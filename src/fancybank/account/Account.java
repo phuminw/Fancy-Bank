@@ -1,19 +1,33 @@
 package fancybank.account;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Currency;
+import java.util.HashMap;
+import java.util.List;
 import java.util.ListIterator;
+import java.util.Set;
+import java.util.Map.Entry;
 
+import fancybank.FancyBank;
 import fancybank.misc.Transaction;
+import fancybank.util.Tuple;
 
 /**
  * Base template for all account types
  */
 
 public abstract class Account {
+    public static final Currency USD = Currency.getInstance("USD");
+    public static final Currency EUR = Currency.getInstance("EUR");
+    public static final Currency CNY = Currency.getInstance("CNY");
+
     private LocalDate openedDate;
     private LocalDate closedDate;
-    private double balance;
+    private HashMap<Currency, Double> balance;
     private ArrayList<Transaction> transactions;
 
     /**
@@ -23,10 +37,14 @@ public abstract class Account {
      */
 
     public Account() {
-        this.openedDate = LocalDate.now();
-        this.closedDate = null;
-        this.balance = 0;
+        openedDate = LocalDate.now();
+        closedDate = null;
+        balance = new HashMap<Currency, Double>();
+        balance.put(USD, 0.0);
+        balance.put(EUR, 0.0);
+        balance.put(CNY, 0.0);
         transactions = new ArrayList<Transaction>();
+        addTransaction(new Transaction(Transaction.FEE, FancyBank.OPENFEE, "USD", String.format("OPEN FEE %d", FancyBank.OPENFEE)));
     }
 
     /**
@@ -38,18 +56,22 @@ public abstract class Account {
      */
 
     public Account(double balance, LocalDate openedDate, LocalDate closedDate) {
-        this.balance = balance;
+        this.balance = new HashMap<Currency, Double>();
+        this.balance.put(USD, balance);
+        this.balance.put(EUR, 0.0);
+        this.balance.put(CNY, 0.0);
         this.openedDate = openedDate;
         this.closedDate = closedDate;
         transactions = new ArrayList<Transaction>();
+        addTransaction(new Transaction(Transaction.FEE, null, FancyBank.OPENFEE, "USD", String.format("OPEN FEE %d", FancyBank.OPENFEE), openedDate.plusDays(1).atStartOfDay().toEpochSecond(ZoneOffset.of(ZoneId.SHORT_IDS.get("EST")))));
     }
 
     /**
-     * @return current balance
+     * @return current balance (zero if invalid currency or actually zero)
      */
 
-    public double getBalance() {
-        return balance;
+    public double getBalance(String currency) {
+        return (balance.containsKey(Currency.getInstance(currency.toUpperCase()))) ? balance.get(Currency.getInstance(currency.toUpperCase())) : 0;
     }
 
     /**
@@ -86,7 +108,7 @@ public abstract class Account {
      * @return matching transactions
      */
     
-    public ArrayList<Transaction> getTransactionsAfter(long timestamp) {
+    public List<Transaction> getTransactionsAfter(long timestamp) {
         ListIterator<Transaction> li = transactions.listIterator();
         ArrayList<Transaction> result = new ArrayList<Transaction>();
 
@@ -107,7 +129,7 @@ public abstract class Account {
      * @return matching transactions
      */
     
-    public ArrayList<Transaction> getTransactionsBefore(long timestamp) {
+    public List<Transaction> getTransactionsBefore(long timestamp) {
         ListIterator<Transaction> li = transactions.listIterator();
         ArrayList<Transaction> result = new ArrayList<Transaction>();
 
@@ -121,12 +143,66 @@ public abstract class Account {
         return result;
     }
 
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
+
     /**
      * @param balance the balance to set
      */
 
-    public void setBalance(double balance) {
-        this.balance = balance;
+    public boolean setBalance(double balance, String currency) {
+        // Invalid currency
+        if (!this.balance.containsKey(Currency.getInstance(currency.toUpperCase())))
+            return false;
+
+        this.balance.put(Currency.getInstance(currency.toUpperCase()), balance);
+        return true;
+    }
+
+    /**
+     * Add new currency
+     * 
+     * @param currency new currency
+     * @return adding result
+     */
+
+    public boolean addCurrency(String currency) {
+        try {
+            balance.put(Currency.getInstance(currency.toUpperCase()), 0.0);
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+    }
+
+    /**
+     * Remove currency from account. Caller must backup or empty to-be-removed currency if needed.
+     * 
+     * @param currency currency to remove
+     * @return removal result
+     */
+
+    public boolean removeCurrency(String currency) {
+        if (balance.keySet().size() > 3) {
+            try {
+                balance.remove(Currency.getInstance(currency.toUpperCase()));
+                return true;
+            } catch (IllegalArgumentException e) {
+                return false;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * All available currencies for this account
+     * 
+     * @return available currency
+     */
+
+    public Set<Currency> getCurrencies() {
+        return balance.keySet();
     }
 
     /**
@@ -140,29 +216,50 @@ public abstract class Account {
     public boolean addTransaction(Transaction t) {
         if (transactions.size() != 0 && transactions.get(transactions.size()-1).isAfter(t))
             return false; // Attempted to add out-of-order transaction (edit history)
+        if (t.getTime().toLocalDate().isAfter(closedDate))
+            return false; // xact after account was closed
+        if (!t.getCurrency().equals("N/A") && !balance.containsKey(Currency.getInstance(t.getCurrency().toUpperCase())))
+            return false; // Invalid currency
         
         /* Commit/Apply transaction */
         switch (t.getOperation()) {
+            case Transaction.INTEREST:
             case Transaction.DEPOSIT:
                 if (t.getAmount() >= 0) {
-                    balance += t.getAmount();
-                    t.setFinalBalance(balance);
+                    balance.put(Currency.getInstance(t.getCurrency().toUpperCase()), balance.get(Currency.getInstance(t.getCurrency().toUpperCase()))+t.getAmount());
+                    t.setFinalBalance(balance.get(Currency.getInstance(t.getCurrency().toUpperCase())));
                     transactions.add(t);
                     return true;
                 }
                 return false;
+            case Transaction.FEE:
             case Transaction.WITHDRAW:
                 if (t.getAmount() >= 0) {
-                    balance -= t.getAmount();
-                    t.setFinalBalance(balance);
+                    balance.put(Currency.getInstance(t.getCurrency().toUpperCase()), balance.get(Currency.getInstance(t.getCurrency().toUpperCase()))-t.getAmount());
+                    t.setFinalBalance(balance.get(Currency.getInstance(t.getCurrency().toUpperCase())));
                     transactions.add(t);
                     return true;
                 }
                 return false;
             default: 
-                t.setFinalBalance(balance); // Buy/sell asset, no affect on balance for this xact.
+                t.setFinalBalance(balance.get(Currency.getInstance("USD"))); // Buy/sell asset, no affect on balance USD for this xact.
                 transactions.add(t);
                 return true;
         }
+    }
+
+    /**
+     * Close account and return account information
+     * 
+     * @return Tuple(balance, stocks)
+     */
+
+    public Tuple<Set<Entry<Currency, Double>>, Set<Entry<String, Double>>> closeAccount() {
+        // Return balance and stock information
+        if (FancyBank.DEBUG)
+            addTransaction(new Transaction(Transaction.FEE, null, FancyBank.CLOSEFEE, "USD", String.format("CLOSED FEE %d", FancyBank.CLOSEFEE), closedDate.atTime(23, 59, 59).toEpochSecond(ZoneOffset.of(ZoneId.SHORT_IDS.get("EST")))));
+        else
+            addTransaction(new Transaction(Transaction.FEE, FancyBank.CLOSEFEE, "USD", String.format("CLOSED FEE %d", FancyBank.CLOSEFEE)));
+        return new Tuple<Set<Entry<Currency,Double>>, Set<Entry<String,Double>>>(balance.entrySet(), null);
     }
 }

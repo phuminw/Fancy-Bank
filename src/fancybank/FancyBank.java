@@ -15,6 +15,10 @@ public class FancyBank {
     /* DEBUG flag: Enable more options and settings for debugging */
     public static final boolean DEBUG = true;
 
+    /* Account open and close fee (USD) */
+    public static final int OPENFEE = 2;
+    public static final int CLOSEFEE = 5;
+
     private List<SavingAccount> savings;
     private List<CheckingAccount> checkings;
     private List<SecuritiesAccount> securites;

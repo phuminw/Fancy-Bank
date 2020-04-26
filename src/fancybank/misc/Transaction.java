@@ -1,23 +1,26 @@
 package fancybank.misc;
 
 import java.time.LocalDateTime;
-// import java.util.Date;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.util.Currency;
 
 /**
  * An immutable transaction
  */
 
 public class Transaction {
+    public static final String FEE = "FEE";
     public static final String DEPOSIT = "DEPOSIT";
     public static final String WITHDRAW = "WITHDRAW";
-    public static final String BUY = "BUY";
+    public static final String INTEREST = "INTEREST";
+    public static final String BUY = "BUY"; 
     public static final String SELL = "SELL";
     
     private String operation;
     private String assetName; // For securities trading
     private double amount;
+    private Currency currency;
     private double finalBalance;
     private String description;
     private LocalDateTime transactTime;
@@ -28,13 +31,19 @@ public class Transaction {
      * @param operation operation
      * @param assetName name of affecting asset
      * @param amount amount
+     * @param currency
      * @param description description of this transaction
      */
 
-    public Transaction(String operation, String assetName, double amount, String description) {
+    public Transaction(String operation, String assetName, double amount, String currency, String description) {
         this.operation = operation;
         this.assetName = assetName;
-        this.amount = Math.round(amount*100.0)/100/0; // Round to 2 decimal places
+        this.amount = Math.round(amount*100.0)/100.0; // Round to 2 decimal places
+        try {
+            this.currency = Currency.getInstance(currency.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            this.currency = null;
+        }
         this.description = description;
         this.transactTime = LocalDateTime.now();
     }
@@ -47,8 +56,8 @@ public class Transaction {
      * @param description description of this transaction
      */
 
-    public Transaction(String operation, double amount, String description) {
-        this(operation, "", amount, description);
+    public Transaction(String operation, double amount, String currency, String description) {
+        this(operation, "", amount, currency, description);
     }
 
     /**
@@ -61,10 +70,15 @@ public class Transaction {
      * @param timestamp timestamp
      */
 
-    public Transaction(String operation, String assetName, double amount, String description, long timestamp) {
+    public Transaction(String operation, String assetName, double amount, String currency, String description, long timestamp) {
         this.operation = operation;
         this.assetName = assetName;
-        this.amount = Math.round(amount*100.0)/100/0; // Round to 2 decimal places
+        this.amount = Math.round(amount*100.0)/100.0; // Round to 2 decimal places
+        try {
+            this.currency = Currency.getInstance(currency.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            this.currency = null;
+        }
         this.description = description;
         this.transactTime = LocalDateTime.ofEpochSecond(timestamp, 0, ZoneOffset.of(ZoneId.SHORT_IDS.get("EST")));
     }
@@ -93,6 +107,10 @@ public class Transaction {
         return amount;
     }
 
+    public String getCurrency() {
+        return (currency == null) ? "N/A" : currency.toString();
+    }
+
     /**
      * @return the description
      */
@@ -119,6 +137,10 @@ public class Transaction {
         return transactTime.atZone(ZoneId.systemDefault()).toEpochSecond();
     }
 
+    public LocalDateTime getTime() {
+        return transactTime;
+    }
+
     /**
      * @return final balance after applying this transaction
      */
@@ -135,11 +157,6 @@ public class Transaction {
         this.finalBalance = finalBalance;
     }
 
-    @Override
-    public String toString() {
-        return String.format("%s | %c | %.2f | %s", transactTime, operation.charAt(0), amount, description);
-    }
-
     /**
      * Test whether this transtion comes after the specified transaction
      * 
@@ -148,7 +165,7 @@ public class Transaction {
      */
     
     public boolean isAfter(Transaction t) {
-        return transactTime.isAfter(LocalDateTime.ofEpochSecond(t.getTimestamp(), 0, ZoneOffset.of(ZoneId.SHORT_IDS.get("EST"))));
+        return transactTime.isAfter(t.getTime());
         // return transactTime.after(new Date(t.getTimestamp()));
     }
 
@@ -160,7 +177,19 @@ public class Transaction {
      */
     
     public boolean isBefore(Transaction t) {
-        return transactTime.isBefore(LocalDateTime.ofEpochSecond(t.getTimestamp(), 0, ZoneOffset.of(ZoneId.SHORT_IDS.get("EST"))));
+        return transactTime.isBefore(t.getTime());
         // return transactTime.before(new Date(t.getTimestamp()));
+    }
+
+    @Override
+    public String toString() {
+        // private String operation;
+        // private String assetName; // For securities trading
+        // private double amount;
+        // private Currency currency;
+        // private double finalBalance;
+        // private String description;
+        // private LocalDateTime transactTime;
+        return String.format("%s | OPS: %s Asset: %s amount: %.2f currency: %s finalB: %.2f | %s", transactTime, operation, assetName, amount, currency, finalBalance, description);
     }
 }

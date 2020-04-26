@@ -2,7 +2,7 @@
  * Author: Phumin Walaipatchara
  */
 
-package edu.bu.phuminw.quest.io;
+package fancybank.io;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
