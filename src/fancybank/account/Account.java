@@ -99,6 +99,14 @@ public abstract class Account {
     }
 
     /**
+     * @param closedDate the closedDate to set
+     */
+
+    protected void setClosedDate(LocalDate closedDate) {
+        this.closedDate = closedDate;
+    }
+
+    /**
      * Get a single transaction
      * 
      * @param i index
@@ -217,17 +225,16 @@ public abstract class Account {
      * @return removal result
      */
 
-    public boolean removeCurrency(String currency) {
+    public Tuple<Double, List<Transaction>> removeCurrency(String currency) {
         if (balance.keySet().size() > 3) {
             try {
-                balance.remove(Currency.getInstance(currency.toUpperCase()));
-                xactByCurrency.remove(Currency.getInstance(currency.toUpperCase()));
-                return true;
+                Double t = balance.remove(Currency.getInstance(currency.toUpperCase()));
+                List<Transaction> u = xactByCurrency.remove(Currency.getInstance(currency.toUpperCase()));
+                return new Tuple<Double,List<Transaction>>(t, u);
             } catch (IllegalArgumentException e) {
-                return false;
             }
         }
-        return false;
+        return new Tuple<Double,List<Transaction>>(-1.0, new ArrayList<>());
     }
 
     /**
@@ -258,7 +265,7 @@ public abstract class Account {
             return false;
         }
 
-        if (transactions.size() != 0 && transactions.get(transactions.size()-1).isAfter(t))
+        if (transactions == null || (transactions.size() != 0 && transactions.get(transactions.size()-1).isAfter(t)))
             return false; // Attempted to add out-of-order transaction (edit history)
         if (t.getTime().toLocalDate().isAfter(closedDate))
             return false; // xact after account was closed
@@ -269,22 +276,22 @@ public abstract class Account {
         switch (t.getOperation()) {
             case Transaction.INTEREST:
             case Transaction.DEPOSIT:
-                if (t.getAmount() >= 0) {
+                // if (t.getAmount() >= 0) {
                     balance.put(Currency.getInstance(t.getCurrency().toUpperCase()), balance.get(Currency.getInstance(t.getCurrency().toUpperCase()))+t.getAmount());
                     t.setFinalBalance(balance.get(Currency.getInstance(t.getCurrency().toUpperCase())));
                     transactions.add(t);
                     return true;
-                }
-                return false;
+                // }
+                // return false;
             case Transaction.FEE:
             case Transaction.WITHDRAW:
-                if (t.getAmount() >= 0) {
+                // if (t.getAmount() >= 0) {
                     balance.put(Currency.getInstance(t.getCurrency().toUpperCase()), balance.get(Currency.getInstance(t.getCurrency().toUpperCase()))-t.getAmount());
                     t.setFinalBalance(balance.get(Currency.getInstance(t.getCurrency().toUpperCase())));
                     transactions.add(t);
                     return true;
-                }
-                return false;
+                // }
+                // return false;
             default: 
                 t.setFinalBalance(balance.get(Currency.getInstance("USD"))); // Buy/sell asset, no affect on balance USD for this xact.
                 transactions.add(t);
@@ -302,8 +309,10 @@ public abstract class Account {
         // Return balance and stock information
         if (FancyBank.DEBUG)
             addTransaction(new Transaction(Transaction.FEE, null, FancyBank.CLOSEFEE, "USD", String.format("CLOSED FEE %d", FancyBank.CLOSEFEE), closedDate.atTime(23, 59, 59).toEpochSecond(ZoneOffset.of(ZoneId.SHORT_IDS.get("EST")))));
-        else
+        else {
             addTransaction(new Transaction(Transaction.FEE, FancyBank.CLOSEFEE, "USD", String.format("CLOSED FEE %d", FancyBank.CLOSEFEE)));
+            closedDate = LocalDate.now();
+        }
         return new Tuple<Set<Entry<Currency,Double>>, Set<Entry<String,Double>>>(balance.entrySet(), null);
     }
 }

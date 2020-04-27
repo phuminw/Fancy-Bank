@@ -17,6 +17,7 @@ public class Transaction {
     public static final String BUY = "BUY"; 
     public static final String SELL = "SELL";
     
+    
     private String operation;
     private String assetName; // For securities trading
     private double amount;
