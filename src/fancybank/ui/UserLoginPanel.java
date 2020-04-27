@@ -3,42 +3,44 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class UserLoginPanel extends BankPanel {
-    private JTextField txtUserName;
+    private JTextField userNameTextField;
 
     public UserLoginPanel(final BankUI bankUI) {
         super(bankUI);
-        setLayout(new GridBagLayout());
-        JPanel panel = new JPanel();
-        panel.add(new JLabel("User Name"));
-        txtUserName = new JTextField(10);
-        panel.add(txtUserName);
+        setLayout(new FlowLayout(FlowLayout.LEADING, 20, 20));
+        JPanel jPanel = new JPanel();
+        jPanel.setBackground(Color.gray);
+        jPanel.add(new JLabel("Customer Name"));
+        userNameTextField = new JTextField(20);
+        jPanel.add(userNameTextField);
         JButton loginBtn = new JButton("Login");
         JButton createBtn = new JButton("Create");
-        panel.add(loginBtn);
-        panel.add(createBtn);
+        jPanel.add(loginBtn);
+        jPanel.add(createBtn);
         loginBtn.addActionListener(new LoginUserListener());
         createBtn.addActionListener(new CreateUserListener());
-        add(panel);
+        add(jPanel);
     }
 
     private class LoginUserListener implements ActionListener {
+        @Override
         public void actionPerformed(ActionEvent e) {
-            String userName = txtUserName.getText();
-            if (userName.length() > 20) {
-                new Message(bankUI, "The Username must be less than 20 characters!");
-            }
-            // else if (bankUI.userExists(userName)) {
-            // dlgBank.userLogin(userName);
+            String userName = userNameTextField.getText();
+            bankUI.loginUser(userName);
+            // if (userName.length() > 20) {
+            // new Message(bankUI, "The Username must be less than 20 characters!");
+            // } else if (true) { // bankUI.userExists(userName)
+            // bankUI.loginUser(userName);
+            // } else {
+            // new Message(bankUI, "No such user exists!");
             // }
-            else {
-                new Message(bankUI, "No such user exists!");
-            }
         }
     }
 
     private class CreateUserListener implements ActionListener {
+        @Override
         public void actionPerformed(ActionEvent e) {
-            String userName = txtUserName.getText();
+            String userName = userNameTextField.getText();
             if (userName.length() > 20) {
                 new Message(bankUI, "The Username must be less than 20 characters!");
             }
@@ -47,7 +49,7 @@ public class UserLoginPanel extends BankPanel {
             // }
             else {
                 // bankUI.createUser(userName);
-                bankUI.userLogin(userName);
+                bankUI.loginUser(userName);
             }
         }
     }
