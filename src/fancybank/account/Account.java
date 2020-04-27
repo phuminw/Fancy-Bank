@@ -1,7 +1,6 @@
 package fancybank.account;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -28,7 +27,8 @@ public abstract class Account {
     private LocalDate openedDate;
     private LocalDate closedDate;
     private HashMap<Currency, Double> balance;
-    private ArrayList<Transaction> transactions;
+    private HashMap<Currency, ArrayList<Transaction>> xactByCurrency;
+    // private ArrayList<Transaction> transactions;
 
     /**
      * Constructor for Account
@@ -43,7 +43,11 @@ public abstract class Account {
         balance.put(USD, 0.0);
         balance.put(EUR, 0.0);
         balance.put(CNY, 0.0);
-        transactions = new ArrayList<Transaction>();
+        xactByCurrency = new HashMap<Currency, ArrayList<Transaction>>();
+        xactByCurrency.put(USD, new ArrayList<Transaction>());
+        xactByCurrency.put(EUR, new ArrayList<Transaction>());
+        xactByCurrency.put(CNY, new ArrayList<Transaction>());
+        // transactions = new ArrayList<Transaction>();
         addTransaction(new Transaction(Transaction.FEE, FancyBank.OPENFEE, "USD", String.format("OPEN FEE %d", FancyBank.OPENFEE)));
     }
 
@@ -62,7 +66,11 @@ public abstract class Account {
         this.balance.put(CNY, 0.0);
         this.openedDate = openedDate;
         this.closedDate = closedDate;
-        transactions = new ArrayList<Transaction>();
+        xactByCurrency = new HashMap<Currency, ArrayList<Transaction>>();
+        xactByCurrency.put(USD, new ArrayList<Transaction>());
+        xactByCurrency.put(EUR, new ArrayList<Transaction>());
+        xactByCurrency.put(CNY, new ArrayList<Transaction>());
+        // transactions = new ArrayList<Transaction>();
         addTransaction(new Transaction(Transaction.FEE, null, FancyBank.OPENFEE, "USD", String.format("OPEN FEE %d", FancyBank.OPENFEE), openedDate.plusDays(1).atStartOfDay().toEpochSecond(ZoneOffset.of(ZoneId.SHORT_IDS.get("EST")))));
     }
 
@@ -97,8 +105,13 @@ public abstract class Account {
      * @return the transactions
      */
 
-    public Transaction getTransaction(int i) {
-        return transactions.get(i);
+    public Transaction getTransaction(String currency, int i) {
+        try {
+            List<Transaction> xacts = xactByCurrency.get(Currency.getInstance(currency.toUpperCase()));
+            return xacts.get(i);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     /**
@@ -108,7 +121,15 @@ public abstract class Account {
      * @return matching transactions
      */
     
-    public List<Transaction> getTransactionsAfter(long timestamp) {
+    public List<Transaction> getTransactionsAfter(String currency, long timestamp) {
+        ArrayList<Transaction> transactions;
+
+        try {
+            transactions = xactByCurrency.get(Currency.getInstance(currency.toUpperCase()));
+        } catch (Exception e) {
+            return new ArrayList<Transaction>();
+        }
+
         ListIterator<Transaction> li = transactions.listIterator();
         ArrayList<Transaction> result = new ArrayList<Transaction>();
 
@@ -129,7 +150,15 @@ public abstract class Account {
      * @return matching transactions
      */
     
-    public List<Transaction> getTransactionsBefore(long timestamp) {
+    public List<Transaction> getTransactionsBefore(String currency, long timestamp) {
+        ArrayList<Transaction> transactions;
+        
+        try {
+            transactions = xactByCurrency.get(Currency.getInstance(currency.toUpperCase()));
+        } catch (Exception e) {
+            return new ArrayList<Transaction>();
+        }
+
         ListIterator<Transaction> li = transactions.listIterator();
         ArrayList<Transaction> result = new ArrayList<Transaction>();
 
@@ -143,8 +172,12 @@ public abstract class Account {
         return result;
     }
 
-    public List<Transaction> getTransactions() {
-        return transactions;
+    public List<Transaction> getTransactions(String currency) {
+        try {
+            return xactByCurrency.get(Currency.getInstance(currency.toUpperCase()));
+        } catch (Exception e) {
+            return new ArrayList<Transaction>();
+        }
     }
 
     /**
@@ -170,6 +203,7 @@ public abstract class Account {
     public boolean addCurrency(String currency) {
         try {
             balance.put(Currency.getInstance(currency.toUpperCase()), 0.0);
+            xactByCurrency.put(Currency.getInstance(currency.toUpperCase()), new ArrayList<Transaction>());
             return true;
         } catch (IllegalArgumentException e) {
             return false;
@@ -187,6 +221,7 @@ public abstract class Account {
         if (balance.keySet().size() > 3) {
             try {
                 balance.remove(Currency.getInstance(currency.toUpperCase()));
+                xactByCurrency.remove(Currency.getInstance(currency.toUpperCase()));
                 return true;
             } catch (IllegalArgumentException e) {
                 return false;
@@ -214,6 +249,15 @@ public abstract class Account {
      */
     
     public boolean addTransaction(Transaction t) {
+        String currency = t.getCurrency();
+        ArrayList<Transaction> transactions;
+        
+        try {
+            transactions = xactByCurrency.get(Currency.getInstance(currency.toUpperCase()));
+        } catch (Exception e) {
+            return false;
+        }
+
         if (transactions.size() != 0 && transactions.get(transactions.size()-1).isAfter(t))
             return false; // Attempted to add out-of-order transaction (edit history)
         if (t.getTime().toLocalDate().isAfter(closedDate))

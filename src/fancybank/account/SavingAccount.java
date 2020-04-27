@@ -5,8 +5,10 @@ import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.Currency;
 import java.util.HashMap;
+import java.util.ListIterator;
 import java.util.PriorityQueue;
 import java.util.Set;
 
@@ -21,7 +23,7 @@ public class SavingAccount extends Account {
     private Tuple<YearMonth, Integer> withdrawCount; // Associate with Month
     private int withdrawCountLimit;
     // private HashMap<YearMonth, Double> intRate; // K: year V: (K: month V: interest rate)
-    private PriorityQueue<Tuple<Tuple<YearMonth, YearMonth>, Double>> intRateHistory; // ((start, end), intRate)
+    private ArrayList<Tuple<Tuple<YearMonth, YearMonth>, Double>> intRateHistory; // ((start, end), intRate)
     private HashMap<YearMonth, Double> intEarned; // K: year month V: interest earned
     private YearMonth intCheckPoint; // Most recent interest rate calculation
 
@@ -30,7 +32,7 @@ public class SavingAccount extends Account {
         // this.interest = interest;
         this.withdrawCount = new Tuple<YearMonth, Integer>(YearMonth.now(), 0);
         this.withdrawCountLimit = withdrawCountLimit;
-        this.intRateHistory = new PriorityQueue<Tuple<Tuple<YearMonth, YearMonth>, Double>>(new InterestRateDBSorter());
+        this.intRateHistory = new ArrayList<Tuple<Tuple<YearMonth, YearMonth>, Double>>();
         // intRate.put(YearMonth.now(), interest);
         this.intEarned = new HashMap<YearMonth, Double>();
         this.intCheckPoint = null;
@@ -58,7 +60,7 @@ public class SavingAccount extends Account {
             this.withdrawCount = new Tuple<YearMonth, Integer>(YearMonth.now(), 0);
             
         this.withdrawCountLimit = withdrawCountLimit;
-        this.intRateHistory = new PriorityQueue<Tuple<Tuple<YearMonth, YearMonth>, Double>>(new InterestRateDBSorter());
+        this.intRateHistory = new ArrayList<Tuple<Tuple<YearMonth, YearMonth>, Double>>();
         // intRate.put(YearMonth.now(), interest);
         this.intEarned = new HashMap<YearMonth, Double>();
         this.intCheckPoint = null;
@@ -69,11 +71,11 @@ public class SavingAccount extends Account {
     }
 
     /**
-     * @return this account interest rate
+     * @return this account interest rate. zero if no recent entry of actually zero.
      */
 
     public Double getInterestRate() {
-        return intRateHistory.peek().getSecond();
+        return (intRateHistory.size() == 0) ? 0 : intRateHistory.get(intRateHistory.size()-1).getSecond();
     }
 
     /**
@@ -111,22 +113,29 @@ public class SavingAccount extends Account {
      */
 
     public boolean setIntRate(double interest, YearMonth start, YearMonth end) {
-        Tuple<Tuple<YearMonth,YearMonth>,Double> recentInt;
+        // Check trying to go into history and invalidate old entry, if exists
+        if (intRateHistory.size() != 0) {
+            Tuple<Tuple<YearMonth,YearMonth>,Double> recentInt = intRateHistory.get(intRateHistory.size()-1);
 
-        // Invalidate old entry, if exists
-        if ((recentInt = intRateHistory.poll()) != null) {
             // Check whether trying to overwrite history or not
-            if (recentInt.getFirst().getFirst().isAfter(start))
+            if (!recentInt.getFirst().getFirst().isBefore(start))
                 return false;
 
-            if (FancyBank.DEBUG)
-                return intRateHistory.add(new Tuple<Tuple<YearMonth,YearMonth>,Double>(new Tuple<YearMonth,YearMonth>(recentInt.getFirst().getFirst(), start), recentInt.getSecond()));
-            else
-                return intRateHistory.add(new Tuple<Tuple<YearMonth,YearMonth>,Double>(new Tuple<YearMonth,YearMonth>(recentInt.getFirst().getFirst(), YearMonth.now()), recentInt.getSecond()));
+            if (FancyBank.DEBUG) {
+                intRateHistory.set(intRateHistory.size()-1, new Tuple<Tuple<YearMonth,YearMonth>,Double>(new Tuple<YearMonth,YearMonth>(recentInt.getFirst().getFirst(), start), recentInt.getSecond()));
+                intRateHistory.add(new Tuple<Tuple<YearMonth,YearMonth>,Double>(new Tuple<YearMonth,YearMonth>(start, null), interest));
+            }
+            else {
+                intRateHistory.set(intRateHistory.size()-1, new Tuple<Tuple<YearMonth,YearMonth>,Double>(new Tuple<YearMonth,YearMonth>(recentInt.getFirst().getFirst(), YearMonth.now()), recentInt.getSecond()));
+                intRateHistory.add(new Tuple<Tuple<YearMonth,YearMonth>,Double>(new Tuple<YearMonth,YearMonth>(YearMonth.now(), null), interest));
+            }
+            
+            return true;
         }
         
         if (FancyBank.DEBUG) {
-            return intRateHistory.add(new Tuple<Tuple<YearMonth,YearMonth>,Double>(new Tuple<YearMonth, YearMonth>(start, end), interest));
+            // First entry must start from opened date and valid
+            return intRateHistory.add(new Tuple<Tuple<YearMonth,YearMonth>,Double>(new Tuple<YearMonth, YearMonth>(YearMonth.of(getOpenedDate().getYear(), getOpenedDate().getMonth()), end), interest));
         }
 
         return intRateHistory.add(new Tuple<Tuple<YearMonth,YearMonth>,Double>(new Tuple<YearMonth,YearMonth>(YearMonth.now(), null), interest));
@@ -197,38 +206,65 @@ public class SavingAccount extends Account {
     }
 
     /**
-     * Calculate interest on this account up to specified date
+     * Calculate interest on this account up to specified date on monthly level
      * 
      * @param ym today (or simulated date). Ignore if not debug.
      */
-    @SuppressWarnings({"unchecked"})
+    // @SuppressWarnings({"unchecked"})
 
     public void calculateInterest(LocalDate date) {
         Set<Currency> currencies = getCurrencies();
         for (Currency c: currencies) {
-            // TODO: Interest rate calculation on both debug and non-debug mode
-            Tuple<Tuple<YearMonth, YearMonth>, Double>[] intEntries = (Tuple<Tuple<YearMonth, YearMonth>, Double>[]) intRateHistory.toArray();
+            // Interest rate calculation on both debug and non-debug mode
 
-            if (intRateHistory.peek().getFirst().getSecond() != null) {
+            if (intRateHistory.size() == 0)
+                throw new InterestRateDBCorruptException("No interest rate entry");
+            if (intRateHistory.get(intRateHistory.size()-1).getFirst().getSecond() != null)
                 throw new InterestRateDBCorruptException("Most recent interest rate entry was invalidated and no alive entry");
-            }
 
             if (!FancyBank.DEBUG)
                 date = LocalDate.now(); // Ignore param and set to today
 
-            YearMonth checkpoint = (intCheckPoint == null) ? intEntries[0].getFirst().getFirst().minusMonths(1) : intCheckPoint;
-            for (int i = 0 ; i < intEntries.length && checkpoint.isBefore(YearMonth.of(date.getYear(), date.getMonth())) ; i++) {
-                Tuple<Tuple<YearMonth, YearMonth>, Double> current = intEntries[i]; // Current interest rate
-                
-                YearMonth stopYM = (current.getFirst().getSecond() == null || !current.getFirst().getSecond().isBefore(YearMonth.of(date.getYear(), date.getMonth().minus(1)))) ? YearMonth.of(date.getYear(), date.getMonth().minus(1)) : current.getFirst().getSecond();
+            if (getBalance(c.toString()) < 0)
+                continue;
 
-                while (!checkpoint.isAfter(stopYM)) {
-                    addTransaction(new Transaction(Transaction.INTEREST, Math.round(getBalance(c.toString())*current.getSecond()*100.00)/100.0, c.toString(), String.format("Interest %s %s", checkpoint, c)));
+            YearMonth checkpoint = (intCheckPoint == null) ? intRateHistory.get(0).getFirst().getFirst().minusMonths(1) : intCheckPoint;
+            Tuple<Tuple<YearMonth, YearMonth>, Double> current = null;
+            ListIterator<Tuple<Tuple<YearMonth, YearMonth>, Double>> li = intRateHistory.listIterator();
+
+            // Find first int entry corresponding to checkpoint
+            while (li.hasNext() 
+            && !(current = li.next()).getFirst().getFirst().isAfter(checkpoint) 
+            && (current.getFirst().getSecond() == null || current.getFirst().getSecond().isAfter(checkpoint))
+            ) {}
+
+            while (checkpoint.plusMonths(1).isBefore(YearMonth.of(date.getYear(), date.getMonth()))) {
+                YearMonth stopYM = (current.getFirst().getSecond() == null) ? YearMonth.of(date.getYear(), date.getMonth()) : (current.getFirst().getSecond().isBefore(YearMonth.of(date.getYear(), date.getMonth()))) ? current.getFirst().getSecond() : YearMonth.of(date.getYear(), date.getMonth()); // Exclusive upper bound
+
+                while (checkpoint.plusMonths(1).isBefore(stopYM)) {
                     checkpoint = checkpoint.plusMonths(1);
+                    addTransaction(new Transaction(Transaction.INTEREST, null, Math.round(getBalance(c.toString())*current.getSecond()*100.00)/100.0, c.toString(), String.format("Interest %s %s", checkpoint, c), LocalDateTime.of(checkpoint.getYear(), checkpoint.getMonth(), 28, 23, 59, 59).toEpochSecond(ZoneOffset.of(ZoneId.SHORT_IDS.get("EST")))));
                 }
+
+                if (li.hasNext())
+                    current = li.next();
             }
-            intCheckPoint = checkpoint;
         }
+
+        intCheckPoint = YearMonth.of(date.getYear(), date.getMonth().minus(1));
+
+        //     for (int i = 0 ; i < intEntries.length && checkpoint.isBefore(YearMonth.of(date.getYear(), date.getMonth())) ; i++) {
+        //         Tuple<Tuple<YearMonth, YearMonth>, Double> current = intEntries[i]; // Current interest rate
+                
+        //         YearMonth stopYM = (current.getFirst().getSecond() == null || !current.getFirst().getSecond().isBefore(YearMonth.of(date.getYear(), date.getMonth().minus(1)))) ? YearMonth.of(date.getYear(), date.getMonth().minus(1)) : current.getFirst().getSecond();
+
+        //         while (!checkpoint.isAfter(stopYM)) {
+        //             addTransaction(new Transaction(Transaction.INTEREST, Math.round(getBalance(c.toString())*current.getSecond()*100.00)/100.0, c.toString(), String.format("Interest %s %s", checkpoint, c)));
+        //             checkpoint = checkpoint.plusMonths(1);
+        //         }
+        //     }
+        //     intCheckPoint = checkpoint;
+        // }
 
     }
 }
