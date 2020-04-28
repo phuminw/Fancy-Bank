@@ -1,6 +1,4 @@
-
-// package fancybank.ui;
-import java.util.ArrayList;
+package fancybank.ui;
 
 import javax.swing.*;
 

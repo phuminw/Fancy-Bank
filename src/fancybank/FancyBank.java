@@ -1,5 +1,8 @@
 package fancybank;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +39,7 @@ public class FancyBank {
 
     private String currentName;
     private Character currentChar;
-    private static final String ownerCode = 0000;
+    private static final String ownerCode = "0000";
 
     public FancyBank() {
 

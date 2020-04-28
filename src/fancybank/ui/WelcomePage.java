@@ -1,3 +1,5 @@
+package fancybank.ui;
+
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import java.awt.*;

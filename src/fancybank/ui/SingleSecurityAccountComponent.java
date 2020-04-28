@@ -1,7 +1,7 @@
+package fancybank.ui;
+
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
 
 public class SingleSecurityAccountComponent extends BankPanel {
     private int accountID;
