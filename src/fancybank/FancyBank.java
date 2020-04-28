@@ -80,7 +80,7 @@ public class FancyBank {
             String line = "";
 
             while ((line = br.readLine()) != null) {
-                // Name,mana,strength,agility,dexterity,starting money,starting experience
+                // Name,accountName,pwd
                 String[] tokens = line.replace("\n", "").strip().split(",");
 
                 // Expect 3 columns, otherwise skip
@@ -110,6 +110,53 @@ public class FancyBank {
     }
 
     public void loadAccount(String path){
+        File[] accountCsv = new File(path).listFiles(new FileFilter() {
+
+            @Override
+            public boolean accept(File pathname) {
+                return pathname.getName().substring(pathname.getName().length() - 4, pathname.getName().length())
+                        .equals(".csv");
+            }
+        });
+
+        for (File f : accountCsv) {
+            BufferedReader br = new BufferedReader(new FileReader(f));
+            br.readLine(); // skip header
+            String type = f.getName().substring(0, f.getName().indexOf('.')).toUpperCase();
+
+            String line = "";
+
+            while ((line = br.readLine()) != null) {
+                // online account ID, account type, USD,balance,EUR,balance, CNY, balance.
+                String[] tokens = line.replace("\n", "").strip().split(",");
+
+                // Expect 3 columns, otherwise skip
+                if (tokens.length == 8) {
+                    switch (type) {
+                        case "checkingAccount":
+                            Manager m = new Manager(tokens[0].replace("-", " ").replace("_", " "),tokens[1], tokens[2]);
+                            this.managers.add(m);
+                            this.OnlineAccounts.add(new Tuple(tokens[1],tokens[2]));
+                            break;
+                        case "savingAccount":
+                            Customer c = new Customer(tokens[0].replace("-", " ").replace("_", " "),tokens[1], tokens[2]);
+                            this.customers.add(c);
+                            this.OnlineAccounts.add(new Tuple(tokens[1],tokens[2]));
+                            break;
+                        case "securitiesAccount":
+                            Manager m = new Manager(tokens[0].replace("-", " ").replace("_", " "),tokens[1], tokens[2]);
+                            this.managers.add(m);
+                            this.OnlineAccounts.add(new Tuple(tokens[1],tokens[2]));
+                            break;
+                        default:
+                            System.err.println("Encountered undefined type");
+                    }
+                } else {
+                    System.out.printf("Len is %d\n", tokens.length);
+                }
+            }
+
+            br.close();
 
     }
 
