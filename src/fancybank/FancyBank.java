@@ -1,6 +1,9 @@
 package fancybank;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileFilter;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -136,17 +139,17 @@ public class FancyBank {
                         case "checkingAccount":
                             Manager m = new Manager(tokens[0].replace("-", " ").replace("_", " "),tokens[1], tokens[2]);
                             this.managers.add(m);
-                            this.OnlineAccounts.add(new Tuple(tokens[1],tokens[2]));
+                            this.OnlineAccounts.add(new Tuple<String, String>(tokens[1],tokens[2]));
                             break;
                         case "savingAccount":
                             Customer c = new Customer(tokens[0].replace("-", " ").replace("_", " "),tokens[1], tokens[2]);
                             this.customers.add(c);
-                            this.OnlineAccounts.add(new Tuple(tokens[1],tokens[2]));
+                            this.OnlineAccounts.add(new Tuple<String, String>(tokens[1],tokens[2]));
                             break;
                         case "securitiesAccount":
                             Manager m = new Manager(tokens[0].replace("-", " ").replace("_", " "),tokens[1], tokens[2]);
                             this.managers.add(m);
-                            this.OnlineAccounts.add(new Tuple(tokens[1],tokens[2]));
+                            this.OnlineAccounts.add(new Tuple<String, String>(tokens[1],tokens[2]));
                             break;
                         default:
                             System.err.println("Encountered undefined type");
@@ -181,7 +184,7 @@ public class FancyBank {
                     sinwrap.setMessage("Create Account Successfully!");
                     Character c = new Character(currentName,id,pwd);
                     this.currentChar = c;
-                    this.OnlineAccounts.add(new Tuple(id,pwd));
+                    this.OnlineAccounts.add(new Tuple<String, String>(id,pwd));
                     if(type.equals("Customer"))
                     {
                         Customer cust = (Customer)c;
@@ -189,7 +192,7 @@ public class FancyBank {
                     }
                     else if(type.equals("Manager"))
                     {
-                        Manager man = (Manager)m;
+                        Manager man = (Manager) m;
                         this.managers.add(man);
                     }
                 }
