@@ -13,19 +13,19 @@ public class AmountTextField extends BankPanel {
         add(txtAmount);
 
         add(new JLabel("Currency Type"));
-        cbxCurrencyType = new JComboBox<String>(new String[] { "()", "()" });
+        cbxCurrencyType = new JComboBox<String>(new String[] { "RMB", "USD", "EUR", "JPY", "GBP", "CHF", });
         add(cbxCurrencyType);
     }
 
-    // public double getAmount() {
-    // double amount = -1;
-    // try {
-    // amount = Double.parseDouble(txtAmount.getText());
-    // } catch (NumberFormatException ex) {
-    // new MessageWindow("Please input valid number!", dlgBank);
-    // }
-    // return amount;
-    // }
+    public double getAmount() {
+        double amount = -1;
+        try {
+            amount = Double.parseDouble(txtAmount.getText());
+        } catch (NumberFormatException ex) {
+            new Message(bankUI, "Please input valid number!");
+        }
+        return amount;
+    }
 
     // public Money.Currency getCurrency() {
     // return (Money.Currency) cbxCurrencyType.getSelectedItem();

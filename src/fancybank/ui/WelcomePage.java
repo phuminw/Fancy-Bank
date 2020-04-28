@@ -28,7 +28,7 @@ public class WelcomePage extends BankPanel {
     private class LoginManagerListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            bankUI.navigateToLoginManagerPage();
+            bankUI.navigateToManagerPage();
         }
     }
 }

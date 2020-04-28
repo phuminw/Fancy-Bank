@@ -5,8 +5,8 @@ import java.awt.event.*;
 
 import java.util.ArrayList;
 
-public class SecuritiesAccountInfoPanel extends JPanel {
-    public SecuritiesAccountInfoPanel() {
+public class SecurityAccountInfoPanel extends JPanel {
+    public SecurityAccountInfoPanel() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         // info.reset();
