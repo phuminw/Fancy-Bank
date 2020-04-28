@@ -39,11 +39,11 @@ public class UserDetailPanel extends BankPanel {
     public void refreshAccountList(String name) {
         userNameLabel.setText(name + "'s account");
         accountsListJpanel.removeAll();
-        accountsListJpanel.add(new SingleAccountComponent(bankUI));
-        accountsListJpanel.add(new SingleAccountComponent(bankUI));
-        accountsListJpanel.add(new SingleAccountComponent(bankUI));
-        accountsListJpanel.add(new SingleAccountComponent(bankUI));
-        accountsListJpanel.add(new SingleAccountComponent(bankUI));
+        accountsListJpanel.add(new SingleNormalAccountComponent(bankUI));
+        accountsListJpanel.add(new SingleNormalAccountComponent(bankUI));
+        accountsListJpanel.add(new SingleNormalAccountComponent(bankUI));
+        accountsListJpanel.add(new SingleNormalAccountComponent(bankUI));
+        accountsListJpanel.add(new SingleNormalAccountComponent(bankUI));
     }
 
     private class CreateAccountListener implements ActionListener {

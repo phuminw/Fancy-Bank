@@ -1,18 +1,23 @@
+
 // package fancybank.ui;
+import java.util.ArrayList;
 
 import javax.swing.*;
 
 public class BankUI extends JFrame {
-    // private final Bank bank; // Init the band instance
+    // private final FancyBank fancybank; // Init the band instance
     private final WelcomePage welcomePage = new WelcomePage(this);
     private final UserLoginPanel userLoginPage = new UserLoginPanel(this);
     private final UserDetailPanel userPage = new UserDetailPanel(this);
     private final CreateAccountPanel createAccountPage = new CreateAccountPanel(this);
     private final ManagerPanel managerPage = new ManagerPanel(this);
-    private final SecuritiesInfoPanel securitiesInfoPanel = new SecuritiesInfoPanel();
-    private final SecuritiesAccountInfoPanel securitiesAccountInfoPanel = new SecuritiesAccountInfoPanel();
+    private final SecurityInfoPanel securitiesInfoPanel = new SecurityInfoPanel();
+    private final SecurityAccountInfoPanel securitiesAccountInfoPanel = new SecurityAccountInfoPanel();
 
-    BankUI() {
+    BankUI(
+    // FancyBank fancybank
+    ) {
+        // this.fancybank = fancybank;
         add(welcomePage);
         setTitle("Fancy Bank");
         setSize(600, 300);
@@ -22,14 +27,120 @@ public class BankUI extends JFrame {
     }
 
     public void loginUser(final String customerName) {
-        // bank.userLogin(customerName);
+        // fancybank.userLogin(customerName);
         navigateToUserDetailPage();
     }
 
     public void logout() {
-        // bank.userLogout();
-        // switchWelcomePanel();
+        // fancybank.userLogout();
+        navigateToWelcomePage();
     }
+
+    public boolean doesUserExist(String userName) {
+        return true;
+        // return fancybank.existUser(userName);
+    }
+
+    public void managerLogin() {
+        System.out.print("Manager Login");
+    }
+
+    public void createUser(String userName) {
+        // fancybank.createUser();
+    }
+
+    public boolean tryCreateAccount(String accountType, int initialDeposit) {
+        return false;
+        // Response err = new Response();
+        // boolean res = fancybank.tryCreateAccount(type, initialDeposit, err);
+        // new Message(err.res, this);
+        // return res;
+    }
+
+    public boolean tryDestroyAccount(int id) {
+        return false;
+        // Response err = new Response();
+        // boolean res = fancybank.tryDestroyAccount(id, err);
+        // new Message(err.res, this);
+        // return res;
+    }
+
+    public void saveMoneyToAccount(int money, int accountID) {
+        // fancybank.saveMoneyToAccount(money, accountID);
+    }
+
+    public void withdrawMoneyFromAccount(int money, int accountID) {
+        // Response err = new Response();
+        // if (!fancybank.withdrawMoneyFromAccount(money, accountID, err)) {
+        // new Message(err.res, this);
+        // }
+    }
+
+    public void transactMoney(int money, int fromID, int toID) {
+        // Response err = new Response();
+        // if (!fancybank.transactMoney(money, fromID, toID, err)) {
+        // new Message(err.res, this);
+        // }
+    }
+
+    public void payInterest() {
+        // fancybank.payInterest();
+    }
+
+    // public void showLogAll() {
+    // new DlgLog(fancybank.getLogAll(), this);
+    // }
+
+    // public void showLogUpdate() {
+    // new DlgLog(fancybank.getLogUpdate(), this);
+    // }
+
+    // public void showUserLog() {
+    // new DlgLog(fancybank.getActiveUserLog(), this);
+    // }
+
+    // public ArrayList getUserAccountInfo(String name) {
+    // return fancybank.getUserAccountInfo(name);
+    // }
+
+    public void setTransFee(int newTransFee) {
+        // fancybank.setTransFee(newTransFee);
+    }
+
+    public void setHighBalance(int highBalance) {
+        // fancybank.setHighBalance(highBalance);
+    }
+
+    public void setLoanInterest(double interestRate) {
+        // fancybank.setLoanInterest(interestRate);
+    }
+
+    public void setShareThreshold(int threshold) {
+        // fancybank.setShareThreshold(threshold);
+    }
+
+    // public boolean tryCreateNewStock(int id, String name, Response err) {
+    // return fancybank.tryCreateNewStock(id, name, err);
+    // }
+
+    // public boolean tryRemoveStock(int id, Response err) {
+    // return fancybank.tryRemoveStock(id, err);
+    // }
+
+    // public boolean tryBuyStock(int accountID, int assoAccntID, int stockID, int
+    // stockNum, Response err) {
+    // return fancybank.tryBuyStock(accountID, assoAccntID, stockID, stockNum, err);
+    // }
+
+    // public boolean trySellStock(int accountID, int assoAccntID, int stockID, int
+    // stockNum, Response err) {
+    // return fancybank.trySellStock(accountID, assoAccntID, stockID, stockNum,
+    // err);
+    // }
+
+    // public ArrayList getStockInfo() {
+    // return fancybank.getStockInfo();
+    // }
 
     public void navigateToLoginUserPage() {
         getContentPane().removeAll();
@@ -37,8 +148,9 @@ public class BankUI extends JFrame {
         SwingUtilities.updateComponentTreeUI(this);
     }
 
-    public void navigateToLoginManagerPage() {
+    public void navigateToManagerPage() {
         getContentPane().removeAll();
+        managerPage.refreshAccountList("1", "2");
         add(managerPage);
         SwingUtilities.updateComponentTreeUI(this);
     }
@@ -46,7 +158,8 @@ public class BankUI extends JFrame {
     public void navigateToUserDetailPage() {
         getContentPane().removeAll();
         add(userPage);
-        // userPanel.update(bank.getActiveUserName(), bank.getActiveUserAccountsInfo());
+        // userPanel.update(fancybank.getActiveUserName(),
+        // fancybank.getActiveUserAccountsInfo());
         SwingUtilities.updateComponentTreeUI(this);
     }
 
@@ -56,7 +169,14 @@ public class BankUI extends JFrame {
         SwingUtilities.updateComponentTreeUI(this);
     }
 
+    public void navigateToWelcomePage() {
+        getContentPane().removeAll();
+        add(welcomePage);
+        SwingUtilities.updateComponentTreeUI(this);
+    }
+
     public static void main(String[] args) {
         BankUI bankUI = new BankUI();
     }
+
 }

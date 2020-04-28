@@ -3,8 +3,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class MoneyAccountInfoPanel extends JPanel {
-    public MoneyAccountInfoPanel() {
+public class NormalAccountInfoPanel extends JPanel {
+    public NormalAccountInfoPanel() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         // info.reset();

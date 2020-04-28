@@ -2,8 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class SecuritiesInfoPanel extends JPanel {
-    public SecuritiesInfoPanel() {
+public class SecurityInfoPanel extends JPanel {
+    public SecurityInfoPanel() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         JPanel idPanel = new JPanel();
