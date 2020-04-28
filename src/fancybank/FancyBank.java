@@ -4,10 +4,13 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.lang.model.util.ElementScanner14;
 
 import fancybank.account.CheckingAccount;
 import fancybank.account.SavingAccount;
@@ -44,14 +47,19 @@ public class FancyBank {
     private Character currentChar;
     private static final String ownerCode = "0000";
 
+    //database path
+    private String DBPATH = findDb();
+
     public FancyBank() {
+        initBank();
 
         sinwrap = new StdinWrapper("");
-
-        //database path
-        String DBPATH = findDb();
         loadCharacter(DBPATH + "character/");
         loadAccount(DBPATH + "account/");
+
+        
+
+        
     }
 
     public void initBank(){
@@ -63,6 +71,17 @@ public class FancyBank {
         this.customers = new ArrayList<Customer>();
 
         this.currentChar = new Character();
+    }
+
+    public void run(){
+        //display welcome
+
+        //create account or login
+
+        //get action from user and enforce.
+        
+
+
     }
 
     public void loadCharacter(String path){
@@ -163,6 +182,46 @@ public class FancyBank {
         }
 
     }
+
+    public void updataManager(String path,String[] record,String type){
+        
+        FileWriter writer;
+        
+        switch(type)
+        {
+            case "manager":
+                writer = new FileWriter(path+"manager.csv",true);
+            case "customer":
+                writer = new FileWriter(path+"customer.csv",true);
+            case "saving":
+                writer = new FileWriter(path+"savingAccount.csv",true);
+            case "checking":
+                writer = new FileWriter(path+"checkingAccount.csv",true);
+            case "securities":
+                writer = new FileWriter(path+"securitiesAccount.csv",true);
+            default:
+                System.err.println("Encountered undefined type");
+        }
+        for(int i = 0;i<record.length;i++)
+        {
+            if(i != (record.length-1))
+            {
+                writer.append(record[i]);
+                writer.append(",");
+            }
+            else
+            {
+                writer.append(record[i]);
+            }
+            
+        }
+
+        writer.close();
+    }
+
+
+
+
 
     public void CreateOnlineAccount(){
         Boolean finished = false;
