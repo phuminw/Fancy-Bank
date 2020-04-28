@@ -134,22 +134,22 @@ public class FancyBank {
                 String[] tokens = line.replace("\n", "").strip().split(",");
 
                 // Expect 3 columns, otherwise skip
-                if (tokens.length == 8) {
+                if (tokens.length == 8 || tokens.length == 10) {
                     switch (type) {
                         case "checkingAccount":
-                            Manager m = new Manager(tokens[0].replace("-", " ").replace("_", " "),tokens[1], tokens[2]);
-                            this.managers.add(m);
-                            this.OnlineAccounts.add(new Tuple<String, String>(tokens[1],tokens[2]));
+                            CheckingAccount c = new CheckingAccount(tokens[0].replace("-", " ").replace("_", " "),tokens[1], tokens[2],
+                            tokens[3],tokens[4],tokens[5],tokens[6],tokens[7]);
+                            this.checkings.add(c);
                             break;
                         case "savingAccount":
-                            Customer c = new Customer(tokens[0].replace("-", " ").replace("_", " "),tokens[1], tokens[2]);
-                            this.customers.add(c);
-                            this.OnlineAccounts.add(new Tuple<String, String>(tokens[1],tokens[2]));
+                            Savingaccount s = new Savingaccount(tokens[0].replace("-", " ").replace("_", " "),tokens[1], tokens[2],
+                            tokens[3],tokens[4],tokens[5],tokens[6],tokens[7],tokens[8],tokens[9]);
+                            this.savings.add(s);
                             break;
                         case "securitiesAccount":
-                            Manager m = new Manager(tokens[0].replace("-", " ").replace("_", " "),tokens[1], tokens[2]);
-                            this.managers.add(m);
-                            this.OnlineAccounts.add(new Tuple<String, String>(tokens[1],tokens[2]));
+                            SecuritiesAccount se = new SecuritiesAccount(tokens[0].replace("-", " ").replace("_", " "),tokens[1], tokens[2],
+                            tokens[3],tokens[4],tokens[5],tokens[6],tokens[7]);
+                            this.securites.add(se);
                             break;
                         default:
                             System.err.println("Encountered undefined type");
@@ -159,7 +159,8 @@ public class FancyBank {
                 }
             }
 
-            br.close();
+        br.close();
+        }
 
     }
 
