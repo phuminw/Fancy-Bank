@@ -109,21 +109,21 @@ public class StdinWrapper {
         return (special && specialChar.equals(QUIT)) ? true : false;
     }
 
-    public boolean isEnd() {
-        return (special && specialChar.equals(END)) ? true : false;
-    }
+    // public boolean isEnd() {
+    //     return (special && specialChar.equals(END)) ? true : false;
+    // }
 
-    public boolean isInfo() {
-        return (special && specialChar.equals(INFO)) ? true : false;
-    }
+    // public boolean isInfo() {
+    //     return (special && specialChar.equals(INFO)) ? true : false;
+    // }
 
-    public boolean isTeleport() {
-        return (special && specialChar.equals(TELEPORT)) ? true : false;
-    }
+    // public boolean isTeleport() {
+    //     return (special && specialChar.equals(TELEPORT)) ? true : false;
+    // }
 
-    public boolean isBackNexus() {
-        return (special && specialChar.equals(BACKNEXUS)) ? true : false;
-    }
+    // public boolean isBackNexus() {
+    //     return (special && specialChar.equals(BACKNEXUS)) ? true : false;
+    // }
 
     public String next() {
         getInput();

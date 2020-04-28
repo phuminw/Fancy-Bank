@@ -1,7 +1,6 @@
+package fancybank.ui;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
 
 public class AmountTextField extends BankPanel {
     private JTextField txtAmount;

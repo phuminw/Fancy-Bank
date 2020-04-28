@@ -1,6 +1,7 @@
+package fancybank.ui;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 
 public class Message extends JFrame {
     public Message(Component parent, String msg) {

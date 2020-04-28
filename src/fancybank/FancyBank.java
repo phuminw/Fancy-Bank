@@ -1,5 +1,11 @@
 package fancybank;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +42,7 @@ public class FancyBank {
 
     private String currentName;
     private Character currentChar;
-    private static final String ownerCode = 0000;
+    private static final String ownerCode = "0000";
 
     public FancyBank() {
 
@@ -77,7 +83,7 @@ public class FancyBank {
             String line = "";
 
             while ((line = br.readLine()) != null) {
-                // Name,mana,strength,agility,dexterity,starting money,starting experience
+                // Name,accountName,pwd
                 String[] tokens = line.replace("\n", "").strip().split(",");
 
                 // Expect 3 columns, otherwise skip
@@ -107,6 +113,54 @@ public class FancyBank {
     }
 
     public void loadAccount(String path){
+        File[] accountCsv = new File(path).listFiles(new FileFilter() {
+
+            @Override
+            public boolean accept(File pathname) {
+                return pathname.getName().substring(pathname.getName().length() - 4, pathname.getName().length())
+                        .equals(".csv");
+            }
+        });
+
+        for (File f : accountCsv) {
+            BufferedReader br = new BufferedReader(new FileReader(f));
+            br.readLine(); // skip header
+            String type = f.getName().substring(0, f.getName().indexOf('.')).toUpperCase();
+
+            String line = "";
+
+            while ((line = br.readLine()) != null) {
+                // online account ID, account type, USD,balance,EUR,balance, CNY, balance.
+                String[] tokens = line.replace("\n", "").strip().split(",");
+
+                // Expect 3 columns, otherwise skip
+                if (tokens.length == 8 || tokens.length == 10) {
+                    switch (type) {
+                        case "checkingAccount":
+                            CheckingAccount c = new CheckingAccount(tokens[0].replace("-", " ").replace("_", " "),tokens[1], tokens[2],
+                            tokens[3],tokens[4],tokens[5],tokens[6],tokens[7]);
+                            this.checkings.add(c);
+                            break;
+                        case "savingAccount":
+                            Savingaccount s = new Savingaccount(tokens[0].replace("-", " ").replace("_", " "),tokens[1], tokens[2],
+                            tokens[3],tokens[4],tokens[5],tokens[6],tokens[7],tokens[8],tokens[9]);
+                            this.savings.add(s);
+                            break;
+                        case "securitiesAccount":
+                            SecuritiesAccount se = new SecuritiesAccount(tokens[0].replace("-", " ").replace("_", " "),tokens[1], tokens[2],
+                            tokens[3],tokens[4],tokens[5],tokens[6],tokens[7]);
+                            this.securites.add(se);
+                            break;
+                        default:
+                            System.err.println("Encountered undefined type");
+                    }
+                } else {
+                    System.out.printf("Len is %d\n", tokens.length);
+                }
+            }
+
+        br.close();
+        }
 
     }
 
@@ -131,7 +185,7 @@ public class FancyBank {
                     sinwrap.setMessage("Create Account Successfully!");
                     Character c = new Character(currentName,id,pwd);
                     this.currentChar = c;
-                    this.OnlineAccounts.add(new Tuple(id,pwd));
+                    this.OnlineAccounts.add(new Tuple<String, String>(id,pwd));
                     if(type.equals("Customer"))
                     {
                         Customer cust = (Customer)c;
@@ -139,7 +193,7 @@ public class FancyBank {
                     }
                     else if(type.equals("Manager"))
                     {
-                        Manager man = (Manager)m;
+                        Manager man = (Manager) m;
                         this.managers.add(man);
                     }
                 }

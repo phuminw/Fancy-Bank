@@ -1,9 +1,6 @@
+package fancybank.ui;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-
-import java.util.ArrayList;
 
 public class SecurityAccountInfoPanel extends JPanel {
     public SecurityAccountInfoPanel() {

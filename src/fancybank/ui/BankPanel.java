@@ -1,3 +1,5 @@
+package fancybank.ui;
+
 import javax.swing.JPanel;
 
 public class BankPanel extends JPanel {
