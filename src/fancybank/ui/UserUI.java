@@ -4,7 +4,8 @@ import java.awt.event.*;
 import java.util.ArrayList;
 
 public class UserUI extends JFrame {
-    public UserUI(String name, Component parent) {
+    public UserUI(String name, Component parent // , ArrayList<Account.AccountInfo> accntInfo,
+    ) {
         setTitle("User Info");
         setLocationRelativeTo(parent);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
