@@ -2,8 +2,11 @@ package fancybank.ui;
 
 import javax.swing.*;
 
+import fancybank.FancyBank;
+import fancybank.util.*;
+
 public class BankUI extends JFrame {
-    // private final FancyBank fancybank; // Init the band instance
+    private final FancyBank fancybank; // Init the band instance
     private final WelcomePage welcomePage = new WelcomePage(this);
     private final UserLoginPanel userLoginPage = new UserLoginPanel(this);
     private final UserDetailPanel userPage = new UserDetailPanel(this);
@@ -12,10 +15,8 @@ public class BankUI extends JFrame {
     private final SecurityInfoPanel securitiesInfoPanel = new SecurityInfoPanel();
     private final SecurityAccountInfoPanel securitiesAccountInfoPanel = new SecurityAccountInfoPanel();
 
-    BankUI(
-    // FancyBank fancybank
-    ) {
-        // this.fancybank = fancybank;
+    BankUI(FancyBank fancybank) {
+        this.fancybank = fancybank;
         add(welcomePage);
         setTitle("Fancy Bank");
         setSize(600, 300);
@@ -26,6 +27,7 @@ public class BankUI extends JFrame {
 
     public void loginUser(final String customerName) {
         // fancybank.userLogin(customerName);
+        fancybank.logIn();
         navigateToUserDetailPage();
     }
 
@@ -35,8 +37,7 @@ public class BankUI extends JFrame {
     }
 
     public boolean doesUserExist(String userName) {
-        return true;
-        // return fancybank.existUser(userName);
+        return fancybank.checkAccountNameValid(userName);
     }
 
     public void managerLogin() {
@@ -44,15 +45,14 @@ public class BankUI extends JFrame {
     }
 
     public void createUser(String userName) {
-        // fancybank.createUser();
+        fancybank.CreateOnlineAccount();
     }
 
     public boolean tryCreateAccount(String accountType, int initialDeposit) {
+        ErrorResponse err = new ErrorResponse();
+        // boolean res = fancybank.createAccount(type, initialDeposit, err);
+        new Message(this, err.res);
         return false;
-        // Response err = new Response();
-        // boolean res = fancybank.tryCreateAccount(type, initialDeposit, err);
-        // new Message(err.res, this);
-        // return res;
     }
 
     public boolean tryDestroyAccount(int id) {
@@ -63,15 +63,15 @@ public class BankUI extends JFrame {
         // return res;
     }
 
-    public void saveMoneyToAccount(int money, int accountID) {
-        // fancybank.saveMoneyToAccount(money, accountID);
+    public void depositMoney(int money, int accountID) {
+        fancybank.depositMoney(money, accountID);
     }
 
-    public void withdrawMoneyFromAccount(int money, int accountID) {
-        // Response err = new Response();
-        // if (!fancybank.withdrawMoneyFromAccount(money, accountID, err)) {
-        // new Message(err.res, this);
-        // }
+    public void withdrawMoney(int money, int accountID) {
+        ErrorResponse err = new ErrorResponse();
+        if (!fancybank.withdrawMoney(money, accountID, err)) {
+            new Message(err.res, this);
+        }
     }
 
     public void transactMoney(int money, int fromID, int toID) {
@@ -174,7 +174,7 @@ public class BankUI extends JFrame {
     }
 
     public static void main(String[] args) {
-        BankUI bankUI = new BankUI();
+        // BankUI bankUI = new BankUI(fancybank);
     }
 
 }

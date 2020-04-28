@@ -2,6 +2,7 @@ package fancybank.ui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 
 public class CreateAccountPanel extends BankPanel {
     private JComboBox cbxAccntTyp;
@@ -30,9 +31,25 @@ public class CreateAccountPanel extends BankPanel {
         createAccountPanel.add(depositPanel);
 
         JButton btnConfirm = new JButton("Confirm");
-        // btnConfirm.addActionListener(new ConfirmListener());
+        btnConfirm.addActionListener(new ConfirmListener());
         createAccountPanel.add(btnConfirm);
 
         add(createAccountPanel);
+    }
+
+    private class ConfirmListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            double amount = moneyInputer.getAmount();
+            if (amount <= 0) {
+                new Message(bankUI, "You would like to input a number larger than 0!");
+                return;
+            }
+            // Money.Currency currency = moneyInputer.getCurrency();
+            // Account.AccountType type = (Account.AccountType)
+            // cbxAccntTyp.getSelectedItem();
+            // if (bankUI.tryCreateAccount(type, new Money(currency, amount))) {
+            // bankUI.navigateToUserDetailPage();
+            // }
+        }
     }
 }
