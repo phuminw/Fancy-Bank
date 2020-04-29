@@ -4,15 +4,17 @@ public abstract class Character{
     private String name;
     private String accountName;
     private String pwd;
+    private String type;
     
     /**
      * Constructor for Character
      * 
      */
-    public Character(String name, String accountName, String pwd){
+    public Character(String name, String accountName, String pwd,String type){
         this.name = name;
         this.accountName = accountName;
         this.pwd = pwd;
+        this.type = type;
     }
 
     public Character(){

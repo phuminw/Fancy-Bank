@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.lang.model.util.ElementScanner14;
@@ -29,6 +30,9 @@ public class FancyBank {
     /* Account open and close fee (USD) */
     public static final int OPENFEE = 2;
     public static final int CLOSEFEE = 5;
+    public static final double LOANINTEREST = 0.1;
+    public static final double SAVINGINTEREST = 0.1;
+    public static final double SAVINGWITHDRAWLIMIT = 500;
 
     private List<SavingAccount> savings;
     private List<CheckingAccount> checkings;
@@ -38,6 +42,7 @@ public class FancyBank {
     private List<Customer> customers;
 
     private List<Tuple> OnlineAccounts;
+    private HashMap<String,String> AccountToType;
 
     private Report report;
     private int days;
@@ -71,17 +76,64 @@ public class FancyBank {
         this.customers = new ArrayList<Customer>();
 
         this.currentChar = new Character();
+
+        this.OnlineAccounts = new ArrayList<Tuple>();
+        this.AccountToType = new HashMap<String,String>();
     }
 
     public void run(){
         //display welcome
 
+        //get user's nickname
+        sinwrap.setMessage("What's your name?");
+        String name = sinwrap.next();
+        this.currentName = name;
+
         //create account or login
+        sinwrap.setMessage("create account or login? (create or login)");
+        String answer = sinwrap.next();
+        if(answer.equals("create"))
+        {
+            this.CreateOnlineAccount();
+        }
+        else if(answer.equals("login"))
+        {
+            this.logIn();
+        }
 
+        finished = false;
         //get action from user and enforce.
-        
-
-
+        while(!finished)
+        {
+            // if(this.currentChar.instanceOf(Manager))
+            // {
+            //     sinwrap.setMessage("CREATE_BANK_ACCOUNT/VIEW_BALANCE/VIEW_TRANSACTION/LOAN/STOCK/quit");
+            // }
+            // else
+            // {
+            //     sinwrap.setMessage("REPORT/quit");
+            // }
+            // String response = sinwrap.next();
+            // switch(response)
+            // {
+            //     case "CREATE_BANK_ACCOUNT":
+            //         sinwrap.setMessage("Which account do you wish to create? (security,saving,checking)");
+                    
+            //         break;
+                    
+            //     case "VIEW_BALANCE":
+            //     case "VIEW_TRANSACTION":
+            //     case "LOAN":
+            //     case "STOCK":
+            //     case "REPORT":
+            //     case "quit":
+            //         System.out.println("Bye");
+            //         finished = true;
+            //         break;
+            //     default:
+            //         System.out.println("invalid input");
+            // }
+        }
     }
 
     public void loadCharacter(String path){
@@ -112,11 +164,13 @@ public class FancyBank {
                             Manager m = new Manager(tokens[0].replace("-", " ").replace("_", " "),tokens[1], tokens[2]);
                             this.managers.add(m);
                             this.OnlineAccounts.add(new Tuple(tokens[1],tokens[2]));
+                            this.AccountToType.put(tokens[1], "Manager");
                             break;
                         case "customer":
                             Customer c = new Customer(tokens[0].replace("-", " ").replace("_", " "),tokens[1], tokens[2]);
                             this.customers.add(c);
                             this.OnlineAccounts.add(new Tuple(tokens[1],tokens[2]));
+                            this.AccountToType.put(tokens[1], "Customer");
                             break;
                         default:
                             System.err.println("Encountered undefined type");
@@ -183,7 +237,7 @@ public class FancyBank {
 
     }
 
-    public void updataManager(String path,String[] record,String type){
+    public void updataData(String path,String[] record,String type){
         
         FileWriter writer;
         
@@ -242,18 +296,21 @@ public class FancyBank {
                     sinwrap.setMessage("ID Valid! Please create your password: ");
                     String pwd = sinwrap.next();
                     sinwrap.setMessage("Create Account Successfully!");
-                    Character c = new Character(currentName,id,pwd);
-                    this.currentChar = c;
                     this.OnlineAccounts.add(new Tuple<String, String>(id,pwd));
                     if(type.equals("Customer"))
                     {
-                        Customer cust = (Customer)c;
+                        Customer cust = new Customer(name, accountName, pwd,"C");
+                        this.currentChar = cust;
                         this.customers.add(cust);
+                        this.AccountToType.put(accountName,"Customer");
+
                     }
                     else if(type.equals("Manager"))
-                    {
-                        Manager man = (Manager) m;
+                    {   
+                        Manager man = new Manager(name, accountName, pwd,"M");
+                        this.currentChar = man;
                         this.managers.add(man);
+                        this.AccountToType.put(accountName,"Manager");
                     }
                 }
                 else
@@ -284,8 +341,17 @@ public class FancyBank {
             if(checkAccountValid(logId, pwd))
             {
                 sinwrap.setMessage("Log in Successful!");
-                Character c = new Character(currentName,logId,pwd);
-                this.currentChar = c;
+                String type = this.AccountToType.get(logId);
+                if(type.equals("Manager"))
+                {
+                    Manager m = new Manager(this.currentName,logId,pwd);
+                    this.currentChar = m;
+                }
+                else if(type.equals("Customer"))
+                {
+                    Customer c = new Customer(this.currentName, logId, pwd);
+                    this.currentChar =c;
+                }
                 finished = success = true;
             }
             else
@@ -318,6 +384,22 @@ public class FancyBank {
             }
         }
         return true;
+    }
+
+    public void getUserAction(){
+
+    }
+
+    public void addSaving(SavingAccount s){
+        savings.add(s);
+    }
+
+    public void addChecking(CheckingAccount s){
+        this.checkings.add(s);
+    }
+
+    public void addSecurities(SecuritiesAccount s){
+        this.securities.add(s);
     }
 
 
