@@ -303,7 +303,8 @@ public class FancyBank {
                         this.currentChar = cust;
                         this.customers.add(cust);
                         this.AccountToType.put(accountName,"Customer");
-
+                        String[] newrecord = new String[]{name,accountName,pwd};
+                        this.updataData(this.DBPATH+"character/", newrecord, "customer");
                     }
                     else if(type.equals("Manager"))
                     {   
@@ -311,6 +312,8 @@ public class FancyBank {
                         this.currentChar = man;
                         this.managers.add(man);
                         this.AccountToType.put(accountName,"Manager");
+                        String[] newrecord = new String[]{name,accountName,pwd};
+                        this.updataData(this.DBPATH+"character/", newrecord, "manager");
                     }
                 }
                 else
@@ -386,21 +389,13 @@ public class FancyBank {
         return true;
     }
 
-    public void getUserAction(){
-
+    public void getReport(){
+        
     }
 
-    public void addSaving(SavingAccount s){
-        savings.add(s);
-    }
 
-    public void addChecking(CheckingAccount s){
-        this.checkings.add(s);
-    }
 
-    public void addSecurities(SecuritiesAccount s){
-        this.securities.add(s);
-    }
+
 
 
 

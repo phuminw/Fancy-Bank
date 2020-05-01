@@ -112,37 +112,7 @@ public class Customer extends Character{
         this.checkings.add(ck);
 
     }
-
-    
-
-    // public Account createAccount(){
-    //     String response;
-    //     if(ifValidForSecurities())
-    //     {
-    //         sinwrap.setMessage("Which account do you wish to create? (Securities,Saving,Checking)");
-    //         response = sinwrap.next();
-    //     }
-    //     else
-    //     {
-    //         sinwrap.setMessage("Which account do you wish to create? (Saving,Checking)");
-    //         response = sinwrap.next();
-    //     }
-    //     switch(response)
-    //     {
-    //         case "Securities":
-    //         //transfer balance
-    //             SecuritiesAccount se = new SecuritiesAccount(balance, LocalDate.now(),null);
-    //         case "Saving":
-    //             sinwrap.setMessage("How much do you wish to put into the saving account?");
-    //             double b = sinwrap.nextDouble();
-    //             SavingAccount s = new SavingAccount(balance, interest, withdrawCountLimit, openedDate, closedDate);
-    //             //fee
-    //         case "Checking":
-
-    //         default:
-    //             System.out.println("Undefined type");
-        
-    // }
+   
 
     public Boolean ifValidForSecurities(String c){
         Boolean ret = false;
@@ -152,10 +122,7 @@ public class Customer extends Character{
             if(se.getBalance(c) >=5000)
             {
                 ret = true;
-
             }
-            
-            
         }
 
         return ret;

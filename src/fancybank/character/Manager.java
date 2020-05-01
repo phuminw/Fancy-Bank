@@ -8,7 +8,10 @@ public class Manager extends Character{
     }
 
     public void checkCustomer(Customer c){
+        //use c.viewBalance to display information
 
     }
+
+    
 
 }
