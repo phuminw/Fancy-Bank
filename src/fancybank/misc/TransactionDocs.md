@@ -17,4 +17,5 @@ Transaction(String operation, String assetName, double amount, String currency, 
 ## Methods
 
 **Getters are available for all attributes**
+
 **Comparing Transactions**: ```isAfter(Transaction t) -> boolean``` ```isBefore(Transaction t) -> boolean```
