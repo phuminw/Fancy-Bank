@@ -167,7 +167,6 @@ public class Transaction {
     
     public boolean isAfter(Transaction t) {
         return transactTime.isAfter(t.getTime());
-        // return transactTime.after(new Date(t.getTimestamp()));
     }
 
     /**
@@ -179,18 +178,10 @@ public class Transaction {
     
     public boolean isBefore(Transaction t) {
         return transactTime.isBefore(t.getTime());
-        // return transactTime.before(new Date(t.getTimestamp()));
     }
 
     @Override
     public String toString() {
-        // private String operation;
-        // private String assetName; // For securities trading
-        // private double amount;
-        // private Currency currency;
-        // private double finalBalance;
-        // private String description;
-        // private LocalDateTime transactTime;
         return String.format("%s | OPS: %s Asset: %s amount: %.2f currency: %s finalB: %.2f | %s", transactTime, operation, assetName, amount, currency, finalBalance, description);
     }
 }

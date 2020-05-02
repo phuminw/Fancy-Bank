@@ -17,6 +17,10 @@ import fancybank.misc.InterestRateDBCorruptException;
 import fancybank.misc.Transaction;
 import fancybank.util.Tuple;
 
+/**
+ * Saving Account that pays interest
+ */
+
 public class SavingAccount extends Account {
     // private double interest; // APY e.g. 0.1 means 10%
     private Tuple<YearMonth, Integer> withdrawCount; // Associate with Month

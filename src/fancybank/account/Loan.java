@@ -60,7 +60,7 @@ public class Loan extends SavingAccount {
     }
 
     /**
-     * Attempt to add balance to saving account. Check for restrictions and take
+     * Attempt to add balance to loan account. Check for restrictions and take
      * action. Reject request if interest calculation is not up-to-date
      * 
      * @param amount      amount to add

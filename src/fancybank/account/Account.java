@@ -219,10 +219,10 @@ public abstract class Account {
     }
 
     /**
-     * Remove currency from account. Caller must backup or empty to-be-removed currency if needed.
+     * Remove currency from account. Caller must backup to-be-removed currency if needed.
      * 
      * @param currency currency to remove
-     * @return removal result
+     * @return balance and all transactions
      */
 
     public Tuple<Double, List<Transaction>> removeCurrency(String currency) {

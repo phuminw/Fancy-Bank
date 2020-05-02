@@ -101,7 +101,7 @@ public class FancyBank {
             this.logIn();
         }
 
-        finished = false;
+        boolean finished = false;
         //get action from user and enforce.
         while(!finished)
         {
@@ -160,16 +160,16 @@ public class FancyBank {
                 // Expect 3 columns, otherwise skip
                 if (tokens.length == 3) {
                     switch (type) {
-                        case "manager":
+                        case "MANAGER":
                             Manager m = new Manager(tokens[0].replace("-", " ").replace("_", " "),tokens[1], tokens[2]);
                             this.managers.add(m);
-                            this.OnlineAccounts.add(new Tuple(tokens[1],tokens[2]));
+                            this.OnlineAccounts.add(new Tuple<String, String>(tokens[1],tokens[2]));
                             this.AccountToType.put(tokens[1], "Manager");
                             break;
-                        case "customer":
+                        case "CUSTOMER":
                             Customer c = new Customer(tokens[0].replace("-", " ").replace("_", " "),tokens[1], tokens[2]);
                             this.customers.add(c);
-                            this.OnlineAccounts.add(new Tuple(tokens[1],tokens[2]));
+                            this.OnlineAccounts.add(new Tuple<String, String>(tokens[1],tokens[2]));
                             this.AccountToType.put(tokens[1], "Customer");
                             break;
                         default:
@@ -209,17 +209,16 @@ public class FancyBank {
                 // Expect 3 columns, otherwise skip
                 if (tokens.length == 8 || tokens.length == 10) {
                     switch (type) {
-                        case "checkingAccount":
+                        case "CHECKINGACCOUNT":
                             CheckingAccount c = new CheckingAccount(tokens[0].replace("-", " ").replace("_", " "),tokens[1], tokens[2],
                             tokens[3],tokens[4],tokens[5],tokens[6],tokens[7]);
                             this.checkings.add(c);
                             break;
-                        case "savingAccount":
-                            Savingaccount s = new Savingaccount(tokens[0].replace("-", " ").replace("_", " "),tokens[1], tokens[2],
-                            tokens[3],tokens[4],tokens[5],tokens[6],tokens[7],tokens[8],tokens[9]);
+                        case "SAVINGACCOUNT":
+                            SavingAccount s = new SavingAccount(tokens[0].replace("-", " ").replace("_", " "), tokens[1], tokens[2], tokens[3],tokens[4],tokens[5],tokens[6],tokens[7],tokens[8],tokens[9]);
                             this.savings.add(s);
                             break;
-                        case "securitiesAccount":
+                        case "SECURITIESACCOUNT":
                             SecuritiesAccount se = new SecuritiesAccount(tokens[0].replace("-", " ").replace("_", " "),tokens[1], tokens[2],
                             tokens[3],tokens[4],tokens[5],tokens[6],tokens[7]);
                             this.securites.add(se);

@@ -8,6 +8,9 @@ import java.time.ZoneOffset;
 import fancybank.FancyBank;
 import fancybank.misc.Transaction;
 
+/**
+ * Checking account that can only deposit and withdraw money. Nothing more than that.
+ */
 public class CheckingAccount extends Account {
     /**
      * Create zero-balanced checking account

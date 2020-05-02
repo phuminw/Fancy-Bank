@@ -18,6 +18,7 @@ import fancybank.util.Tuple;
 /**
  * Account for investment (USD)
  */
+
 public class SecuritiesAccount extends CheckingAccount {
     private HashMap<String, Double> portfolio; // K: Stock name, V: shares owned
     private StocksMarket market;
@@ -45,8 +46,7 @@ public class SecuritiesAccount extends CheckingAccount {
      * @throws NumberFormatException
      */
 
-    public SecuritiesAccount(double balance, LocalDate openedDate, LocalDate closedDate)
-            throws NumberFormatException, IOException {
+    public SecuritiesAccount(double balance, LocalDate openedDate, LocalDate closedDate) throws NumberFormatException, IOException {
         super(balance, openedDate, closedDate);
         portfolio = new HashMap<String, Double>();
         market = StocksMarket.getInstance();
@@ -125,6 +125,7 @@ public class SecuritiesAccount extends CheckingAccount {
 
     /**
      * Return information of owned stocks
+     * 
      * @return set of KV entries of each stock owned
      */
 
