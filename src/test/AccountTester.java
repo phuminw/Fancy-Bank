@@ -16,6 +16,7 @@ import fancybank.misc.Transaction;
 import fancybank.util.Tuple;
 
 public class AccountTester {
+
     private static void checkingAccTest() {
         /* Checking account test */
         System.out.println("\nChecking account\n");

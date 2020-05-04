@@ -7,9 +7,13 @@ public class Manager extends Character{
         // TODO Auto-generated constructor stub
     }
 
-    public void checkCustomer(Customer c){
+    public Customer checkCustomer(Customer c){
         //use c.viewBalance to display information
+        return c;
+    }
 
+    public void getReport(){
+        
     }
 
     
