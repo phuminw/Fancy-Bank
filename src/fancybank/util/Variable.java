@@ -153,7 +153,7 @@ public class Variable {
         {
             Loan l = (Loan) account;
 
-            record = new String[]{username,Integer.toString(account.getId()),"USD",Double.toString(account.getBalance("USD")),Double.toString(l.getInterestRate)};
+            record = new String[]{username,Integer.toString(account.getId()),"USD",Double.toString(account.getBalance("USD")),Double.toString(l.getInterestRate())};
             try {
                 updataData(record, "loan");
                 
@@ -218,7 +218,7 @@ public class Variable {
                     System.out.printf("Len is %d\n", tokens.length);
                 }
                 line = br.readLine();
-                System.out.println(line);
+                //System.out.println(line);
             }
 
             br.close();
@@ -227,7 +227,7 @@ public class Variable {
     }
 
     public void updataData(String[] record,String type) throws IOException{
-        System.out.println(type);
+        //System.out.println(type);
         String path = DBPATH;
         
         BufferedWriter writer = null;
@@ -339,15 +339,15 @@ public class Variable {
                                 Loan l = new Loan(tokens[2],Double.parseDouble(tokens[3]),Double.parseDouble(tokens[4]));
     
                                 //set up the account
-                                s.setID(Integer.parseInt(tokens[1]));
+                                l.setID(Integer.parseInt(tokens[1]));
                                 // s.setBalance(Double.parseDouble(tokens[3]), tokens[2]);
                                 // s.setBalance(Double.parseDouble(tokens[3]), tokens[4]);
                                 // s.setBalance(Double.parseDouble(tokens[7]), tokens[6]);
     
                                 Customer loan_c = (Customer)USERNAME_TO_CHAR.get(tokens[0]);
     
-                                loan_c.getChecking().add(l);
-                                loans.add(l);
+                                loan_c.getLoans().add(l);
+                                Loans.add(l);
                                 ID_TO_ACCOUNT.put(tokens[1], l);
                                 //ID_TO_ACCOUNT.put(new Tuple(tokens[0],tokens[1]), s);
                                 break;
