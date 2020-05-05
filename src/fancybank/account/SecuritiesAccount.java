@@ -124,6 +124,20 @@ public class SecuritiesAccount extends CheckingAccount {
     }
 
     /**
+     * Calculate net worth of assets/stocks owned
+     * 
+     * @return
+     */
+
+    public double getNetWorthAssets() {
+        double networth = 0;
+        for (String assetName: portfolio.keySet()) {
+            networth += market.priceLookup(assetName.toUpperCase())*portfolio.get(assetName);
+        }
+        return networth;
+    }
+
+    /**
      * Return information of owned stocks
      * 
      * @return set of KV entries of each stock owned
