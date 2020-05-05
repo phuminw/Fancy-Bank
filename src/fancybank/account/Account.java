@@ -110,6 +110,10 @@ public abstract class Account {
         return id;
     }
 
+    public void setID(int input){
+        this.id = input;
+    }
+
     /**
      * @param closedDate the closedDate to set
      */

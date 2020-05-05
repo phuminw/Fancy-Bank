@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.print.DocFlavor.STRING;
+
 import fancybank.account.*;
 import fancybank.character.*;
 import fancybank.character.Character;
@@ -25,12 +27,16 @@ public class Variable {
     public static List<Character> characterList;
     public static List<Customer> customerList;
     public static List<Manager> managerList;
-
+    
+    public static List<Transaction> transactions;
+    public static List<Loan> Loans;
     public static List<SavingAccount> savings;
     public static List<CheckingAccount> checkings;
     public static List<SecuritiesAccount> securites;
 
     public static HashMap<String, Object> USERNAME_TO_CHAR;
+    //public static HashMap<Tuple<String,String>,Object> ID_TO_ACCOUNT;
+    public static HashMap<String,Object> ID_TO_ACCOUNT;
 
     // public static HashMap<String,Object> USERNAME_TO_ACC;
 
@@ -46,11 +52,11 @@ public class Variable {
         //System.out.println(characterList);
 
 
-        //for testing purpose
-        Customer c = new Customer("jessy", "111", "0");
-        updateCustomer(c);
+        // //for testing purpose
+        // Customer c = new Customer("jessy", "111", "0");
+        // updateCustomer(c);
 
-        System.out.println(characterList);
+        // System.out.println(characterList);
         
 
     }
@@ -64,17 +70,21 @@ public class Variable {
     }
 
     public void initAccount()  {
+        //ID_TO_ACCOUNT = new HashMap<Tuple<String,String>,Object>();
+        ID_TO_ACCOUNT = new HashMap<String,Object>();
         this.savings = new ArrayList<SavingAccount>();
         this.checkings = new ArrayList<CheckingAccount>();
         this.securites = new ArrayList<SecuritiesAccount>();
+        Loans = new ArrayList<Loan>();
         
 
     }
 
     public void loading() {
         try {
-            loadAccount(DBPATH + "account/");
             loadCharacter(DBPATH + "character/");
+            loadAccount(DBPATH + "account/");
+            loadTransaction(DBPATH + "transaction/");
             
         } catch (IOException e) {
             //TODO: handle exception
@@ -99,16 +109,76 @@ public class Variable {
 
     }
 
-    public void updateAccount(Account account)
+    public void updateAccount(String username,Account account)
     {
+        //ID_TO_ACCOUNT.put(new Tuple(username,Integer.toString(account.getId())), account);
+        ID_TO_ACCOUNT.put(Integer.toString(account.getId()), account);
+        String[] record;
+        if(account instanceof SavingAccount)
+        {
+            SavingAccount s = (SavingAccount) account;
+            record = new String[]{username,Integer.toString(account.getId()),"USD",Double.toString(account.getBalance("USD")),"EUR",Double.toString(account.getBalance("EUR")),"CNY",Double.toString(account.getBalance("CNY")),Double.toString(s.getInterestRate()),Integer.toString(s.getWithdrawCountLimit())};
+            try {
+                updataData(record, "saving");
+                
+            }  catch (IOException e) {
+                //TODO: handle exception
+                e.printStackTrace();
+            }
+        }
+        else if(account instanceof CheckingAccount)
+        {
+            record = new String[]{username,Integer.toString(account.getId()),"USD",Double.toString(account.getBalance("USD")),"EUR",Double.toString(account.getBalance("EUR")),"CNY",Double.toString(account.getBalance("CNY"))};
+            try {
+                updataData(record, "checking");
+                
+            }  catch (IOException e) {
+                //TODO: handle exception
+                e.printStackTrace();
+            }
+        }
+        else if(account instanceof SecuritiesAccount)
+        {
+            record = new String[]{username,Integer.toString(account.getId()),"USD",Double.toString(account.getBalance("USD")),"EUR",Double.toString(account.getBalance("EUR")),"CNY",Double.toString(account.getBalance("CNY"))};
+            try {
+                updataData(record, "securities");
+                
+            }  catch (IOException e) {
+                //TODO: handle exception
+                e.printStackTrace();
+            }
+
+        }
+        else if(account instanceof Loan)
+        {
+            Loan l = (Loan) account;
+
+            record = new String[]{username,Integer.toString(account.getId()),"USD",Double.toString(account.getBalance("USD")),Double.toString(l.getInterestRate)};
+            try {
+                updataData(record, "loan");
+                
+            }  catch (IOException e) {
+                //TODO: handle exception
+                e.printStackTrace();
+            }
+        }
 
 
     }
 
-    public void updateTransaction(Transaction t)
+    public void updateTransaction(int accountId,Transaction t)
     {
-
+        String[] record = new String[]{Integer.toString(accountId),t.getOperation(),t.getAssetName(), Double.toString(t.getAmount()),t.getCurrency(),""};
+        try {
+            updataData(record, "transaction");
+            
+        }  catch (IOException e) {
+            //TODO: handle exception
+            e.printStackTrace();
+        }
+    
     }
+
 
     public void loadCharacter(String path) throws IOException{
         File[] characterCsv = new File(path).listFiles();
@@ -181,6 +251,14 @@ public class Variable {
         {
             writer = new BufferedWriter(new FileWriter(path+"account/securitiesAccount.csv",true));
         }
+        else if(type.equals("transaction"))
+        {
+            writer = new BufferedWriter(new FileWriter(path+"transaction/transaction.csv",true));
+        }
+        else if(type.equals("loan"))
+        {
+            writer = new BufferedWriter(new FileWriter(path+"account/loan.csv",true));
+        }
         else
         {
             System.err.println("Encountered undefined type");
@@ -223,19 +301,69 @@ public class Variable {
                 
                 if (tokens.length == 8 || tokens.length == 10) {
                     switch (type) {
-                        // case "CHECKINGACCOUNT":
-                        //     CheckingAccount c = new CheckingAccount(Integer.parseInt(tokens[1]),tokens[1], tokens[2],
-                        //     tokens[3],tokens[4],tokens[5],tokens[6],tokens[7]);
-                        //     checkings.add(c);
-                        //     break;
-                        // case "SAVINGACCOUNT":
-                        //     SavingAccount s = new SavingAccount(tokens[0].replace("-", " ").replace("_", " "), tokens[1], tokens[2], tokens[3],tokens[4],tokens[5],tokens[6],tokens[7],tokens[8],tokens[9]);
-                        //     savings.add(s);
-                        //     break;
-                        // case "SECURITIESACCOUNT":
-                        //     SecuritiesAccount se = new SecuritiesAccount(tokens[0].replace("-", " ").replace("_", " "),tokens[1], tokens[2],
-                        //     tokens[3],tokens[4],tokens[5],tokens[6],tokens[7]);
-                        //     securites.add(se);
+                        case "CHECKINGACCOUNT":
+                            CheckingAccount c = new CheckingAccount();
+                            //set up the account
+                            c.setID(Integer.parseInt(tokens[1]));
+                            c.setBalance(Double.parseDouble(tokens[3]), tokens[2]);
+                            c.setBalance(Double.parseDouble(tokens[3]), tokens[4]);
+                            c.setBalance(Double.parseDouble(tokens[7]), tokens[6]);
+
+                            //给用户加进去
+                            Customer customer = (Customer)USERNAME_TO_CHAR.get(tokens[0]);
+                            customer.getChecking().add(c);
+                            checkings.add(c);
+                            //ID_TO_ACCOUNT.put(new Tuple(tokens[0],tokens[1]), c);
+                            ID_TO_ACCOUNT.put(tokens[1], c);
+                            
+                            break;
+                        case "SAVINGACCOUNT":
+                        //username,AccountID,USD,USDbalance,EUR,EURbalance,CNY,CNYbalance,interestRate,withdrawCountLimit
+                            SavingAccount s = new SavingAccount(Double.parseDouble(tokens[8]),Integer.parseInt(tokens[9]));
+
+                            //set up the account
+                            s.setID(Integer.parseInt(tokens[1]));
+                            s.setBalance(Double.parseDouble(tokens[3]), tokens[2]);
+                            s.setBalance(Double.parseDouble(tokens[3]), tokens[4]);
+                            s.setBalance(Double.parseDouble(tokens[7]), tokens[6]);
+
+                            Customer sac_c = (Customer)USERNAME_TO_CHAR.get(tokens[0]);
+
+                            sac_c.getChecking().add(s);
+                            savings.add(s);
+                            ID_TO_ACCOUNT.put(tokens[1], s);
+                            //ID_TO_ACCOUNT.put(new Tuple(tokens[0],tokens[1]), s);
+                            break;
+                        case "LOAN":
+                        //username,ccountId,currency,balance,interest
+                                Loan l = new Loan(tokens[2],Double.parseDouble(tokens[3]),Double.parseDouble(tokens[4]));
+    
+                                //set up the account
+                                s.setID(Integer.parseInt(tokens[1]));
+                                // s.setBalance(Double.parseDouble(tokens[3]), tokens[2]);
+                                // s.setBalance(Double.parseDouble(tokens[3]), tokens[4]);
+                                // s.setBalance(Double.parseDouble(tokens[7]), tokens[6]);
+    
+                                Customer loan_c = (Customer)USERNAME_TO_CHAR.get(tokens[0]);
+    
+                                loan_c.getChecking().add(l);
+                                loans.add(l);
+                                ID_TO_ACCOUNT.put(tokens[1], l);
+                                //ID_TO_ACCOUNT.put(new Tuple(tokens[0],tokens[1]), s);
+                                break;
+                        case "SECURITIESACCOUNT":
+                            SecuritiesAccount se = new SecuritiesAccount();
+                            //set up the account
+                            se.setID(Integer.parseInt(tokens[1]));
+                            se.setBalance(Double.parseDouble(tokens[3]), tokens[2]);
+                            se.setBalance(Double.parseDouble(tokens[3]), tokens[4]);
+                            se.setBalance(Double.parseDouble(tokens[7]), tokens[6]);
+
+                            Customer sec_c= (Customer)USERNAME_TO_CHAR.get(tokens[0]);
+                            sec_c.getChecking().add(se);
+                            securites.add(se);
+                            ID_TO_ACCOUNT.put(tokens[1], se);
+                            //ID_TO_ACCOUNT.put(new Tuple(tokens[0],tokens[1]), se);
                             break;
                         default:
                             System.err.println("Encountered undefined type");
@@ -243,6 +371,44 @@ public class Variable {
                 } else {
                     System.out.printf("Len is %d\n", tokens.length);
                 }
+            }
+
+        br.close();
+        }
+
+    }
+
+    public void loadTransaction(String path) throws IOException {
+        File[] accountCsv = new File(path).listFiles();
+
+        for (File f : accountCsv) {
+            BufferedReader br = new BufferedReader(new FileReader(f));
+            br.readLine(); // skip header
+            String type = f.getName().substring(0, f.getName().indexOf('.')).toUpperCase();
+
+            String line = "";
+
+            while ((line = br.readLine()) != null) {
+                //accountID,operation,assetname,amount,currency,description,timestamp
+                String[] tokens = line.replace("\n", "").strip().split(",");
+                Account a = (Account)ID_TO_ACCOUNT.get(new Tuple(tokens[0],tokens[1]));
+                Transaction t = null;
+                if(tokens[2].equals(""))
+                {
+                    t = new Transaction(tokens[1], Double.parseDouble(tokens[3]), tokens[4], tokens[5]);
+                }
+                else
+                {
+                    if(tokens[6].equals(""))
+                    {
+                        t = new Transaction(tokens[1], tokens[2], Double.parseDouble(tokens[3]), tokens[4], tokens[5]);
+                    }
+                    else
+                    {
+                        //t = new Transaction(tokens[2], tokens[3], Double.parseDouble(tokens[4]), tokens[5], tokens[6],tokens[7]);
+                    }
+                }
+                a.addTransaction(t);
             }
 
         br.close();

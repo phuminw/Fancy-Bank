@@ -51,22 +51,37 @@ public class Customer extends Character {
 
     }
 
-    // public void requestLoan(){
-    // sinwrap.setMessage("Which item do you have?");
-    // String item = sinwrap.next();
-    // sinwrap.setMessage("How much do you want?");
-    // Double money = (Double)sinwrap.next();
-    // sinwrap.setMessage("in which currency?");
-    // String currency = sinwrap.next();
+    public ArrayList getSaving()
+    {
+        return this.savings;
+    }
 
-    // Loan l = new Loan(currency, money, Fancybank.LOANINTEREST);
-    // this.loans.add(l);
-    // }
+    public ArrayList getChecking()
+    {
+        return this.checkings;
+    }
+
+    public ArrayList getSecurities(){
+        return this.securites;
+    }
+
+    public ArrayList getLoans()
+    {
+        return this.loans;
+    }
+
+
+    public void requestLoan(double money){
+        Loan l = new Loan("USD", money, Fancybank.LOANINTEREST);
+        this.loans.add(l);
+        FancyBank.VARIABLE.updateAccount(this.getName(),l);
+    }
 
     public void createSavingAccount() {
         SavingAccount sav = new SavingAccount(FancyBank.SAVINGINTEREST, FancyBank.SAVINGWITHDRAWCOUNTLIMIT);
         this.savings.add(sav);
         FancyBank.VARIABLE.savings.add(sav);
+        FancyBank.VARIABLE.updateAccount(this.getName(), sav);
     }
 
     public void deposit(String currency, double money, Account account) {
@@ -132,6 +147,11 @@ public class Customer extends Character {
             error.res = "INVALID AMOUNT.TRANSFER FAILED.";
             return false;
         }
+        Transaction t1 = new Transaction(Transaction.WITHDRAW, money, currency, "TRANSFER TO");
+        Transaction t2 = new Transaction(Transaction.DEPOSIT, money, currency, "TRANSFER FROM");
+
+        FancyBank.VARIABLE.updateTransaction(from.getId(), t1);
+        FancyBank.VARIABLE.updateTransaction(to.getId(), t2);
 
         if (from instanceof SavingAccount) {
             SavingAccount s = (SavingAccount) from;
@@ -148,14 +168,14 @@ public class Customer extends Character {
 
         if (to instanceof SavingAccount) {
             SavingAccount s = (SavingAccount) to;
-            s.addBalance(money, currency, "WITHDRAW", LocalDateTime.now());
+            s.addBalance(money, currency, "DEPOSIT", LocalDateTime.now());
         } else if (to instanceof CheckingAccount) {
             CheckingAccount s = (CheckingAccount) to;
-            s.addBalance(money, currency, "WITHDRAW", LocalDateTime.now());
+            s.addBalance(money, currency, "DEPOSIT", LocalDateTime.now());
 
         } else if (to instanceof SecuritiesAccount) {
             SecuritiesAccount s = (SecuritiesAccount) to;
-            s.addBalance(money, currency, "WITHDRAW", LocalDateTime.now());
+            s.addBalance(money, currency, "DEPOSIT", LocalDateTime.now());
 
         }
 
@@ -174,6 +194,9 @@ public class Customer extends Character {
             sav.setBalance(money, currency);
             Transaction t = new Transaction(Transaction.WITHDRAW, money, currency, String.format("SECURITIES ACCOUNT OPEN FEE %d",money));
             sav.addTransaction(t);
+            this.securites.add(sec);
+            FancyBank.VARIABLE.updateAccount(this.getName(), sec);
+            FancyBank.VARIABLE.updateTransaction(sav.getId(), t);
             return true;
         }
         error.res = "FAILED TO CREATE ACCOUNT";
