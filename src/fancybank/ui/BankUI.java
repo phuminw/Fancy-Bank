@@ -15,6 +15,8 @@ public class BankUI extends JFrame {
     private final SecurityInfoPanel securitiesInfoPanel = new SecurityInfoPanel();
     private final SecurityAccountInfoPanel securitiesAccountInfoPanel = new SecurityAccountInfoPanel();
 
+
+
     BankUI(FancyBank fancybank) {
         this.fancybank = fancybank;
         add(welcomePage);
@@ -174,7 +176,7 @@ public class BankUI extends JFrame {
     }
 
     public static void main(String[] args) {
-        // BankUI bankUI = new BankUI(fancybank);
+        BankUI bankUI = new BankUI(fancybank);
     }
 
 }

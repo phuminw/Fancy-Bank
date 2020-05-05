@@ -1,3 +1,5 @@
+package fancybank.util;
+
 public class ErrorResponse {
     public String res = new String();
 
