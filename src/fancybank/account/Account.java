@@ -8,6 +8,7 @@ import java.util.Currency;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Random;
 import java.util.Set;
 import java.util.Map.Entry;
 
@@ -24,6 +25,7 @@ public abstract class Account {
     public static final Currency EUR = Currency.getInstance("EUR");
     public static final Currency CNY = Currency.getInstance("CNY");
 
+    private int id;
     private LocalDate openedDate;
     private LocalDate closedDate;
     private HashMap<Currency, Double> balance;
@@ -37,6 +39,7 @@ public abstract class Account {
      */
 
     public Account() {
+        id = new Random().nextInt(Integer.MAX_VALUE);
         openedDate = LocalDate.now();
         closedDate = null;
         balance = new HashMap<Currency, Double>();
@@ -96,6 +99,14 @@ public abstract class Account {
 
     public LocalDate getClosedDate() {
         return closedDate;
+    }
+
+    /**
+     * @return the id
+     */
+    
+    public int getId() {
+        return id;
     }
 
     /**
