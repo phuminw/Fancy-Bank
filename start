@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# Check java version
+if [ "$(javac --version | awk '{print $2}')" -lt "13" ]; then
+        printf "\n[!] Please update Java to version 13 or newer\n\n"
+        exit # Check fail, exit
+fi
+
+# Check execution from local directory
+if [ "`dirname \"$0\"`" != "." ]; then
+	printf "\n[!] Please change directory and use ./startgame\n\n"
+	exit # Check fail, exit
+fi
+
+# Create bin directory if not exists
+mkdir -p bin
+
+# Let's go!
+printf "\nCompiling source code\n"
+find src/ -name '*.java' | xargs javac -d bin
+printf "\nGame starting\n\n"
+java -Dfile.encoding=UTF-8 -cp "bin/" fancybank.FancyBank
