@@ -1,5 +1,8 @@
 package fancybank.character;
 
+import fancybank.FancyBank;
+import fancybank.util.Tuple;
+
 public class Manager extends Character{
 
     public Manager(String name, String accountName, String pwd) {
@@ -11,10 +14,7 @@ public class Manager extends Character{
         //use c.viewBalance to display information
         return c;
     }
-
-    public void getReport(){
-        
-    }
+    
     public String toString(){
         String str = this.getName()+" , "+this.getAccountName()+" , "+this.getPwd();
         return str;

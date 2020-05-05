@@ -14,6 +14,7 @@ import fancybank.account.SecuritiesAccount;
 import fancybank.io.StdinWrapper;
 import fancybank.misc.Transaction;
 import fancybank.util.Variable;
+import sun.swing.plaf.synth.Paint9Painter.PaintType;
 import fancybank.FancyBank;
 import fancybank.util.ErrorResponse;
 
@@ -28,8 +29,6 @@ public class Customer extends Character {
 
     public Customer(String name, String accountName, String pwd) {
         super(name, accountName, pwd, "C");
-        sinwrap = new StdinWrapper("");
-
         this.savings = new ArrayList<SavingAccount>();
         this.checkings = new ArrayList<CheckingAccount>();
         this.securites = new ArrayList<SecuritiesAccount>();
@@ -213,6 +212,8 @@ public class Customer extends Character {
         this.checkings.add(ck);
     }
 
+    
+
 
    
 
@@ -236,10 +237,14 @@ public class Customer extends Character {
 
     }
 
+
+
     public String toString(){
         String str = this.getName()+" , "+this.getAccountName()+" , "+this.getPwd();
         return str;
         
     }
+
+
 
 }
