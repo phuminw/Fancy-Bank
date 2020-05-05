@@ -27,7 +27,7 @@ public class BankUI extends JFrame {
 
     public void loginUser(final String customerName) {
         // fancybank.userLogin(customerName);
-        fancybank.logIn();
+        // fancybank.logIn();
         navigateToUserDetailPage();
     }
 
@@ -45,7 +45,7 @@ public class BankUI extends JFrame {
     }
 
     public void createUser(String userName) {
-        fancybank.CreateOnlineAccount();
+        // fancybank.CreateOnlineAccount();
     }
 
     public boolean tryCreateAccount(String accountType, int initialDeposit) {
@@ -64,14 +64,14 @@ public class BankUI extends JFrame {
     }
 
     public void depositMoney(int money, int accountID) {
-        fancybank.depositMoney(money, accountID);
+        // fancybank.depositMoney(money, accountID);
     }
 
     public void withdrawMoney(int money, int accountID) {
         ErrorResponse err = new ErrorResponse();
-        if (!fancybank.withdrawMoney(money, accountID, err)) {
-            new Message(err.res, this);
-        }
+        // if (!fancybank.withdrawMoney(money, accountID, err)) {
+        //     new Message(this, err.res);
+        // }
     }
 
     public void transactMoney(int money, int fromID, int toID) {
