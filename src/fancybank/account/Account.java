@@ -63,6 +63,7 @@ public abstract class Account {
      */
 
     public Account(double balance, LocalDate openedDate, LocalDate closedDate) {
+        id = new Random().nextInt(Integer.MAX_VALUE);
         this.balance = new HashMap<Currency, Double>();
         this.balance.put(USD, balance);
         this.balance.put(EUR, 0.0);
@@ -104,7 +105,7 @@ public abstract class Account {
     /**
      * @return the id
      */
-    
+
     public int getId() {
         return id;
     }
