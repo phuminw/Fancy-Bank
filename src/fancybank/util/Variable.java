@@ -1,4 +1,9 @@
 package fancybank.util;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -11,7 +16,7 @@ import fancybank.db.*;
 public class Variable{
 
     String DBPATH;
-
+    
     public static List<Character> characterList;
     public static List<Customer> customerList;
     public static List<Manager> managerList;
@@ -113,14 +118,7 @@ public class Variable{
     }
 
     public void loadAccount(String path){
-        File[] accountCsv = new File(path).listFiles(new FileFilter() {
-
-            @Override
-            public boolean accept(File pathname) {
-                return pathname.getName().substring(pathname.getName().length() - 4, pathname.getName().length())
-                        .equals(".csv");
-            }
-        });
+        File[] accountCsv = new File(path).listFiles();
 
         for (File f : accountCsv) {
             BufferedReader br = new BufferedReader(new FileReader(f));
@@ -137,18 +135,18 @@ public class Variable{
                 if (tokens.length == 8 || tokens.length == 10) {
                     switch (type) {
                         case "CHECKINGACCOUNT":
-                            CheckingAccount c = new CheckingAccount(tokens[0].replace("-", " ").replace("_", " "),tokens[1], tokens[2],
-                            tokens[3],tokens[4],tokens[5],tokens[6],tokens[7]);
-                            checkings.add(c);
-                            break;
-                        case "SAVINGACCOUNT":
-                            SavingAccount s = new SavingAccount(tokens[0].replace("-", " ").replace("_", " "), tokens[1], tokens[2], tokens[3],tokens[4],tokens[5],tokens[6],tokens[7],tokens[8],tokens[9]);
-                            savings.add(s);
-                            break;
-                        case "SECURITIESACCOUNT":
-                            SecuritiesAccount se = new SecuritiesAccount(tokens[0].replace("-", " ").replace("_", " "),tokens[1], tokens[2],
-                            tokens[3],tokens[4],tokens[5],tokens[6],tokens[7]);
-                            securites.add(se);
+                        //     CheckingAccount c = new CheckingAccount(tokens[0].replace("-", " ").replace("_", " "),tokens[1], tokens[2],
+                        //     tokens[3],tokens[4],tokens[5],tokens[6],tokens[7]);
+                        //     checkings.add(c);
+                        //     break;
+                        // case "SAVINGACCOUNT":
+                        //     SavingAccount s = new SavingAccount(tokens[0].replace("-", " ").replace("_", " "), tokens[1], tokens[2], tokens[3],tokens[4],tokens[5],tokens[6],tokens[7],tokens[8],tokens[9]);
+                        //     savings.add(s);
+                        //     break;
+                        // case "SECURITIESACCOUNT":
+                        //     SecuritiesAccount se = new SecuritiesAccount(tokens[0].replace("-", " ").replace("_", " "),tokens[1], tokens[2],
+                        //     tokens[3],tokens[4],tokens[5],tokens[6],tokens[7]);
+                        //     securites.add(se);
                             break;
                         default:
                             System.err.println("Encountered undefined type");

@@ -23,6 +23,7 @@ import fancybank.util.Tuple;
 import fancybank.character.*;
 import fancybank.character.Character;
 import fancybank.util.Variable;
+import fancybank.util.ErrorResponse;
 /**
  * Main program for the bank
  */
@@ -36,7 +37,7 @@ public class FancyBank {
     public static final double LOANINTEREST = 0.1;
     public static final double SAVINGINTEREST = 0.1;
     public static final double SAVINGWITHDRAWLIMIT = 500;
-
+    public static final int SAVINGWITHDRAWCOUNTLIMIT = 5;
     // private List<SavingAccount> savings;
     // private List<CheckingAccount> checkings;
     // private List<SecuritiesAccount> securites;
@@ -49,7 +50,7 @@ public class FancyBank {
     // private List<Tuple> OnlineAccounts;
     // private HashMap<String,String> AccountToType;
 
-    private Report report;
+    //private Report report;
     private int days;
     private StdinWrapper sinwrap;
 
@@ -60,9 +61,16 @@ public class FancyBank {
     public static Variable VARIABLE;
 
     //database path
-    private String DBPATH = findDb();
+    private String DBPATH;
 
-    public FancyBank() {
+    public FancyBank(){
+        try {
+            DBPATH = findDb();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        VARIABLE = new Variable(DBPATH);
         initBank();
 
         // sinwrap = new StdinWrapper("");
@@ -84,220 +92,11 @@ public class FancyBank {
 
         // this.managers = new ArrayList<Manager>();
         // this.customers = new ArrayList<Customer>();
-        this.currentChar = new Character();
+        this.currentChar = new Character() {
+        };
     }
 
-    // public void run(){
-    //     //display welcome
-
-    //     //get user's nickname
-    //     sinwrap.setMessage("What's your name?");
-    //     String name = sinwrap.next();
-    //     this.currentName = name;
-
-    //     //create account or login
-    //     sinwrap.setMessage("create account or login? (create or login)");
-    //     String answer = sinwrap.next();
-    //     if(answer.equals("create"))
-    //     {
-    //         this.CreateOnlineAccount();
-    //     }
-    //     else if(answer.equals("login"))
-    //     {
-    //         this.logIn();
-    //     }
-
-    //     boolean finished = false;
-    //     //get action from user and enforce.
-    //     while(!finished)
-    //     {
-    //         // if(this.currentChar.instanceOf(Manager))
-    //         // {
-    //         //     sinwrap.setMessage("CREATE_BANK_ACCOUNT/VIEW_BALANCE/VIEW_TRANSACTION/LOAN/STOCK/quit");
-    //         // }
-    //         // else
-    //         // {
-    //         //     sinwrap.setMessage("REPORT/quit");
-    //         // }
-    //         // String response = sinwrap.next();
-    //         // switch(response)
-    //         // {
-    //         //     case "CREATE_BANK_ACCOUNT":
-    //         //         sinwrap.setMessage("Which account do you wish to create? (security,saving,checking)");
-                    
-    //         //         break;
-                    
-    //         //     case "VIEW_BALANCE":
-    //         //     case "VIEW_TRANSACTION":
-    //         //     case "LOAN":
-    //         //     case "STOCK":
-    //         //     case "REPORT":
-    //         //     case "quit":
-    //         //         System.out.println("Bye");
-    //         //         finished = true;
-    //         //         break;
-    //         //     default:
-    //         //         System.out.println("invalid input");
-    //         // }
-    //     }
-    // }
-
-
-    public void loadAccount(String path){
-        File[] accountCsv = new File(path).listFiles(new FileFilter() {
-
-            @Override
-            public boolean accept(File pathname) {
-                return pathname.getName().substring(pathname.getName().length() - 4, pathname.getName().length())
-                        .equals(".csv");
-            }
-        });
-
-        for (File f : accountCsv) {
-            BufferedReader br = new BufferedReader(new FileReader(f));
-            br.readLine(); // skip header
-            String type = f.getName().substring(0, f.getName().indexOf('.')).toUpperCase();
-
-            String line = "";
-
-            while ((line = br.readLine()) != null) {
-                // online account ID, account type, USD,balance,EUR,balance, CNY, balance.
-                String[] tokens = line.replace("\n", "").strip().split(",");
-
-                
-                if (tokens.length == 8 || tokens.length == 10) {
-                    switch (type) {
-                        case "CHECKINGACCOUNT":
-                            CheckingAccount c = new CheckingAccount(tokens[0].replace("-", " ").replace("_", " "),tokens[1], tokens[2],
-                            tokens[3],tokens[4],tokens[5],tokens[6],tokens[7]);
-                            this.checkings.add(c);
-                            break;
-                        case "SAVINGACCOUNT":
-                            SavingAccount s = new SavingAccount(tokens[0].replace("-", " ").replace("_", " "), tokens[1], tokens[2], tokens[3],tokens[4],tokens[5],tokens[6],tokens[7],tokens[8],tokens[9]);
-                            this.savings.add(s);
-                            break;
-                        case "SECURITIESACCOUNT":
-                            SecuritiesAccount se = new SecuritiesAccount(tokens[0].replace("-", " ").replace("_", " "),tokens[1], tokens[2],
-                            tokens[3],tokens[4],tokens[5],tokens[6],tokens[7]);
-                            this.securites.add(se);
-                            break;
-                        default:
-                            System.err.println("Encountered undefined type");
-                    }
-                } else {
-                    System.out.printf("Len is %d\n", tokens.length);
-                }
-            }
-
-        br.close();
-        }
-
-    }
-
-    public void updataData(String path,String[] record,String type){
-        
-        FileWriter writer;
-        
-        switch(type)
-        {
-            case "manager":
-                writer = new FileWriter(path+"manager.csv",true);
-            case "customer":
-                writer = new FileWriter(path+"customer.csv",true);
-            case "saving":
-                writer = new FileWriter(path+"savingAccount.csv",true);
-            case "checking":
-                writer = new FileWriter(path+"checkingAccount.csv",true);
-            case "securities":
-                writer = new FileWriter(path+"securitiesAccount.csv",true);
-            default:
-                System.err.println("Encountered undefined type");
-        }
-        for(int i = 0;i<record.length;i++)
-        {
-            if(i != (record.length-1))
-            {
-                writer.append(record[i]);
-                writer.append(",");
-            }
-            else
-            {
-                writer.append(record[i]);
-            }
-            
-        }
-
-        writer.close();
-    }
-
-    public boolean createOnlineAccount(String realname, String username, String password,ErrorMessage err){
-        if(checkAccountNameValid(username))
-        {
-            Customer c = new Customer(realname, username, password);
-            VARIABLE.updateCustomer(c);
-        }
-        else
-        {
-            new Message("INVALID USERNAME");
-            return false;
-        }
-
-
-    }
-
-    // public void CreateOnlineAccount(){
-    //     Boolean finished = false;
-    //     Boolean success = false;
-    //     sinwrap.setMessage("Hi "+this.currentName+" :");
-
-    //     while(!finished && !success)
-    //     {
-    //         sinwrap.setMessage("What type of account do you wish to create? (Manager or Customer)");
-    //         String type = sinwrap.next();
-    //         if(type.equals("Customer") || type.equals("Manager"))
-    //         {
-    //             sinwrap.setMessage("Please create your Online Id:");
-    //             String id = sinwrap.next();
-    //             if(checkAccountNameValid(id))
-    //             {
-    //                 finished = success = true;
-    //                 sinwrap.setMessage("ID Valid! Please create your password: ");
-    //                 String pwd = sinwrap.next();
-    //                 sinwrap.setMessage("Create Account Successfully!");
-    //                 this.OnlineAccounts.add(new Tuple<String, String>(id,pwd));
-    //                 if(type.equals("Customer"))
-    //                 {
-    //                     Customer cust = new Customer(name, accountName, pwd,"C");
-    //                     this.currentChar = cust;
-    //                     this.customers.add(cust);
-    //                     this.AccountToType.put(accountName,"Customer");
-    //                     String[] newrecord = new String[]{name,accountName,pwd};
-    //                     this.updataData(this.DBPATH+"character/", newrecord, "customer");
-    //                 }
-    //                 else if(type.equals("Manager"))
-    //                 {   
-    //                     Manager man = new Manager(name, accountName, pwd,"M");
-    //                     this.currentChar = man;
-    //                     this.managers.add(man);
-    //                     this.AccountToType.put(accountName,"Manager");
-    //                     String[] newrecord = new String[]{name,accountName,pwd};
-    //                     this.updataData(this.DBPATH+"character/", newrecord, "manager");
-    //                 }
-    //             }
-    //             else
-    //             {
-    //                 sinwrap.setMessage("Same ID exists.");
-    //             }
-    //         }
-    //         else
-    //         {
-    //             sinwrap.setMessage("Invalid Input.");
-    //         }
-
-    //     }
-    // }
-
-    public boolean logIn(String realName, String userName, String password,ErrorResponse err){
+    public boolean logIn(String realName, String userName, String password,ErrorResponse error){
 
         if(checkAccountValid(userName,password))
         {
@@ -308,40 +107,25 @@ public class FancyBank {
         else
         {
             //error message
-            new Message("INVALID USERNAME OR PASSWORD");
+            error.res = "INVALID USERNAME OR PASSWORD";
             return false;
         }
-        // Boolean finished = false;
-        // Boolean success = false;
+    }
 
-        // while(!finished && !success)
-        // {
-        //     sinwrap.setMessage("Hi, "+this.currentChar.getName());
-        //     sinwrap.setMessage("Please enter your Online Bank Account ID:");
-        //     String logId = sinwrap.next();
-        //     sinwrap.setMessage("Please enter your Password");
-        //     String pwd = sinwrap.next();
-        //     if(checkAccountValid(logId, pwd))
-        //     {
-        //         sinwrap.setMessage("Log in Successful!");
-        //         String type = this.AccountToType.get(logId);
-        //         if(type.equals("Manager"))
-        //         {
-        //             Manager m = new Manager(this.currentName,logId,pwd);
-        //             this.currentChar = m;
-        //         }
-        //         else if(type.equals("Customer"))
-        //         {
-        //             Customer c = new Customer(this.currentName, logId, pwd);
-        //             this.currentChar =c;
-        //         }
-        //         finished = success = true;
-        //     }
-        //     else
-        //     {
-        //         sinwrap.setMessage("Log in failed! Incorrect Account name or Password!");
-        //     }
-        // }
+    public boolean createOnlineAccount(String realname, String username, String password,ErrorResponse error){
+        if(checkAccountNameValid(username))
+        {
+            Customer c = new Customer(realname, username, password);
+            VARIABLE.updateCustomer(c);
+            return true;
+        }
+        else
+        {
+            error.res = "INVALID USERNAME";
+            return false;
+        }
+
+
     }
 
     public Boolean checkAccountValid(String Id, String pwd){
