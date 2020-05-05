@@ -2,7 +2,10 @@ package fancybank.util;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,11 +15,10 @@ import fancybank.character.*;
 import fancybank.character.Character;
 import fancybank.db.*;
 
-
-public class Variable{
+public class Variable {
 
     String DBPATH;
-    
+
     public static List<Character> characterList;
     public static List<Customer> customerList;
     public static List<Manager> managerList;
@@ -25,55 +27,44 @@ public class Variable{
     public static List<CheckingAccount> checkings;
     public static List<SecuritiesAccount> securites;
 
-    
-    
     public static HashMap<String, Object> USERNAME_TO_CHAR;
 
+    // public static HashMap<String,Object> USERNAME_TO_ACC;
 
-
-    //public static HashMap<String,Object> USERNAME_TO_ACC;   
-
-    public Variable(String path){
-        this.DBPATH = path;
-        
-        
+    public static void main(String[] args) {
+        Variable var = new Variable("src/db/");
     }
 
-    public void initCharacter(){
-        USERNAME_TO_CHAR = new HashMap<String,Object>();
+    public Variable(String path) {
+        this.DBPATH = path;
+
+    }
+
+    public void initCharacter() throws IOException {
+        USERNAME_TO_CHAR = new HashMap<String, Object>();
         customerList = new ArrayList<Customer>();
         managerList = new ArrayList<Manager>();
         characterList = new ArrayList<Character>();
         loadCharacter(DBPATH + "character/");
-
-
-
     }
 
-    public void initAccount(){
-        this.savings = new ArrayList<SavingAccount>();
-        this.checkings = new ArrayList<CheckingAccount>();
-        this.securites = new ArrayList<SecuritiesAccount>();
-        loadAccount(DBPATH + "account/");
+    // public void initAccount() throws IOException {
+    //     this.savings = new ArrayList<SavingAccount>();
+    //     this.checkings = new ArrayList<CheckingAccount>();
+    //     this.securites = new ArrayList<SecuritiesAccount>();
+    //     loadAccount(DBPATH + "account/");
 
-    }
+    // }
 
-    public void updateCustomer(Customer c){
+    public void updateCustomer(Customer c) {
         customerList.add(c);
         characterList.add(c);
         USERNAME_TO_CHAR.put(c.getAccountName(), c);
 
     }
 
-    public void loadCharacter(String path){
-        File[] characterCsv = new File(path).listFiles(new FileFilter() {
-
-            @Override
-            public boolean accept(File pathname) {
-                return pathname.getName().substring(pathname.getName().length() - 4, pathname.getName().length())
-                        .equals(".csv");
-            }
-        });
+    public void loadCharacter(String path) throws IOException {
+        File[] characterCsv = new File(path).listFiles();
 
         for (File f : characterCsv) {
             BufferedReader br = new BufferedReader(new FileReader(f));
@@ -89,23 +80,20 @@ public class Variable{
                 // Expect 3 columns, otherwise skip
                 if (tokens.length == 3) {
                     switch (type) {
-                        case "MANAGER":
-                            Manager m = new Manager(tokens[0].replace("-", " ").replace("_", " "),tokens[1], tokens[2]);
-                            characterList.add(m);
-                            managerList.add(m);
-                            USERNAME_TO_CHAR.put(tokens[1],m);
-                            
-                            //this.OnlineAccounts.add(new Tuple<String, String>(tokens[1],tokens[2]));
-                            //this.AccountToType.put(tokens[1], "Manager");
-                            break;
-                        case "CUSTOMER":
-                            Customer c = new Customer(tokens[0].replace("-", " ").replace("_", " "),tokens[1], tokens[2]);
-                            characterList.add(c);
-                            customerList.add(c);
-                            USERNAME_TO_CHAR.put(tokens[1],c);
-                            break;
-                        default:
-                            System.err.println("Encountered undefined type");
+                    case "MANAGER":
+                        Manager m = new Manager(tokens[0].replace("-", " ").replace("_", " "), tokens[1], tokens[2]);
+                        characterList.add(m);
+                        managerList.add(m);
+                        USERNAME_TO_CHAR.put(tokens[1], m);
+                        break;
+                    case "CUSTOMER":
+                        Customer c = new Customer(tokens[0].replace("-", " ").replace("_", " "), tokens[1], tokens[2]);
+                        characterList.add(c);
+                        customerList.add(c);
+                        USERNAME_TO_CHAR.put(tokens[1], c);
+                        break;
+                    default:
+                        System.err.println("Encountered undefined type");
                     }
                 } else {
                     System.out.printf("Len is %d\n", tokens.length);
@@ -117,7 +105,7 @@ public class Variable{
 
     }
 
-    public void loadAccount(String path){
+    public void loadAccount(String path) throws IOException {
         File[] accountCsv = new File(path).listFiles();
 
         for (File f : accountCsv) {
@@ -160,5 +148,7 @@ public class Variable{
         }
 
     }
+
+
 
 }

@@ -6,7 +6,7 @@ import fancybank.FancyBank;
 import fancybank.util.*;
 
 public class BankUI extends JFrame {
-    private final FancyBank fancybank; // Init the band instance
+    private final static FancyBank fancybank; // Init the band instance
     private final WelcomePage welcomePage = new WelcomePage(this);
     private final UserLoginPanel userLoginPage = new UserLoginPanel(this);
     private final UserDetailPanel userPage = new UserDetailPanel(this);
@@ -14,8 +14,6 @@ public class BankUI extends JFrame {
     private final ManagerPanel managerPage = new ManagerPanel(this);
     private final SecurityInfoPanel securitiesInfoPanel = new SecurityInfoPanel();
     private final SecurityAccountInfoPanel securitiesAccountInfoPanel = new SecurityAccountInfoPanel();
-
-
 
     BankUI(FancyBank fancybank) {
         this.fancybank = fancybank;

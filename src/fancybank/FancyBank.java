@@ -63,6 +63,10 @@ public class FancyBank {
     //database path
     private String DBPATH;
 
+    public static void main(String[] args) throws IOException {
+        System.out.println(findDb());
+    }
+
     public FancyBank(){
         try {
             DBPATH = findDb();
