@@ -296,6 +296,7 @@ public abstract class Account {
                     balance.put(Currency.getInstance(t.getCurrency().toUpperCase()), balance.get(Currency.getInstance(t.getCurrency().toUpperCase()))+t.getAmount());
                     t.setFinalBalance(balance.get(Currency.getInstance(t.getCurrency().toUpperCase())));
                     transactions.add(t);
+                    FancyBank.VARIABLE.updateTransaction(id, t);
                     return true;
                 // }
                 // return false;
@@ -305,12 +306,14 @@ public abstract class Account {
                     balance.put(Currency.getInstance(t.getCurrency().toUpperCase()), balance.get(Currency.getInstance(t.getCurrency().toUpperCase()))-t.getAmount());
                     t.setFinalBalance(balance.get(Currency.getInstance(t.getCurrency().toUpperCase())));
                     transactions.add(t);
+                    FancyBank.VARIABLE.updateTransaction(id, t);
                     return true;
                 // }
                 // return false;
             default: 
                 t.setFinalBalance(balance.get(Currency.getInstance("USD"))); // Buy/sell asset, no affect on balance USD for this xact.
                 transactions.add(t);
+                FancyBank.VARIABLE.updateTransaction(id, t);
                 return true;
         }
     }
