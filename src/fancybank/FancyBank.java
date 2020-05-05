@@ -62,9 +62,8 @@ public class FancyBank {
 
     //database path
     private String DBPATH;
-
-    public static void main(String[] args) throws IOException {
-        System.out.println(findDb());
+    public static void main(String[] args) {
+        FancyBank f = new FancyBank();
     }
 
     public FancyBank(){
@@ -77,17 +76,12 @@ public class FancyBank {
         VARIABLE = new Variable(DBPATH);
         initBank();
 
-        // sinwrap = new StdinWrapper("");
-        // loadCharacter(DBPATH + "character/");
-        // loadAccount(DBPATH + "account/");
-
         
 
         
     }
 
     public void initBank(){
-        Variable VARIABLE = new Variable(DBPATH);
 
         
         // this.savings = new ArrayList<SavingAccount>();

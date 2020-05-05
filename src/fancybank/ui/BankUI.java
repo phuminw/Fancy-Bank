@@ -173,8 +173,8 @@ public class BankUI extends JFrame {
         SwingUtilities.updateComponentTreeUI(this);
     }
 
-    public static void main(String[] args) {
-        BankUI bankUI = new BankUI(fancybank);
-    }
+    // public static void main(String[] args) {
+    //     BankUI bankUI = new BankUI(fancybank);
+    // }
 
 }

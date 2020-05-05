@@ -1,1 +1,1 @@
-BankID,USD,USDbalance,EUR,EURbalance,CNY,CNYbalance,interestRate,withdrawLimit
+username,AccountID,USD,USDbalance,EUR,EURbalance,CNY,CNYbalance,interestRate,withdrawCountLimit

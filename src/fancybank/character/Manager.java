@@ -15,6 +15,12 @@ public class Manager extends Character{
     public void getReport(){
         
     }
+    public String toString(){
+        String str = this.getName()+" , "+this.getAccountName()+" , "+this.getPwd();
+        return str;
+        
+    }
+
 
     
 

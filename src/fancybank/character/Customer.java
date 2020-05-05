@@ -212,4 +212,10 @@ public class Customer extends Character {
 
     }
 
+    public String toString(){
+        String str = this.getName()+" , "+this.getAccountName()+" , "+this.getPwd();
+        return str;
+        
+    }
+
 }
