@@ -75,8 +75,8 @@ public class FancyBank {
         
 
         Customer c = (Customer)VARIABLE.USERNAME_TO_CHAR.get("jessy");
-        //c.createCheckingAccount("USD",50.0);
-        System.out.println(c.viewTransaction());
+        c.createCheckingAccount("USD",50.0);
+        //System.out.println(c.viewTransaction());
         //c.deposit("USD", 10.0, Integer.toString(105272405));
         // // c.deposit("USD", 100.0, Integer.toString(105272405));
         // //c.withdraw("USD", 1.0, Integer.toString(105272405));

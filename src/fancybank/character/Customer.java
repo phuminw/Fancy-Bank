@@ -40,11 +40,11 @@ public class Customer extends Character {
 
     public String viewCheckingBalance() {
         String ret = "";
-        for(CheckingAccount c:this.checkings)
-        {
-            ret = ret+c.toString();
-            ret = ret + "/n";
-        }
+        CheckingAccount c = this.checkings.get(this.checkings.size()-1);
+        
+        ret = ret+c.toString();
+        ret = ret + "/n";
+        
         //System.out.println(ret);
         return ret;
         //return this.checkings;
@@ -52,11 +52,10 @@ public class Customer extends Character {
 
     public String viewSavingBalance() {
         String ret = "";
-        for(SavingAccount c:this.savings)
-        {
-            ret = ret+c.toString();
-            ret = ret + "/n";
-        }
+        SavingAccount c = this.savings.get(this.savings.size()-1);
+        
+        ret = ret+c.toString();
+        ret = ret + "/n";
         //System.out.println(ret);
         return ret;
 
@@ -64,11 +63,10 @@ public class Customer extends Character {
 
     public String viewSecuritiesBalance() {
         String ret = "";
-        for(SecuritiesAccount c:this.securites)
-        {
-            ret = ret+c.toString();
-            ret = ret + "/n";
-        }
+        SecuritiesAccount c = this.securities.get(this.securities.size()-1);
+        
+        ret = ret+c.toString();
+        ret = ret + "/n";
         //System.out.println(ret);
         return ret;
 
@@ -321,6 +319,7 @@ public class Customer extends Character {
             List lst = sav.getTransactions("USD");
             lst.addAll(sav.getTransactions("CNY"));
             lst.addAll(sav.getTransactions("EUR"));
+            
             for(int i = 0;i<lst.size();i++)
             {
                 ret = ret+lst.get(i).toString();
@@ -334,6 +333,7 @@ public class Customer extends Character {
             List lst = sav.getTransactions("USD");
             lst.addAll(sav.getTransactions("CNY"));
             lst.addAll(sav.getTransactions("EUR"));
+            //System.out.println(sav.getTransactions("USD"));
 
             for(int i = 0;i<lst.size();i++)
             {

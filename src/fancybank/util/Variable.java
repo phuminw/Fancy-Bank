@@ -499,17 +499,19 @@ public class Variable {
         File[] accountCsv = new File(path).listFiles();
 
         for (File f : accountCsv) {
-            //BufferedReader br = new BufferedReader (new FileReader (f));
-            BufferedReader br = new BufferedReader (new InputStreamReader (new ReverseLineInputStream(f)));
-            br.readLine(); // skip header
+            BufferedReader br = new BufferedReader (new FileReader (f));
+            //BufferedReader br = new BufferedReader (new InputStreamReader (new ReverseLineInputStream(f)));
+            
             String type = f.getName().substring(0, f.getName().indexOf('.')).toUpperCase();
 
             String line = "";
+            
+            
+            line = br.readLine();
+            line = br.readLine();
             line = br.readLine();
             //System.out.println(line);
-            line = br.readLine();
-            //System.out.println("zhe li");
-            //System.out.println(line);
+           
 
             while (line != null && !(line.equals(""))) {
                 // username,account ID,USD,balance,EUR,balance, CNY, balance.
@@ -520,86 +522,86 @@ public class Variable {
                 
                 if(!DISPLAY_TRANSACTION.containsKey(tokens[1]))
                 {
-                    DISPLAY_TRANSACTION.put(tokens[1],"");
-                    switch (type) {
-                        case "CHECKINGACCOUNT":
-                            CheckingAccount c = new CheckingAccount();
-                            //set up the account
-                            c.setID(Integer.parseInt(tokens[1]));
-                            
-                            c.setBalance(Double.parseDouble(tokens[3]), tokens[2]);
-                            c.setBalance(Double.parseDouble(tokens[3]), tokens[4]);
-                            c.setBalance(Double.parseDouble(tokens[7]), tokens[6]);
-
-                            //给用户加进去
-                            Customer customer = (Customer)USERNAME_TO_CHAR.get(tokens[0]);
-                            //System.out.println(USERNAME_TO_CHAR);
-                            //System.out.println(tokens[0]);
-                            //System.out.println(USERNAME_TO_CHAR.get(tokens[0]));
-                            customer.getChecking().add(c);
-                            
-                            checkings.add(c);
-                            //ID_TO_ACCOUNT.put(new Tuple(tokens[0],tokens[1]), c);
-                            ID_TO_ACCOUNT.put(tokens[1], c);
-                            
-                            break;
-                        case "SAVINGACCOUNT":
-                        //username,AccountID,USD,USDbalance,EUR,EURbalance,CNY,CNYbalance,interestRate,withdrawCountLimit
-                            SavingAccount s = new SavingAccount(Double.parseDouble(tokens[8]),Integer.parseInt(tokens[9]));
-
-                            //set up the account
-                            s.setID(Integer.parseInt(tokens[1]));
-                            s.setBalance(Double.parseDouble(tokens[3]), tokens[2]);
-                            s.setBalance(Double.parseDouble(tokens[3]), tokens[4]);
-                            s.setBalance(Double.parseDouble(tokens[7]), tokens[6]);
-
-                            Customer sac_c = (Customer)USERNAME_TO_CHAR.get(tokens[0]);
-                            //System.out.println(tokens[0]);
-                            //System.out.println("zhe li");
-
-                            sac_c.getChecking().add(s);
-                            //System.out.println("加成"+sac_c.getChecking());
-                            savings.add(s);
-                            ID_TO_ACCOUNT.put(tokens[1], s);
-                            //ID_TO_ACCOUNT.put(new Tuple(tokens[0],tokens[1]), s);
-                            break;
-                        case "LOAN":
-                        //username,ccountId,currency,balance,interest
-                                Loan l = new Loan(tokens[2],Double.parseDouble(tokens[3]),Double.parseDouble(tokens[4]));
+                        DISPLAY_TRANSACTION.put(tokens[1],"");
+                        switch (type) {
+                            case "CHECKINGACCOUNT":
+                                CheckingAccount c = new CheckingAccount();
+                                //set up the account
+                                c.setID(Integer.parseInt(tokens[1]));
+                                
+                                c.setBalance(Double.parseDouble(tokens[3]), tokens[2]);
+                                c.setBalance(Double.parseDouble(tokens[3]), tokens[4]);
+                                c.setBalance(Double.parseDouble(tokens[7]), tokens[6]);
+    
+                                //给用户加进去
+                                Customer customer = (Customer)USERNAME_TO_CHAR.get(tokens[0]);
+                                //System.out.println(USERNAME_TO_CHAR);
+                                //System.out.println(tokens[0]);
+                                //System.out.println(USERNAME_TO_CHAR.get(tokens[0]));
+                                customer.getChecking().add(c);
+                                
+                                checkings.add(c);
+                                //ID_TO_ACCOUNT.put(new Tuple(tokens[0],tokens[1]), c);
+                                ID_TO_ACCOUNT.put(tokens[1], c);
+                                
+                                break;
+                            case "SAVINGACCOUNT":
+                            //username,AccountID,USD,USDbalance,EUR,EURbalance,CNY,CNYbalance,interestRate,withdrawCountLimit
+                                SavingAccount s = new SavingAccount(Double.parseDouble(tokens[8]),Integer.parseInt(tokens[9]));
     
                                 //set up the account
-                                l.setID(Integer.parseInt(tokens[1]));
-                                // s.setBalance(Double.parseDouble(tokens[3]), tokens[2]);
-                                // s.setBalance(Double.parseDouble(tokens[3]), tokens[4]);
-                                // s.setBalance(Double.parseDouble(tokens[7]), tokens[6]);
+                                s.setID(Integer.parseInt(tokens[1]));
+                                s.setBalance(Double.parseDouble(tokens[3]), tokens[2]);
+                                s.setBalance(Double.parseDouble(tokens[3]), tokens[4]);
+                                s.setBalance(Double.parseDouble(tokens[7]), tokens[6]);
     
-                                Customer loan_c = (Customer)USERNAME_TO_CHAR.get(tokens[0]);
+                                Customer sac_c = (Customer)USERNAME_TO_CHAR.get(tokens[0]);
+                                //System.out.println(tokens[0]);
+                                //System.out.println("zhe li");
     
-                                loan_c.getLoans().add(l);
-                                Loans.add(l);
-                                ID_TO_ACCOUNT.put(tokens[1], l);
+                                sac_c.getChecking().add(s);
+                                //System.out.println("加成"+sac_c.getChecking());
+                                savings.add(s);
+                                ID_TO_ACCOUNT.put(tokens[1], s);
                                 //ID_TO_ACCOUNT.put(new Tuple(tokens[0],tokens[1]), s);
                                 break;
-                        case "SECURITIESACCOUNT":
-                            SecuritiesAccount se = new SecuritiesAccount();
-                            //set up the account
-                            se.setID(Integer.parseInt(tokens[1]));
+                            case "LOAN":
+                            //username,ccountId,currency,balance,interest
+                                    Loan l = new Loan(tokens[2],Double.parseDouble(tokens[3]),Double.parseDouble(tokens[4]));
+        
+                                    //set up the account
+                                    l.setID(Integer.parseInt(tokens[1]));
+                                    // s.setBalance(Double.parseDouble(tokens[3]), tokens[2]);
+                                    // s.setBalance(Double.parseDouble(tokens[3]), tokens[4]);
+                                    // s.setBalance(Double.parseDouble(tokens[7]), tokens[6]);
+        
+                                    Customer loan_c = (Customer)USERNAME_TO_CHAR.get(tokens[0]);
+        
+                                    loan_c.getLoans().add(l);
+                                    Loans.add(l);
+                                    ID_TO_ACCOUNT.put(tokens[1], l);
+                                    //ID_TO_ACCOUNT.put(new Tuple(tokens[0],tokens[1]), s);
+                                    break;
+                            case "SECURITIESACCOUNT":
+                                SecuritiesAccount se = new SecuritiesAccount();
+                                //set up the account
+                                se.setID(Integer.parseInt(tokens[1]));
+    
+                                se.setBalance(Double.parseDouble(tokens[3]), tokens[2]);
+                                se.setBalance(Double.parseDouble(tokens[3]), tokens[4]);
+                                se.setBalance(Double.parseDouble(tokens[7]), tokens[6]);
+    
+                                Customer sec_c= (Customer)USERNAME_TO_CHAR.get(tokens[0]);
+                                sec_c.getChecking().add(se);
+                                securites.add(se);
+                                ID_TO_ACCOUNT.put(tokens[1], se);
+                                //ID_TO_ACCOUNT.put(new Tuple(tokens[0],tokens[1]), se);
+                                break;
+                            default:
+                                System.err.println("Encountered undefined type");
+                        }
 
-                            se.setBalance(Double.parseDouble(tokens[3]), tokens[2]);
-                            se.setBalance(Double.parseDouble(tokens[3]), tokens[4]);
-                            se.setBalance(Double.parseDouble(tokens[7]), tokens[6]);
-
-                            Customer sec_c= (Customer)USERNAME_TO_CHAR.get(tokens[0]);
-                            sec_c.getChecking().add(se);
-                            securites.add(se);
-                            ID_TO_ACCOUNT.put(tokens[1], se);
-                            //ID_TO_ACCOUNT.put(new Tuple(tokens[0],tokens[1]), se);
-                            break;
-                        default:
-                            System.err.println("Encountered undefined type");
                     }
-
-                }
                 
                 line = br.readLine();
             }
