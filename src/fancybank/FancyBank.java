@@ -296,10 +296,9 @@ public class FancyBank {
         else if(this.currentChar instanceof Manager)
         {
             String ret = "";
-            for(Transaction t:FancyBank.VARIABLE.transactions)
+            for(Customer c:FancyBank.VARIABLE.customerList)
             {
-                ret = ret+t.toString();
-                ret = ret + "/n";
+                ret = ret + c.viewTransaction();
             }
             //System.out.println(ret);
             return ret;
