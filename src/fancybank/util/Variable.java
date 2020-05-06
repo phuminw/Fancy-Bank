@@ -38,7 +38,7 @@ public class Variable {
     //public static HashMap<Tuple<String,String>,Object> ID_TO_ACCOUNT;
     public static HashMap<String,Object> ID_TO_ACCOUNT;
 
-    public static HashMap<String, String[]> DISPLAY_TRANSACTION;
+    public static HashMap<String, String> DISPLAY_TRANSACTION;
 
     // public static HashMap<String,Object> USERNAME_TO_ACC;
 
@@ -78,7 +78,7 @@ public class Variable {
     public void initAccount()  {
         //ID_TO_ACCOUNT = new HashMap<Tuple<String,String>,Object>();
         ID_TO_ACCOUNT = new HashMap<String,Object>();
-        DISPLAY_TRANSACTION = new HashMap<String,String[]>();
+        DISPLAY_TRANSACTION = new HashMap<String,String>();
         this.savings = new ArrayList<SavingAccount>();
         this.checkings = new ArrayList<CheckingAccount>();
         this.securites = new ArrayList<SecuritiesAccount>();
@@ -464,25 +464,42 @@ public class Variable {
     //     writer.close();
     // }
 
-    public void removeDuplicates(String path)throws IOException{
-        //File[] accountCsv = new File(path).listFiles();
+    // public void removeDuplicates(String path)throws IOException{
+    //     //File[] accountCsv = new File(path).listFiles();
         
-        BufferedReader br = new BufferedReader(new FileReader(path));
-        //String type = f.getName().substring(0, f.getName().indexOf('.')).toUpperCase();
-        String line = br.readLine();
-        ArrayList<String> lst = new ArrayList<String>();
+    //     BufferedReader br = new BufferedReader(new FileReader(path));
+    //     //String type = f.getName().substring(0, f.getName().indexOf('.')).toUpperCase();
+    //     String title = br.readLine();
+    //     String line = br.readLine();
+    //     line = br.readLine();
+    //     ArrayList<String> lst = new ArrayList<String>();
 
-        while (line != null && line != "") {
-            lst.add(line);
-            line = br.readLine();
-        }
+    //     while (line != null && !(line.equals(""))){
+    //         String[] tokens = line.replace("\n", "").strip().split(",");
+    //         if(DISPLAY_TRANSACTION.containsKey(tokens[1]))
+    //         {
+    //             DISPLAY_TRANSACTION.replace(tokens[1],line);
+    //         }
+    //         else
+    //         {
+    //             DISPLAY_TRANSACTION.put(tokens[1],line);
+    //         }
+    //     }
+
+    //     Collection<String> v = DISPLAY_TRANSACTION.values();
+
+    //     BufferedWriter writer = 
+
+
+
+
 
 
         
 
 
 
-    }
+    // }
 
     public void loadAccount(String path) throws IOException {
         File[] accountCsv = new File(path).listFiles();

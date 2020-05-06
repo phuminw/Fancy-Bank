@@ -135,6 +135,31 @@ public class FancyBank {
         
     }
 
+    public boolean createCheckingAccount(String currency, double money){
+        Customer cus = (Customer)this.currentChar;
+        cus.createCheckingAccount(currency,money);
+        return true;
+    }
+
+    public boolean createSavingAccount(String currency, double money){
+        Customer cus = (Customer)this.currentChar;
+        cus.createSavingAccount(currency,money);
+        return true;
+    }
+
+    public boolean createSecuritiesAccount(String SavingaccountId,String currency, double money, ErrorResponse error){
+        Customer cus = (Customer)this.currentChar;
+        try {
+            cus.createSecuritesAccount(SavingaccountId,currency,money,error);
+            return true;
+            
+        } catch ( IOException e) {
+            //TODO: handle exception
+        }
+        return false;
+
+    }
+
     public Boolean checkAccountValid(String Id, String pwd){
         if(VARIABLE.USERNAME_TO_CHAR.containsKey(Id))
         {

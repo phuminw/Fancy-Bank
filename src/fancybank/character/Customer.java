@@ -100,10 +100,11 @@ public class Customer extends Character {
         FancyBank.VARIABLE.updateAccount(this.getName(),l);
     }
 
-    public void createSavingAccount() {
+    public void createSavingAccount(String currency, double money) {
         SavingAccount sav = new SavingAccount(FancyBank.SAVINGINTEREST, FancyBank.SAVINGWITHDRAWCOUNTLIMIT);
         this.savings.add(sav);
         FancyBank.VARIABLE.savings.add(sav);
+        this.deposit(currency,money,Integer.toString(sav.getId()));
         FancyBank.VARIABLE.updateAccount(this.getAccountName(),sav);
         sav.addTransaction(new Transaction(Transaction.FEE, FancyBank.OPENFEE, "USD", String.format("OPEN FEE %d", FancyBank.OPENFEE)));
     }
@@ -232,8 +233,9 @@ public class Customer extends Character {
 
     }
 
-    public boolean createSecuritesAccount(SavingAccount sav, String currency, double money,ErrorResponse error)
+    public boolean createSecuritesAccount(String savId, String currency, double money,ErrorResponse error)
             throws NumberFormatException, IOException {
+        SavingAccount sav = (SavingAccount)FancyBank.VARIABLE.ID_TO_ACCOUNT.get(savId);
         double total = sav.getBalance(currency);
         double rest = total-money;
         if(rest>=2500)
@@ -258,10 +260,11 @@ public class Customer extends Character {
 
     
 
-    public void createCheckingAccount(){
+    public void createCheckingAccount(String currency, double money){
         CheckingAccount ck = new CheckingAccount();
         FancyBank.VARIABLE.checkings.add(ck);
         this.checkings.add(ck);
+        this.deposit(currency,money,Integer.toString(ck.getId()));
         FancyBank.VARIABLE.updateAccount(this.getAccountName(), ck);
         ck.addTransaction(new Transaction(Transaction.FEE, FancyBank.OPENFEE, "USD", String.format("OPEN FEE %d", FancyBank.OPENFEE)));
     }
