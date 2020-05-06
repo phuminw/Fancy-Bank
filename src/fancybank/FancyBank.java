@@ -75,6 +75,7 @@ public class FancyBank {
         c.deposit("USD", 10.0, Integer.toString(105272405));
         // c.deposit("USD", 100.0, Integer.toString(105272405));
         //c.withdraw("USD", 1.0, Integer.toString(105272405));
+        f.createCheckingAccount("USD",50.0);
 
         
         
@@ -136,25 +137,39 @@ public class FancyBank {
     }
 
     public boolean createCheckingAccount(String currency, double money){
-        Customer cus = (Customer)this.currentChar;
-        cus.createCheckingAccount(currency,money);
-        return true;
+        if(this.currentChar instanceof Customer)
+        {
+            Customer cus = (Customer)this.currentChar;
+            cus.createCheckingAccount(currency,money);
+            return true;
+
+        }
+        return false;
     }
 
     public boolean createSavingAccount(String currency, double money){
-        Customer cus = (Customer)this.currentChar;
-        cus.createSavingAccount(currency,money);
-        return true;
+        if(this.currentChar instanceof Customer)
+        {
+            Customer cus = (Customer)this.currentChar;
+            cus.createSavingAccount(currency,money);
+            return true;
+        }
+        return false;
     }
 
     public boolean createSecuritiesAccount(String SavingaccountId,String currency, double money, ErrorResponse error){
-        Customer cus = (Customer)this.currentChar;
-        try {
-            cus.createSecuritesAccount(SavingaccountId,currency,money,error);
-            return true;
-            
-        } catch ( IOException e) {
-            //TODO: handle exception
+        if(this.currentChar instanceof Customer)
+        {
+            Customer cus = (Customer) this.currentChar;
+            try {
+                cus.createSecuritesAccount(SavingaccountId,currency,money,error);
+                return true;
+                
+            } catch ( IOException e) {
+                //TODO: handle exception
+            }
+            return false;
+
         }
         return false;
 
@@ -241,44 +256,80 @@ public class FancyBank {
     }
 
     public void deposit(String currency,double money,String accountId){
-        Customer cus = (Customer)this.currentChar;
-        cus.deposit(currency, money, accountId);
+        if(this.currentChar instanceof Customer)
+        {
+            Customer cus = (Customer)this.currentChar;
+            cus.deposit(currency, money, accountId);
+        }
+        
     }
 
     public boolean withdraw(String currency,double money, String accountId,ErrorResponse error){
-        Customer cus = (Customer)this.currentChar;
-        return cus.withdraw(currency, money, accountId, error);
+        if(this.currentChar instanceof Customer)
+        {
+            Customer cus = (Customer)this.currentChar;
+            return cus.withdraw(currency, money, accountId, error);
+
+        }
+        return false;
     }
 
     public boolean transfer(String from, String to, String currency, double money, ErrorResponse error){
-        Customer cus  = (Customer) this.currentChar;
-        return cus.transfer(from, to, currency, money, error);
+        if(this.currentChar instanceof Customer)
+        {
+            Customer cus = (Customer) this.currentChar;
+            return cus.transfer(from, to, currency, money, error);
+        }
+        return false;
     }
 
     public String viewTransaction()
     {
-        Customer cus  = (Customer) this.currentChar;
-        return cus.viewTransaction();
+        if(this.currentChar instanceof Customer)
+        {
+            Customer cus = (Customer) this.currentChar;
+         return cus.viewTransaction();
+        }
+        return "";
+
     }
 
     public String viewSecuritiesBalance(){
-        Customer cus  = (Customer) this.currentChar;
-        return cus.viewSecuritiesBalance();
+        if(this.currentChar instanceof Customer)
+        {
+            Customer cus = (Customer) this.currentChar;
+            return cus.viewSecuritiesBalance();
+        }
+        return "";
+
     }
 
     public String viewSavingBalance(){
-        Customer cus  = (Customer) this.currentChar;
-        return cus.viewSavingBalance();
+        if(this.currentChar instanceof Customer)
+        {
+            Customer cus = (Customer) this.currentChar;
+            return cus.viewSavingBalance();
+        }
+        return "";
     }
 
     public String viewCheckingBalance(){
-        Customer cus  = (Customer) this.currentChar;
-        return cus.viewCheckingBalance();
+        if(this.currentChar instanceof Customer)
+        {
+            Customer cus = (Customer) this.currentChar;
+            return cus.viewCheckingBalance();
+        }
+        return "";
     }
 
     public StocksMarket getStock(){
-        Customer cus  = (Customer) this.currentChar;
-        return cus.getStock();
+        if(this.currentChar instanceof Customer)
+        {
+            Customer cus = (Customer) this.currentChar;
+            return cus.getStock();
+        }
+        return null;
+        
         
 
     }

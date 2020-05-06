@@ -464,45 +464,33 @@ public class Variable {
     //     writer.close();
     // }
 
-    // public void removeDuplicates(String path)throws IOException{
-    //     //File[] accountCsv = new File(path).listFiles();
+    public void removeDuplicates(String path)throws IOException{
+        //File[] accountCsv = new File(path).listFiles();
         
-    //     BufferedReader br = new BufferedReader(new FileReader(path));
-    //     //String type = f.getName().substring(0, f.getName().indexOf('.')).toUpperCase();
-    //     String title = br.readLine();
-    //     String line = br.readLine();
-    //     line = br.readLine();
-    //     ArrayList<String> lst = new ArrayList<String>();
+        BufferedReader br = new BufferedReader(new FileReader(path));
+        //String type = f.getName().substring(0, f.getName().indexOf('.')).toUpperCase();
+        String title = br.readLine();
+        String line = br.readLine();
+        line = br.readLine();
+        ArrayList<String> lst = new ArrayList<String>();
 
-    //     while (line != null && !(line.equals(""))){
-    //         String[] tokens = line.replace("\n", "").strip().split(",");
-    //         if(DISPLAY_TRANSACTION.containsKey(tokens[1]))
-    //         {
-    //             DISPLAY_TRANSACTION.replace(tokens[1],line);
-    //         }
-    //         else
-    //         {
-    //             DISPLAY_TRANSACTION.put(tokens[1],line);
-    //         }
-    //     }
+        while (line != null && !(line.equals(""))){
+            String[] tokens = line.replace("\n", "").strip().split(",");
+            if(DISPLAY_TRANSACTION.containsKey(tokens[1]))
+            {
+                DISPLAY_TRANSACTION.replace(tokens[1],line);
+            }
+            else
+            {
+                DISPLAY_TRANSACTION.put(tokens[1],line);
+            }
+        }
 
-    //     BufferedWriter writer = new BufferedWriter(new FileWriter(path));
-    //     writer.write(title);
-
-
-        
+        BufferedWriter writer = new BufferedWriter(new FileWriter(path));
+        writer.write(title);
         
 
-
-
-
-
-
-        
-
-
-
-    // }
+    }
 
     public void loadAccount(String path) throws IOException {
         File[] accountCsv = new File(path).listFiles();
