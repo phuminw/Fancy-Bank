@@ -99,36 +99,29 @@ public class FancyBank {
         };
     }
 
-    public boolean logIn(String realName, String userName, String password,ErrorResponse error){
+    public void logIn(String userName){
 
-        if(checkAccountValid(userName,password))
-        {
-            Character c = (Character)VARIABLE.USERNAME_TO_CHAR.get(userName);
-            this.currentChar = c;
-            return true;
-        }
-        else
-        {
-            //error message
-            error.res = "INVALID USERNAME OR PASSWORD";
-            return false;
-        }
+        Character c = (Character)VARIABLE.USERNAME_TO_CHAR.get(userName);
+        this.currentChar = c;
+        // if(checkAccountValid(userName,password))
+        // {
+        //     Character c = (Character)VARIABLE.USERNAME_TO_CHAR.get(userName);
+        //     this.currentChar = c;
+        //     return true;
+        // }
+        // else
+        // {
+        //     //error message
+        //     error.res = "INVALID USERNAME OR PASSWORD";
+        //     return false;
+        // }
     }
 
-    public boolean createOnlineAccount(String realname, String username, String password,ErrorResponse error){
-        if(checkAccountNameValid(username))
-        {
-            Customer c = new Customer(realname, username, password);
-            VARIABLE.updateCustomer(c);
-            return true;
-        }
-        else
-        {
-            error.res = "INVALID USERNAME";
-            return false;
-        }
-
-
+    public void createOnlineAccount(String username){
+        
+        Customer c = new Customer("", username,"");
+        VARIABLE.updateCustomer(c);
+        
     }
 
     public Boolean checkAccountValid(String Id, String pwd){
@@ -200,7 +193,7 @@ public class FancyBank {
     public ArrayList getCustomers(){
         return VARIABLE.customerList;
     }
-    
+
     /**
      * Find db folder path that contains game data
      * 
