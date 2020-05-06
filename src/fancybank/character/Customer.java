@@ -111,11 +111,16 @@ public class Customer extends Character {
         if (account instanceof SavingAccount) {
             SavingAccount sav = (SavingAccount) account;
             sav.addBalance(money, currency, "deposit",LocalDateTime.now());
-            //Transaction t = new Transaction(Transaction.DEPOSIT, money, currency, "DEPOSIT");
+            //sav.addBalance(10.0, "USD", "deposit",LocalDateTime.now());
+            //System.out.println(sav.getBalance("USD"));
+            // System.out.println(money);
+            FancyBank.VARIABLE.updateAccount(this.getAccountName(),sav);
+            Transaction t = new Transaction(Transaction.DEPOSIT, money, currency, "DEPOSIT");
             //sav.addTransaction(t);
         } else if (account instanceof CheckingAccount) {
             CheckingAccount sav = (CheckingAccount) account;
             sav.addBalance(money, currency, "deposit", LocalDateTime.now());
+            FancyBank.VARIABLE.updateAccount(this.getAccountName(),sav);
             //Transaction t = new Transaction(Transaction.DEPOSIT, money, currency, "DEPOSIT");
             //sav.addTransaction(t);
             //FancyBank.VARIABLE.updateTransation(t);
@@ -123,6 +128,7 @@ public class Customer extends Character {
         } else if (account instanceof SecuritiesAccount) {
             SecuritiesAccount sav = (SecuritiesAccount) account;
             sav.addBalance(money, currency, "deposit", LocalDateTime.now());
+            FancyBank.VARIABLE.updateAccount(this.getAccountName(),sav);
             //Transaction t = new Transaction(Transaction.DEPOSIT, money, currency, "DEPOSIT");
             //sav.addTransaction(t);
             //FancyBank.VARIABLE.updateTransation(t);

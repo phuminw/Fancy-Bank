@@ -319,7 +319,7 @@ public abstract class Account {
                 //return true;
             
         }
-        FancyBank.VARIABLE.updateTransaction(id, t);
+        //FancyBank.VARIABLE.updateTransaction(id, t);
         return true;
     }
 

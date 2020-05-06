@@ -71,23 +71,11 @@ public class FancyBank {
     private String DBPATH;
     public static void main(String[] args) {
         FancyBank f = new FancyBank();
+        Customer c = (Customer)VARIABLE.USERNAME_TO_CHAR.get("jessy");
+        c.deposit("USD", 10.0, Integer.toString(105272405));
+        // c.deposit("USD", 100.0, Integer.toString(105272405));
+        //c.withdraw("USD", 1.0, Integer.toString(105272405));
 
-
-        // Transaction t = new Transaction(Transaction.DEPOSIT, 50.0, "USD", "hihi");
-        // VARIABLE.updateTransaction(, t);
-        //SavingAccount che = new SavingAccount(0.1, 5);
-        // Customer c = new Customer("", "jessy", "");
-        // VARIABLE.updateCustomer(c);
-        // System.out.println(VARIABLE.USERNAME_TO_CHAR);
-        // c.createSavingAccount();
-        // System.out.println("u");
-        // System.out.println(VARIABLE.savings);
-        // System.out.println("u");
-        //VARIABLE.updateCustomer(c);
-        //c.getSaving().add(che);
-        //c.deposit("USD", 500.0, Integer.toString(2037863579));
-        
-        //c.withdraw("USD", 500.0, Integer.toString(105272405));
         
         
 
@@ -250,17 +238,17 @@ public class FancyBank {
 
     public String viewSecuritiesBalance(){
         Customer cus  = (Customer) this.currentChar;
-        return cus.viewTransaction();
+        return cus.viewSecuritiesBalance();
     }
 
     public String viewSavingBalance(){
         Customer cus  = (Customer) this.currentChar;
-        return cus.viewTransaction();
+        return cus.viewSavingBalance();
     }
 
     public String viewCheckingBalance(){
         Customer cus  = (Customer) this.currentChar;
-        return cus.viewTransaction();
+        return cus.viewCheckingBalance();
     }
 
     public StocksMarket getStock(){

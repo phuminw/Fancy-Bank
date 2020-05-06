@@ -116,55 +116,117 @@ public class Variable {
     public void updateAccount(String username,Account account)
     {
         //ID_TO_ACCOUNT.put(new Tuple(username,Integer.toString(account.getId())), account);
-        ID_TO_ACCOUNT.put(Integer.toString(account.getId()), account);
-        String[] record;
-        if(account instanceof SavingAccount)
+        if(ID_TO_ACCOUNT.containsKey(Integer.toString(account.getId())))
         {
-            SavingAccount s = (SavingAccount) account;
-            record = new String[]{username,Integer.toString(account.getId()),"USD",Double.toString(account.getBalance("USD")),"EUR",Double.toString(account.getBalance("EUR")),"CNY",Double.toString(account.getBalance("CNY")),Double.toString(s.getInterestRate()),Integer.toString(s.getWithdrawCountLimit())};
-            try {
-                updataData(record, "saving");
-                
-            }  catch (IOException e) {
-                //TODO: handle exception
-                e.printStackTrace();
+            account = (Account)ID_TO_ACCOUNT.get(Integer.toString(account.getId()));
+            String[] record;
+            if(account instanceof SavingAccount)
+            {
+                SavingAccount s = (SavingAccount) account;
+                record = new String[]{username,Integer.toString(account.getId()),"USD",Double.toString(account.getBalance("USD")),"EUR",Double.toString(account.getBalance("EUR")),"CNY",Double.toString(account.getBalance("CNY")),Double.toString(s.getInterestRate()),Integer.toString(s.getWithdrawCountLimit())};
+                try {
+                    //updataData(record, "saving",true);
+                    updataData(record, "saving");
+                    
+                }  catch (IOException e) {
+                    //TODO: handle exception
+                    e.printStackTrace();
+                }
             }
-        }
-        else if(account instanceof CheckingAccount)
-        {
-            record = new String[]{username,Integer.toString(account.getId()),"USD",Double.toString(account.getBalance("USD")),"EUR",Double.toString(account.getBalance("EUR")),"CNY",Double.toString(account.getBalance("CNY"))};
-            try {
-                updataData(record, "checking");
-                
-            }  catch (IOException e) {
-                //TODO: handle exception
-                e.printStackTrace();
+            else if(account instanceof CheckingAccount)
+            {
+                record = new String[]{username,Integer.toString(account.getId()),"USD",Double.toString(account.getBalance("USD")),"EUR",Double.toString(account.getBalance("EUR")),"CNY",Double.toString(account.getBalance("CNY"))};
+                try {
+                    //updataData(record, "checking",true);
+                    updataData(record, "checking");
+                    
+                }  catch (IOException e) {
+                    //TODO: handle exception
+                    e.printStackTrace();
+                }
             }
+            else if(account instanceof SecuritiesAccount)
+            {
+                record = new String[]{username,Integer.toString(account.getId()),"USD",Double.toString(account.getBalance("USD")),"EUR",Double.toString(account.getBalance("EUR")),"CNY",Double.toString(account.getBalance("CNY"))};
+                try {
+                    //updataData(record, "securities",true);
+                    updataData(record, "securities");
+                    
+                }  catch (IOException e) {
+                    //TODO: handle exception
+                    e.printStackTrace();
+                }
+
+            }
+            else if(account instanceof Loan)
+            {
+                Loan l = (Loan) account;
+
+                record = new String[]{username,Integer.toString(account.getId()),"USD",Double.toString(account.getBalance("USD")),Double.toString(l.getInterestRate())};
+                try {
+                    updataData(record, "loan");
+                }  catch (IOException e) {
+                    //TODO: handle exception
+                    e.printStackTrace();
+                }
+            }
+
+
         }
-        else if(account instanceof SecuritiesAccount)
+        else
         {
-            record = new String[]{username,Integer.toString(account.getId()),"USD",Double.toString(account.getBalance("USD")),"EUR",Double.toString(account.getBalance("EUR")),"CNY",Double.toString(account.getBalance("CNY"))};
-            try {
-                updataData(record, "securities");
-                
-            }  catch (IOException e) {
-                //TODO: handle exception
-                e.printStackTrace();
+            ID_TO_ACCOUNT.put(Integer.toString(account.getId()), account);
+            String[] record;
+            if(account instanceof SavingAccount)
+            {
+                SavingAccount s = (SavingAccount) account;
+                record = new String[]{username,Integer.toString(account.getId()),"USD",Double.toString(account.getBalance("USD")),"EUR",Double.toString(account.getBalance("EUR")),"CNY",Double.toString(account.getBalance("CNY")),Double.toString(s.getInterestRate()),Integer.toString(s.getWithdrawCountLimit())};
+                try {
+                    updataData(record, "saving");
+                    
+                }  catch (IOException e) {
+                    //TODO: handle exception
+                    e.printStackTrace();
+                }
+            }
+            else if(account instanceof CheckingAccount)
+            {
+                record = new String[]{username,Integer.toString(account.getId()),"USD",Double.toString(account.getBalance("USD")),"EUR",Double.toString(account.getBalance("EUR")),"CNY",Double.toString(account.getBalance("CNY"))};
+                try {
+                    updataData(record, "checking");
+                    
+                }  catch (IOException e) {
+                    //TODO: handle exception
+                    e.printStackTrace();
+                }
+            }
+            else if(account instanceof SecuritiesAccount)
+            {
+                record = new String[]{username,Integer.toString(account.getId()),"USD",Double.toString(account.getBalance("USD")),"EUR",Double.toString(account.getBalance("EUR")),"CNY",Double.toString(account.getBalance("CNY"))};
+                try {
+                    updataData(record, "securities");
+                    
+                }  catch (IOException e) {
+                    //TODO: handle exception
+                    e.printStackTrace();
+                }
+
+            }
+            else if(account instanceof Loan)
+            {
+                Loan l = (Loan) account;
+
+                record = new String[]{username,Integer.toString(account.getId()),"USD",Double.toString(account.getBalance("USD")),Double.toString(l.getInterestRate())};
+                try {
+                    updataData(record, "loan");
+                }  catch (IOException e) {
+                    //TODO: handle exception
+                    e.printStackTrace();
+                }
             }
 
         }
-        else if(account instanceof Loan)
-        {
-            Loan l = (Loan) account;
-
-            record = new String[]{username,Integer.toString(account.getId()),"USD",Double.toString(account.getBalance("USD")),Double.toString(l.getInterestRate())};
-            try {
-                updataData(record, "loan");
-            }  catch (IOException e) {
-                //TODO: handle exception
-                e.printStackTrace();
-            }
-        }
+        
         
 
 
@@ -172,6 +234,7 @@ public class Variable {
 
     public void updateTransaction(int accountId,Transaction t)
     {
+        System.out.println("whyyyy");
         String[] record = new String[]{Integer.toString(accountId),t.getOperation(),t.getAssetName(), Double.toString(t.getAmount()),t.getCurrency(),t.getDescription()};
         try {
             updataData(record, "transaction");
@@ -198,7 +261,7 @@ public class Variable {
             System.out.println("out");
             System.out.println(line);
 
-            while (line != null) {
+            while (line != null && line != "") {
                 // Name,accountName,pwd
                 String[] tokens = line.split(",");
                 System.out.println("HERE");
@@ -311,6 +374,93 @@ public class Variable {
         writer.close();
     }
 
+    // public void updataData(String[] record,String type,boolean b) throws IOException{
+    //     //System.out.println(type);
+    //     String path = DBPATH;
+        
+    //     CSVWriter writer = null;
+    //     CSVReader reader = null;
+    //     if(type.equals("saving"))
+    //     {
+    //         writer = new CSVWriter(new FileWriter(path+"account/savingAccount.csv",true));
+    //         reader = new CSVReader(new FileReader(path+"account/savingAccount.csv"));
+    //     }
+    //     else if(type.equals("checking"))
+    //     {
+    //         writer = new CSVWriter(new FileWriter(path+"account/checkingAccount.csv",true));
+    //         reader = new CSVReader(new FileReader(path+"account/checkingAccount.csv"));
+    //     }
+    //     else if(type.equals("securities"))
+    //     {
+    //         writer = new CSVWriter(new FileWriter(path+"account/securitiesAccount.csv",true));
+    //         reader = new CSVReader(new FileReader(path+"account/securitiesAccount.csv"));
+    //     }
+    //     else if(type.equals("loan"))
+    //     {
+    //         writer = new CSVWriter(new FileWriter(path+"account/loan.csv",true));
+    //         reader = new CSVReader(new FileReader(path+"account/loan.csv"));
+    //     }
+    //     else
+    //     {
+    //         System.err.println("Encountered undefined type");
+    //     }
+
+    //     if(b)
+    //     {
+    //         List<String[]> allElements = reader.readAll();
+    //         for(int i = 0;i<allElements.size();i++)
+    //         {
+    //             String[] current = allElements.get(i);
+    //             if(current[1].equals(record[1]))
+    //             {
+    //                 allElements.remove(i);
+    //             }          
+    //         }
+    //         writer.writeAll(allElements);
+    //         writer.close();
+
+    //     }
+    //     else
+    //     {
+    //         writer.newLine();
+
+        
+    //         for(int i = 0;i<record.length;i++)
+    //         {
+    //             if(i != (record.length-1))
+    //             {
+    //                 if(record[i] == null)
+    //                 {
+    //                     writer.write("");
+    //                 }
+    //                 else
+    //                 {
+    //                     writer.write(record[i]);
+    //                 }
+                    
+    //                 writer.write(",");
+    //             }
+    //             else
+    //             {
+    //                 if(record[i] == null)
+    //                 {
+    //                     writer.write("");
+    //                 }
+    //                 else
+    //                 {
+    //                     writer.write(record[i]);
+    //                 }
+                    
+    //             }
+                
+    //         }
+
+    //     }
+        
+
+    //     writer.close();
+    // }
+
     public void loadAccount(String path) throws IOException {
         File[] accountCsv = new File(path).listFiles();
 
@@ -323,7 +473,7 @@ public class Variable {
             line = br.readLine();
             line = br.readLine();
 
-            while (line != null) {
+            while (line != null && line != "") {
                 // username,account ID,USD,balance,EUR,balance, CNY, balance.
                 String[] tokens = line.replace("\n", "").strip().split(",");
 
@@ -429,7 +579,7 @@ public class Variable {
             System.out.println("HI");
             System.out.println(line);
 
-            while (line != null) {
+            while (line != null && line != "") {
                 //accountID,operation,assetname,amount,currency,description
                 String[] tokens = line.replace("\n", "").strip().split(",");
                 System.out.println(tokens.length);
