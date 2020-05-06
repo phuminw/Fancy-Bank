@@ -108,6 +108,7 @@ public class Customer extends Character {
         FancyBank.VARIABLE.updateAccount(this.getAccountName(),sav);
         Transaction t = new Transaction(Transaction.FEE, FancyBank.OPENFEE, "USD", String.format("OPEN FEE %d", FancyBank.OPENFEE));
         sav.addTransaction(t);
+        this.transactions.add(t);
         FancyBank.VARIABLE.updateTransaction(sav.getId(),t);
 
     }
@@ -123,6 +124,7 @@ public class Customer extends Character {
             FancyBank.VARIABLE.updateAccount(this.getAccountName(),sav);
             Transaction t = new Transaction(Transaction.DEPOSIT, money, currency, "DEPOSIT");
             FancyBank.VARIABLE.updateTransaction(sav.getId(),t);
+            this.transactions.add(t);
             //sav.addTransaction(t);
         } else if (account instanceof CheckingAccount) {
             CheckingAccount sav = (CheckingAccount) account;
@@ -132,6 +134,7 @@ public class Customer extends Character {
             //sav.addTransaction(t);
             //FancyBank.VARIABLE.updateTransation(t);
             FancyBank.VARIABLE.updateTransaction(sav.getId(),t);
+            this.transactions.add(t);
 
         } else if (account instanceof SecuritiesAccount) {
             SecuritiesAccount sav = (SecuritiesAccount) account;
@@ -141,6 +144,7 @@ public class Customer extends Character {
             //sav.addTransaction(t);
             //FancyBank.VARIABLE.updateTransation(t);
             FancyBank.VARIABLE.updateTransaction(sav.getId(),t);
+            this.transactions.add(t);
 
         }
     }
@@ -158,6 +162,7 @@ public class Customer extends Character {
             Transaction t = new Transaction(Transaction.WITHDRAW, money, currency, "WITHDRAW");
             //sav.addTransaction(t);
             FancyBank.VARIABLE.updateTransaction(sav.getId(),t);
+            this.transactions.add(t);
         } else if (account instanceof CheckingAccount) {
             CheckingAccount sav = (CheckingAccount) account;
             if (sav.getBalance(currency) < money) {
@@ -169,6 +174,7 @@ public class Customer extends Character {
             Transaction t = new Transaction(Transaction.WITHDRAW, money, currency, "WITHDRAW");
             //sav.addTransaction(t);
             FancyBank.VARIABLE.updateTransaction(sav.getId(),t);
+            this.transactions.add(t);
 
         } else if (account instanceof CheckingAccount) {
             SecuritiesAccount sav = (SecuritiesAccount) account;
@@ -181,6 +187,7 @@ public class Customer extends Character {
             Transaction t = new Transaction(Transaction.WITHDRAW, money, currency, "WITHDRAW");
             //sav.addTransaction(t);
             FancyBank.VARIABLE.updateTransaction(sav.getId(),t);
+            this.transactions.add(t);
 
 
         }
@@ -201,6 +208,7 @@ public class Customer extends Character {
         Transaction t2 = new Transaction(Transaction.DEPOSIT, money, currency, "TRANSFER FROM");
 
         FancyBank.VARIABLE.updateTransaction(from.getId(),t1);
+        
         FancyBank.VARIABLE.updateTransaction(to.getId(),t2);
 
         if (from instanceof SavingAccount) {
@@ -222,13 +230,17 @@ public class Customer extends Character {
         if (to instanceof SavingAccount) {
             SavingAccount s = (SavingAccount) to;
             s.addBalance(money, currency, "DEPOSIT", LocalDateTime.now());
+            FancyBank.VARIABLE.updateAccount(this.getAccountName(),s);
+
         } else if (to instanceof CheckingAccount) {
             CheckingAccount s = (CheckingAccount) to;
             s.addBalance(money, currency, "DEPOSIT", LocalDateTime.now());
+            FancyBank.VARIABLE.updateAccount(this.getAccountName(),s);
 
         } else if (to instanceof SecuritiesAccount) {
             SecuritiesAccount s = (SecuritiesAccount) to;
             s.addBalance(money, currency, "DEPOSIT", LocalDateTime.now());
+            FancyBank.VARIABLE.updateAccount(this.getAccountName(),s);
 
         }
 
@@ -304,14 +316,42 @@ public class Customer extends Character {
     public String viewTransaction(){
         //display transaction
         String ret = "";
-        for(Transaction t:this.transactions)
+        for(SavingAccount sav:this.savings)
         {
-            ret = ret+t.toString();
-            ret = ret + "/n";
+            List lst = sav.getTransactions("USD");
+            for(int i = 0;i<lst.size();i++)
+            {
+                ret = ret+lst.get(0).toString();
+                ret = ret + "/n";
+            }
         }
-        System.out.println(ret);
+
+        for(CheckingAccount sav:this.checkings)
+        {
+            List lst = sav.getTransactions("USD");
+            for(int i = 0;i<lst.size();i++)
+            {
+                ret = ret+lst.get(0).toString();
+                ret = ret + "/n";
+            }
+        }
+
+        for(SecuritiesAccount sav:this.securites)
+        {
+            List lst = sav.getTransactions("USD");
+            for(int i = 0;i<lst.size();i++)
+            {
+                ret = ret+lst.get(0).toString();
+                ret = ret + "/n";
+            }
+        }
+        //System.out.println(ret);
         return ret;
 
+    }
+
+    public ArrayList getTransaction(){
+        return this.transactions;
     }
 
 

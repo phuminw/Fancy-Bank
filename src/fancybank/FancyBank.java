@@ -71,8 +71,11 @@ public class FancyBank {
     private String DBPATH;
     public static void main(String[] args) {
         FancyBank f = new FancyBank();
+        System.out.println(f.VARIABLE.ID_TO_ACCOUNT);
+        System.out.println("你好"+f.getAccounts());
+        //System.out.println("你好"+f.getAccounts());
 
-        Customer c = (Customer)VARIABLE.USERNAME_TO_CHAR.get("jessy");
+        //Customer c = (Customer)VARIABLE.USERNAME_TO_CHAR.get("jessy");
         //c.deposit("USD", 10.0, Integer.toString(105272405));
         // // c.deposit("USD", 100.0, Integer.toString(105272405));
         // //c.withdraw("USD", 1.0, Integer.toString(105272405));
