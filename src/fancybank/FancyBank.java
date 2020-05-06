@@ -4,8 +4,12 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileReader;
-import java.io.FileWriter;
+
+
+
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,6 +21,7 @@ import java.util.logging.ErrorManager;
 import fancybank.account.CheckingAccount;
 import fancybank.account.SavingAccount;
 import fancybank.account.SecuritiesAccount;
+import fancybank.account.Account;
 import fancybank.account.AccountType;
 import fancybank.io.StdinWrapper;
 import fancybank.util.Tuple;
@@ -166,16 +171,22 @@ public class FancyBank {
         return true;
     }
 
-    public void getReport(){
+    public Tuple getReport(){
+        List<Account> accounts = new ArrayList<Account>();
+        accounts.addAll(VARIABLE.savings);
+        accounts.addAll(VARIABLE.checkings);
+        accounts.addAll(VARIABLE.securites);
 
+        return new Tuple(VARIABLE.customerList,accounts);
     }
 
+    public void chargeInterest(){
 
-
-
-
-
-
+        for(SavingAccount sav:VARIABLE.savings)
+        {
+            sav.calculateInterest(LocalDate.now());
+        }
+    }
     /**
      * Find db folder path that contains game data
      * 

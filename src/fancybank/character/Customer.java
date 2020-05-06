@@ -14,6 +14,7 @@ import fancybank.account.SecuritiesAccount;
 import fancybank.io.StdinWrapper;
 import fancybank.misc.Transaction;
 import fancybank.util.Variable;
+import sun.swing.plaf.synth.Paint9Painter.PaintType;
 import fancybank.FancyBank;
 import fancybank.util.ErrorResponse;
 
@@ -28,8 +29,6 @@ public class Customer extends Character {
 
     public Customer(String name, String accountName, String pwd) {
         super(name, accountName, pwd, "C");
-        sinwrap = new StdinWrapper("");
-
         this.savings = new ArrayList<SavingAccount>();
         this.checkings = new ArrayList<CheckingAccount>();
         this.securites = new ArrayList<SecuritiesAccount>();
@@ -72,9 +71,15 @@ public class Customer extends Character {
 
 
     public void requestLoan(double money){
+<<<<<<< HEAD
         // Loan l = new Loan("USD", money, Fancybank.LOANINTEREST);
         // this.loans.add(l);
         // FancyBank.VARIABLE.updateAccount(this.getName(),l);
+=======
+        Loan l = new Loan("USD", money,FancyBank.LOANINTEREST);
+        this.loans.add(l);
+        FancyBank.VARIABLE.updateAccount(this.getName(),l);
+>>>>>>> f9b360eea81cb0444b4c4798b5785d8806cb6445
     }
 
     public void createSavingAccount() {
@@ -150,8 +155,8 @@ public class Customer extends Character {
         Transaction t1 = new Transaction(Transaction.WITHDRAW, money, currency, "TRANSFER TO");
         Transaction t2 = new Transaction(Transaction.DEPOSIT, money, currency, "TRANSFER FROM");
 
-        FancyBank.VARIABLE.updateTransaction(from.getId(), t1);
-        FancyBank.VARIABLE.updateTransaction(to.getId(), t2);
+        from.addTransaction(t1);
+        to.addTransaction(t2);
 
         if (from instanceof SavingAccount) {
             SavingAccount s = (SavingAccount) from;
@@ -191,12 +196,13 @@ public class Customer extends Character {
         {
             SecuritiesAccount sec = new SecuritiesAccount();
             sec.addBalance(money, currency,"TRANSFER",LocalDateTime.now());
-            sav.setBalance(money, currency);
-            Transaction t = new Transaction(Transaction.WITHDRAW, money, currency, String.format("SECURITIES ACCOUNT OPEN FEE %d",money));
-            sav.addTransaction(t);
+            sav.deductBalance(money, currency, "TRANSFER", LocalDateTime.now());
+            Transaction t1 = new Transaction(Transaction.WITHDRAW, money, currency, String.format("SECURITIES ACCOUNT OPEN FEE %d",money));
+            Transaction t2 = new Transaction(Transaction.DEPOSIT, money, currency, String.format("SECURITIES ACCOUNT OPEN FEE %d",money));
+            sav.addTransaction(t1);
+            sec.addTransaction(t2);
             this.securites.add(sec);
             FancyBank.VARIABLE.updateAccount(this.getName(), sec);
-            FancyBank.VARIABLE.updateTransaction(sav.getId(), t);
             return true;
         }
         error.res = "FAILED TO CREATE ACCOUNT";
@@ -211,6 +217,8 @@ public class Customer extends Character {
         FancyBank.VARIABLE.checkings.add(ck);
         this.checkings.add(ck);
     }
+
+    
 
 
    
@@ -235,10 +243,14 @@ public class Customer extends Character {
 
     }
 
+
+
     public String toString(){
         String str = this.getName()+" , "+this.getAccountName()+" , "+this.getPwd();
         return str;
         
     }
+
+
 
 }

@@ -103,6 +103,8 @@ SecuritiesAccount(double balance, LocalDate openedDate, LocalDate closedDate)// 
 
 **Retrieve Owned Assets/Stocks**: ```getOwnedStocks() -> Set<Entry<String, Double>>```
 
+**Retrieve net worth**: ```getNetWorthAssets() -> double```
+
 **Close Account (Override)**: ```closeAccount() -> Tuple<Set<Entry<Currency, Double>>, Set<Entry<String, Double>>>```
 
 ## [Loan](Loan.java)
