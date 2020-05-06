@@ -120,6 +120,7 @@ public class ManagerPanel extends BankPanel {
             userPanel.add(btnUser);
         }
 
+
         // stockPanel.removeAll();
         // for (Stock.StockInfo it : stockInfo) {
         //     JPanel p = new JPanel();

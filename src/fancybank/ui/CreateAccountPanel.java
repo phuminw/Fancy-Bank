@@ -20,7 +20,7 @@ public class CreateAccountPanel extends BankPanel {
 
         JPanel typePanel = new JPanel();
         typePanel.add(new JLabel("Account Type"));
-        cbxAccntTyp = new JComboBox<String>(new String[] { "Checking", "Saving", "Security" });
+        cbxAccntTyp = new JComboBox<String>(new String[] { "Checking", "Saving", "Securities" });
         typePanel.add(cbxAccntTyp);
         createAccountPanel.add(typePanel);
 
