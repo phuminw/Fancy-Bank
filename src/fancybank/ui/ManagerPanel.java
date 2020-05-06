@@ -137,7 +137,7 @@ public class ManagerPanel extends BankPanel {
 
     private class LogAllListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            // bankUI.showLogAll();
+            bankUI.showLogAll();
         }
     }
 

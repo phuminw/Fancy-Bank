@@ -20,14 +20,13 @@ public class BankUI extends JFrame {
         add(welcomePage);
         setTitle("Fancy Bank");
         setSize(600, 300);
-        setLocation(1500, 500);
+        setLocation(500, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
     }
 
     public void loginUser(final String customerName) {
-        // fancybank.userLogin(customerName);
-        // fancybank.logIn();
+        // fancybank.logIn(customerName);
         navigateToUserDetailPage();
     }
 
@@ -45,7 +44,7 @@ public class BankUI extends JFrame {
     }
 
     public void createUser(String userName) {
-        // fancybank.CreateOnlineAccount();
+        // fancybank.createOnlineAccount(userName);
     }
 
     public boolean tryCreateAccount(String accountType, int initialDeposit) {
@@ -85,9 +84,9 @@ public class BankUI extends JFrame {
         // fancybank.payInterest();
     }
 
-    // public void showLogAll() {
-    // new DlgLog(fancybank.getLogAll(), this);
-    // }
+    public void showLogAll() {
+        new Log("bank.getLogAll()", this);
+    }
 
     // public void showLogUpdate() {
     // new DlgLog(fancybank.getLogUpdate(), this);
@@ -173,8 +172,9 @@ public class BankUI extends JFrame {
         SwingUtilities.updateComponentTreeUI(this);
     }
 
-    // public static void main(String[] args) {
-    //     BankUI bankUI = new BankUI(fancybank);
-    // }
+    public static void main(String[] args) {
+        FancyBank fancybank = new FancyBank();
+        BankUI bankUI = new BankUI(fancybank);
+    }
 
 }

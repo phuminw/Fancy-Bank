@@ -30,29 +30,29 @@ public class SingleSecurityAccountComponent extends BankPanel {
 
         // accountID = Integer.parseInt(strID);
 
-        // add(new JLabel("Account ID: " + strID));
-        // add(new JLabel("Account Type: " + strType));
+        add(new JLabel("Account ID: " + "strID"));
+        add(new JLabel("Account Type: " + "strType"));
 
-        // add(new JLabel("Stock List"));
+        add(new JLabel("Stock List"));
         // for (StockAccount.AccountStockInfo it : accntStockInfo) {
-        // JPanel stockPanel = new JPanel();
-        // stockPanel.add(new StockInfoPanel(it.stockInfo));
-        // stockPanel.add(new JLabel("Number"));
-        // stockPanel.add(new JLabel("" + it.number));
-        // add(stockPanel);
+        JPanel stockPanel = new JPanel();
+        stockPanel.add(new SecurityInfoPanel());
+        stockPanel.add(new JLabel("Number"));
+        stockPanel.add(new JLabel("" + "it.number"));
+        add(stockPanel);
         // }
-        // add(new JLabel("Net Worth" + netWorth.type + " " + netWorth.amount));
+        add(new JLabel("Net Worth" + "netWorth.type" + " " + "netWorth.amount"));
 
         JPanel panel1 = new JPanel();
         panel1.add(new JLabel("Associated Account ID"));
         panel1.add(txtAccountID);
         add(panel1);
         JPanel panel2 = new JPanel();
-        panel2.add(new JLabel("Stock ID"));
+        panel2.add(new JLabel("Stock Name"));
         panel2.add(txtStockID);
         add(panel2);
         JPanel panel3 = new JPanel();
-        panel3.add(new JLabel("Number of Stock"));
+        panel3.add(new JLabel("Share of Stock"));
         panel3.add(txtStockNum);
         add(panel3);
 
