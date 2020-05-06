@@ -520,9 +520,7 @@ public class Variable {
 
                 
                 
-                if(!DISPLAY_TRANSACTION.containsKey(tokens[1]))
-                {
-                        DISPLAY_TRANSACTION.put(tokens[1],"");
+                
                         switch (type) {
                             case "CHECKINGACCOUNT":
                                 CheckingAccount c = new CheckingAccount();
@@ -601,7 +599,7 @@ public class Variable {
                                 System.err.println("Encountered undefined type");
                         }
 
-                    }
+                    
                 
                 line = br.readLine();
             }

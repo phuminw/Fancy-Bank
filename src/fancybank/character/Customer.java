@@ -23,7 +23,7 @@ import fancybank.market.StocksMarket;
 public class Customer extends Character {
     private ArrayList<SavingAccount> savings;
     private ArrayList<CheckingAccount> checkings;
-    private ArrayList<SecuritiesAccount> securites;
+    private ArrayList<SecuritiesAccount> securities;
     private ArrayList<Loan> loans;
     private ArrayList<Transaction> transactions;
 
@@ -33,7 +33,7 @@ public class Customer extends Character {
         super(name, accountName, pwd, "C");
         this.savings = new ArrayList<SavingAccount>();
         this.checkings = new ArrayList<CheckingAccount>();
-        this.securites = new ArrayList<SecuritiesAccount>();
+        this.securities = new ArrayList<SecuritiesAccount>();
         this.loans = new ArrayList<Loan>();
         this.transactions = new ArrayList<Transaction>();
     }
@@ -83,7 +83,7 @@ public class Customer extends Character {
     }
 
     public List getSecurities(){
-        return this.securites;
+        return this.securities;
     }
 
     public ArrayList getLoans()
@@ -266,7 +266,7 @@ public class Customer extends Character {
             Transaction t2 = new Transaction(Transaction.DEPOSIT, money, currency, String.format("SECURITIES ACCOUNT OPEN FEE %d",money));
             sav.addTransaction(t1);
             sec.addTransaction(t2);
-            this.securites.add(sec);
+            this.securities.add(sec);
             FancyBank.VARIABLE.updateAccount(this.getAccountName(), sec);
             Transaction t = new Transaction(Transaction.FEE, FancyBank.OPENFEE, "USD", String.format("OPEN FEE %d", FancyBank.OPENFEE));
             FancyBank.VARIABLE.updateTransaction(sav.getId(),t);
@@ -342,7 +342,7 @@ public class Customer extends Character {
             }
         }
 
-        for(SecuritiesAccount sav:this.securites)
+        for(SecuritiesAccount sav:this.securities)
         {
             List lst = sav.getTransactions("USD");
             lst.addAll(sav.getTransactions("CNY"));
@@ -370,7 +370,7 @@ public class Customer extends Character {
     }
 
     public StocksMarket getStock(){
-        return this.securites.get(0).getMarket();
+        return this.securities.get(0).getMarket();
 
 
     }
