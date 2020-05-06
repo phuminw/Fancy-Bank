@@ -150,8 +150,10 @@ public class Customer extends Character {
                 return false;
             }
             sav.deductBalance(money, currency, "withdraw", LocalDateTime.now());
+            FancyBank.VARIABLE.updateAccount(this.getAccountName(),sav);
             Transaction t = new Transaction(Transaction.WITHDRAW, money, currency, "WITHDRAW");
-            sav.addTransaction(t);
+            //sav.addTransaction(t);
+            FancyBank.VARIABLE.updateTransaction(sav.getId(),t);
         } else if (account instanceof CheckingAccount) {
             CheckingAccount sav = (CheckingAccount) account;
             if (sav.getBalance(currency) < money) {
@@ -159,8 +161,10 @@ public class Customer extends Character {
                 return false;
             }
             sav.deductBalance(money, currency, "withdraw", LocalDateTime.now());
+            FancyBank.VARIABLE.updateAccount(this.getAccountName(),sav);
             Transaction t = new Transaction(Transaction.WITHDRAW, money, currency, "WITHDRAW");
-            sav.addTransaction(t);
+            //sav.addTransaction(t);
+            FancyBank.VARIABLE.updateTransaction(sav.getId(),t);
 
         } else if (account instanceof CheckingAccount) {
             SecuritiesAccount sav = (SecuritiesAccount) account;
@@ -169,8 +173,10 @@ public class Customer extends Character {
                 return false;
             }
             sav.deductBalance(money, currency, "withdraw", LocalDateTime.now());
+            FancyBank.VARIABLE.updateAccount(this.getAccountName(),sav);
             Transaction t = new Transaction(Transaction.WITHDRAW, money, currency, "WITHDRAW");
-            sav.addTransaction(t);
+            //sav.addTransaction(t);
+            FancyBank.VARIABLE.updateTransaction(sav.getId(),t);
 
 
         }
