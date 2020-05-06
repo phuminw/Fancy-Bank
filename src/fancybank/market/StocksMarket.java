@@ -2,6 +2,8 @@ package fancybank.market;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Set;
+import java.util.Map.Entry;
 
 import fancybank.util.Tuple;
 
@@ -68,5 +70,9 @@ public class StocksMarket {
     public double priceLookup(String symbol) {
         symbol = symbol.toUpperCase();
         return (stocks.containsKey(symbol)) ? stocks.get(symbol).getFirst() : 0;
+    }
+
+    public Set<Entry<String, Tuple<Double, Double>>> getStocksInfo() {
+        return stocks.entrySet();
     }
 }
