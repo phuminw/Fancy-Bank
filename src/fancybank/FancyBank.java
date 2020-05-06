@@ -69,6 +69,7 @@ public class FancyBank {
     private String DBPATH;
     public static void main(String[] args) {
         FancyBank f = new FancyBank();
+       
     }
 
     public FancyBank(){
@@ -156,12 +157,16 @@ public class FancyBank {
         }
     }
 
+    // public Boolean checkAccountNameValid(String id){
+    //     if(VARIABLE.USERNAME_TO_CHAR.containsKey(id))
+    //     {
+    //         return false;
+    //     }
+    //     return true;
+    // }
+
     public Boolean checkAccountNameValid(String id){
-        if(VARIABLE.USERNAME_TO_CHAR.containsKey(id))
-        {
-            return false;
-        }
-        return true;
+        return VARIABLE.checkAccountNameValid(DBPATH+"character/", id);
     }
 
     public Tuple getReport(){
@@ -199,9 +204,35 @@ public class FancyBank {
         cus.deposit(currency, money, accountId);
     }
 
-    public void withdraw(String currency,double money, String accountId,ErrorResponse error){
+    public boolean withdraw(String currency,double money, String accountId,ErrorResponse error){
         Customer cus = (Customer)this.currentChar;
-        cus.withdraw(currency, money, accountId, error);
+        return cus.withdraw(currency, money, accountId, error);
+    }
+
+    public boolean transfer(String from, String to, String currency, double money, ErrorResponse error){
+        Customer cus  = (Customer) this.currentChar;
+        return cus.transfer(from, to, currency, money, error);
+    }
+
+    public void viewTransaction()
+    {
+        Customer cus  = (Customer) this.currentChar;
+        cus.viewTransaction();
+    }
+
+    public void viewSecuritiesBalance(){
+        Customer cus  = (Customer) this.currentChar;
+        cus.viewSecuritiesBalance();
+    }
+
+    public void viewSavingBalance(){
+        Customer cus  = (Customer) this.currentChar;
+        cus.viewSavingBalance();
+    }
+
+    public void viewCheckingBalance(){
+        Customer cus  = (Customer) this.currentChar;
+        cus.viewCheckingBalance();
     }
 
     /**

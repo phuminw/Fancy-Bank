@@ -106,7 +106,7 @@ public class Customer extends Character {
     }
 
     public boolean withdraw(String currency, double money, String accountId,ErrorResponse error) {
-        Account account = (Account)Variable.ID_TO_ACCOUNT.get(accountID);     
+        Account account = (Account)Variable.ID_TO_ACCOUNT.get(accountId);     
         if (account instanceof SavingAccount) {
             SavingAccount sav = (SavingAccount) account;
             if (sav.getBalance(currency) < money) {
@@ -142,7 +142,10 @@ public class Customer extends Character {
 
     }
 
-    public boolean transfer(Account to, Account from, String currency, double money,ErrorResponse error) {
+    public boolean transfer(String toId, String fromId, String currency, double money,ErrorResponse error) {
+        Account from = (Account)Variable.ID_TO_ACCOUNT.get(toId);  
+        Account to = (Account)Variable.ID_TO_ACCOUNT.get(fromId);  
+
         double total = from.getBalance(currency);
         if ((total - money) < money) {
             error.res = "INVALID AMOUNT.TRANSFER FAILED.";

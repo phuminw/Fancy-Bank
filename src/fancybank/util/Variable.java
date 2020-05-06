@@ -418,6 +418,34 @@ public class Variable {
     }
 
 
+    public boolean checkAccountNameValid(String path,String target) throws IOException{
+        File[] characterCsv = new File(path).listFiles();
+
+        for (File f : characterCsv) {
+            BufferedReader br = new BufferedReader(new FileReader(f));
+            br.readLine(); // skip header
+            String type = f.getName().substring(0, f.getName().indexOf('.')).toUpperCase();
+
+            String line = br.readLine();
+
+            while (line != null) {
+                // Name,accountName,pwd
+                String[] tokens = line.replace("\n", "").strip().split(",");
+                if(tokens[1].equals(target))
+                {
+                    return true;
+                }
+                
+                line = br.readLine();
+                //System.out.println(line);
+            }
+
+            br.close();
+        }
+
+    }
+
+
 
 
 
