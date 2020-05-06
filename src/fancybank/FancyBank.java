@@ -194,6 +194,16 @@ public class FancyBank {
         return VARIABLE.customerList;
     }
 
+    public void deposit(String currency,double money,String accountId){
+        Customer cus = (Customer)this.currentChar;
+        cus.deposit(currency, money, accountId);
+    }
+
+    public void withdraw(String currency,double money, String accountId,ErrorResponse error){
+        Customer cus = (Customer)this.currentChar;
+        cus.withdraw(currency, money, accountId, error);
+    }
+
     /**
      * Find db folder path that contains game data
      * 

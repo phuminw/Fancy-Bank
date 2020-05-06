@@ -71,15 +71,9 @@ public class Customer extends Character {
 
 
     public void requestLoan(double money){
-<<<<<<< HEAD
-        // Loan l = new Loan("USD", money, Fancybank.LOANINTEREST);
-        // this.loans.add(l);
-        // FancyBank.VARIABLE.updateAccount(this.getName(),l);
-=======
         Loan l = new Loan("USD", money,FancyBank.LOANINTEREST);
         this.loans.add(l);
         FancyBank.VARIABLE.updateAccount(this.getName(),l);
->>>>>>> f9b360eea81cb0444b4c4798b5785d8806cb6445
     }
 
     public void createSavingAccount() {
@@ -89,7 +83,8 @@ public class Customer extends Character {
         FancyBank.VARIABLE.updateAccount(this.getName(), sav);
     }
 
-    public void deposit(String currency, double money, Account account) {
+    public void deposit(String currency, double money, String accountID) {
+        Account account = Variable.ID_TO_ACCOUNT.get(accountID);
         if (account instanceof SavingAccount) {
             SavingAccount sav = (SavingAccount) account;
             sav.addBalance(money, currency, "deposit", LocalDateTime.now());
@@ -110,7 +105,8 @@ public class Customer extends Character {
         }
     }
 
-    public boolean withdraw(String currency, double money, Account account,ErrorResponse error) {
+    public boolean withdraw(String currency, double money, String accountId,ErrorResponse error) {
+        Account account = Variable.ID_TO_ACCOUNT.get(accountID);     
         if (account instanceof SavingAccount) {
             SavingAccount sav = (SavingAccount) account;
             if (sav.getBalance(currency) < money) {
