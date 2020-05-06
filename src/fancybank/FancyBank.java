@@ -121,6 +121,7 @@ public class FancyBank {
         
         Customer c = new Customer("", username,"");
         VARIABLE.updateCustomer(c);
+        this.currentChar = c;
         
     }
 
