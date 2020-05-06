@@ -186,14 +186,15 @@ public class SavingAccount extends Account {
      */
 
     public boolean addBalance(double amount, String currency, String description, LocalDateTime time) {
+        if (!FancyBank.DEBUG)
+            time = LocalDateTime.now();
+
+        if (intCheckPoint == null || intCheckPoint.isBefore(YearMonth.of(time.getYear(), time.getMonth())))
+            calculateInterest(time.toLocalDate()); // Need to update interest first.
+        
         if (FancyBank.DEBUG)
             return addTransaction(new Transaction(Transaction.DEPOSIT, null, amount, currency, description,
                     time.toEpochSecond(ZoneOffset.of(ZoneId.SHORT_IDS.get("EST")))));
-        
-        time = LocalDateTime.now();
-
-        if (intCheckPoint == null || intCheckPoint.isBefore(YearMonth.of(time.getYear(), time.getMonth())))
-        calculateInterest(time.toLocalDate()); // Need to update interest first.
         
         return addTransaction(new Transaction(Transaction.DEPOSIT, amount, currency, description));
     }
