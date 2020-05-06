@@ -294,33 +294,31 @@ public abstract class Account {
         switch (t.getOperation()) {
             case Transaction.INTEREST:
             case Transaction.DEPOSIT:
-                // if (t.getAmount() >= 0) {
+                if (t.getAmount() >= 0) {
                     balance.put(Currency.getInstance(t.getCurrency().toUpperCase()), balance.get(Currency.getInstance(t.getCurrency().toUpperCase()))+t.getAmount());
                     t.setFinalBalance(balance.get(Currency.getInstance(t.getCurrency().toUpperCase())));
                     transactions.add(t);
                     //FancyBank.VARIABLE.updateTransaction(id, t);
-                    //return true;
-                // }
-                // return false;
+                    return true;
+                }
+                return false;
             case Transaction.FEE:
             case Transaction.WITHDRAW:
-                // if (t.getAmount() >= 0) {
+                if (t.getAmount() >= 0) {
                     balance.put(Currency.getInstance(t.getCurrency().toUpperCase()), balance.get(Currency.getInstance(t.getCurrency().toUpperCase()))-t.getAmount());
                     t.setFinalBalance(balance.get(Currency.getInstance(t.getCurrency().toUpperCase())));
                     transactions.add(t);
                     //FancyBank.VARIABLE.updateTransaction(id, t);
-                    //return true;
-                // }
-                // return false;
+                    return true;
+                }
+                return false;
             default: 
                 t.setFinalBalance(balance.get(Currency.getInstance("USD"))); // Buy/sell asset, no affect on balance USD for this xact.
                 transactions.add(t);
                 //FancyBank.VARIABLE.updateTransaction(id, t);
-                //return true;
+                return true;
             
         }
-        //FancyBank.VARIABLE.updateTransaction(id, t);
-        return true;
     }
 
     /**
