@@ -16,7 +16,9 @@ import fancybank.misc.Transaction;
 import fancybank.util.Variable;
 import fancybank.FancyBank;
 import fancybank.util.ErrorResponse;
+import fancybank.util.Variable;
 import fancybank.market.StocksMarket;
+
 
 public class Customer extends Character {
     private ArrayList<SavingAccount> savings;
@@ -111,27 +113,30 @@ public class Customer extends Character {
         if (account instanceof SavingAccount) {
             SavingAccount sav = (SavingAccount) account;
             sav.addBalance(money, currency, "deposit",LocalDateTime.now());
-            //sav.addBalance(10.0, "USD", "deposit",LocalDateTime.now());
+            sav.addBalance(10.0, "USD", "deposit",LocalDateTime.now());
             //System.out.println(sav.getBalance("USD"));
             // System.out.println(money);
             FancyBank.VARIABLE.updateAccount(this.getAccountName(),sav);
             Transaction t = new Transaction(Transaction.DEPOSIT, money, currency, "DEPOSIT");
+            FancyBank.VARIABLE.updateTransaction(sav.getId(),t);
             //sav.addTransaction(t);
         } else if (account instanceof CheckingAccount) {
             CheckingAccount sav = (CheckingAccount) account;
             sav.addBalance(money, currency, "deposit", LocalDateTime.now());
             FancyBank.VARIABLE.updateAccount(this.getAccountName(),sav);
-            //Transaction t = new Transaction(Transaction.DEPOSIT, money, currency, "DEPOSIT");
+            Transaction t = new Transaction(Transaction.DEPOSIT, money, currency, "DEPOSIT");
             //sav.addTransaction(t);
             //FancyBank.VARIABLE.updateTransation(t);
+            FancyBank.VARIABLE.updateTransaction(sav.getId(),t);
 
         } else if (account instanceof SecuritiesAccount) {
             SecuritiesAccount sav = (SecuritiesAccount) account;
             sav.addBalance(money, currency, "deposit", LocalDateTime.now());
             FancyBank.VARIABLE.updateAccount(this.getAccountName(),sav);
-            //Transaction t = new Transaction(Transaction.DEPOSIT, money, currency, "DEPOSIT");
+            Transaction t = new Transaction(Transaction.DEPOSIT, money, currency, "DEPOSIT");
             //sav.addTransaction(t);
             //FancyBank.VARIABLE.updateTransation(t);
+            FancyBank.VARIABLE.updateTransaction(sav.getId(),t);
 
         }
     }

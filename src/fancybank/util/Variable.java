@@ -234,7 +234,7 @@ public class Variable {
 
     public void updateTransaction(int accountId,Transaction t)
     {
-        System.out.println("whyyyy");
+        //System.out.println("whyyyy");
         String[] record = new String[]{Integer.toString(accountId),t.getOperation(),t.getAssetName(), Double.toString(t.getAmount()),t.getCurrency(),t.getDescription()};
         try {
             updataData(record, "transaction");
