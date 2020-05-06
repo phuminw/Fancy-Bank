@@ -102,7 +102,15 @@ public class FancyBank {
     public void logIn(String userName){
 
         Character c = (Character)VARIABLE.USERNAME_TO_CHAR.get(userName);
-        this.currentChar = c;
+        if(c instanceof Customer)
+        {
+            this.currentChar = (Customer) c;
+        }
+        else if(c instanceof Manager)
+        {
+            this.currentChar = (Manager) c;
+        }
+        
         // if(checkAccountValid(userName,password))
         // {
         //     Character c = (Character)VARIABLE.USERNAME_TO_CHAR.get(userName);
