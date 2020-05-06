@@ -187,6 +187,20 @@ public class FancyBank {
             sav.calculateInterest(LocalDate.now());
         }
     }
+
+    public ArrayList getAccounts()
+    {
+        List<Account> accounts = new ArrayList<Account>();
+        accounts.addAll(VARIABLE.savings);
+        accounts.addAll(VARIABLE.checkings);
+        accounts.addAll(VARIABLE.securites);
+        return accounts;
+    }
+
+    public ArrayList getCustomers(){
+        return VARIABLE.customerList;
+    }
+    
     /**
      * Find db folder path that contains game data
      * 
