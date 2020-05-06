@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class SingleNormalAccountComponent extends BankPanel {
-    private int accountID;
+    private String accountID;
     private AmountTextField saveInputer;
     private AmountTextField withdrawInputer;
     private AmountTextField transactInputer;
@@ -20,7 +20,7 @@ public class SingleNormalAccountComponent extends BankPanel {
         // info.reset();
         // String strID = (String)info.getNextField();
         // String strType = (String)info.getNextField();
-        accountID = Integer.parseInt("123");
+        accountID = "";
 
         saveInputer = new AmountTextField(bankUI);
         withdrawInputer = new AmountTextField(bankUI);
@@ -61,31 +61,27 @@ public class SingleNormalAccountComponent extends BankPanel {
 
     private class SaveListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            // double amount = saveInputer.getAmount();
-            // if (amount <= 0) {
-            // new MessageWindow("You would like to input a number larger than 0!",
-            // dlgBank);
-            // return;
-            // }
-            // Money.Currency currency = saveInputer.getCurrency();
-            // // int id = Integer.parseInt(lblAccountID.getText());
-            // dlgBank.saveMoneyToAccount(new Money(currency, amount), accountID);
-            // dlgBank.switchUserPanel();
+            double amount = saveInputer.getAmount();
+            if (amount <= 0) {
+                new Message(bankUI, "You would like to input a number larger than 0!");
+                return;
+            }
+            String currency = saveInputer.getCurrency();
+            bankUI.depositMoney(currency, amount, accountID);
+            bankUI.navigateToUserDetailPage();
         }
     }
 
     private class WithdrawListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            // double amount = withdrawInputer.getAmount();
-            // if (amount <= 0) {
-            // new MessageWindow("You would like to input a number larger than 0!",
-            // dlgBank);
-            // return;
-            // }
-            // Money.Currency currency = withdrawInputer.getCurrency();
-            // // int id = Integer.parseInt(lblAccountID.getText());
-            // dlgBank.withdrawMoneyFromAccount(new Money(currency, amount), accountID);
-            // dlgBank.switchUserPanel();
+            double amount = withdrawInputer.getAmount();
+            if (amount <= 0) {
+                new Message(bankUI, "You would like to input a number larger than 0!");
+            return;
+            }
+            String currency = withdrawInputer.getCurrency();
+            bankUI.withdrawMoney(currency, amount, accountID);
+            bankUI.navigateToUserDetailPage();
         }
     }
 

@@ -120,7 +120,8 @@ public class FancyBank {
     }
 
     public void createOnlineAccount(String username){
-        
+        System.out.println("Manager Login");
+        System.out.println(username);
         Customer c = new Customer("", username,"");
         VARIABLE.updateCustomer(c);
         this.currentChar = c;

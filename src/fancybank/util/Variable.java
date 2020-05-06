@@ -156,7 +156,6 @@ public class Variable {
             record = new String[]{username,Integer.toString(account.getId()),"USD",Double.toString(account.getBalance("USD")),Double.toString(l.getInterestRate())};
             try {
                 updataData(record, "loan");
-                
             }  catch (IOException e) {
                 //TODO: handle exception
                 e.printStackTrace();
@@ -356,6 +355,7 @@ public class Variable {
                             SecuritiesAccount se = new SecuritiesAccount();
                             //set up the account
                             se.setID(Integer.parseInt(tokens[1]));
+
                             se.setBalance(Double.parseDouble(tokens[3]), tokens[2]);
                             se.setBalance(Double.parseDouble(tokens[3]), tokens[4]);
                             se.setBalance(Double.parseDouble(tokens[7]), tokens[6]);
