@@ -50,9 +50,57 @@ Stocks market is a concrete singleton class. There MUST exist only one stocks ma
 
 ## UI
 
+### [BankUI](src/fancybank/ui/BankUI.java)
+
+BankUI can is the main UI page of this application. It allows the users to switch between different pages and also provides different functions for users. It is the main class that stores the instance of fancybank and it can call all the methods from this class.
+
+### [AmountTextField](src/fancybank/ui/AmountTextField.java)
+
+The user in this application can enter both curreny and amount in order to continue the transaction. Thus, this component can be reused in many places. It contains two parts of input (currency and amount).
+
+### [BankPanel](src/fancybank/ui/BankPanel.java)
+This class is the superclass of all other panel classes. It provides the referece to the instance of bankUI.
+
+### [CreateAccountPanel](src/fancybank/ui/CreateAccountPanel.java)
+This class provides with users about functions of creating new accounts. For example, users can create checking, saving, and securities accounts.
+
+### [Log](src/fancybank/ui/Log.java)
+This class can pop a separate window which used to display all the transactions happened under this user or manager.
+
+### [ManagerPanel](src/fancybank/ui/ManagerPanel.java)
+This is the main panel class for manager page. It allows manager to see all accounts, users, pay intersts and also log all details.
+
+### [Message](src/fancybank/ui/Message.java)
+This is a sparate window allows to present the errors or message for users.
+
+### [NormalAccountInfoPanel](src/fancybank/ui/NormalAccountInfoPanel.java)
+This is the account panel that displays all details of someone's account. This is a reusable component (checking and saving) so this is a single component.
+
+### [SecurityAccountInfoPanel](src/fancybank/ui/SecurityAccountInfoPanel.java)
+This is the account panel that displays all details of someone's account. This is a reusable component (security) so this is a single component.
+
+### [SingleNormalAccountComponent](src/fancybank/ui/SingleNormalAccountComponent.java)
+This is part of NormalAccountInfoPanel component. It is the single component of each account. It can be used. It can display all necessary details of an account.
+
+### [SingleSecurityAccountComponent](src/fancybank/ui/SingleSecurityAccountComponent.java)
+This is part of SecurityAccountInfoPanel component. It is the single component of each account. It can be used. It can display all necessary details of an account.
+
+### [UserDetailPanel](src/fancybank/ui/UserDetailPanel.java)
+This is the main java panel that can provides the users with all the actiions they can perform such as creat new account, withdraw cash and deposit money. 
+
+### [UserLoginPanel](src/fancybank/ui/UserLoginPanel.java)
+This is the enter panel that allows the users to create or login the account.
+
+### [UserUI](src/fancybank/ui/UserUI.java)
+This is a reusable component for manager. This is a button that the manager can click to see different user's account details.
+
+### [WelcomePage](src/fancybank/ui/WelcomePage.java)
+This is the init page of the whole application. In this page, different role of users can choose to login as customer or login as manager.
+
 ## Utilities
 
 ### [Error Response](src/fancybank/util/ErrorResponse.java)
+This is a wrapper class for String in java. It can be passed as reference to other methods. It can be easily edited and the fronend people can easily process the error message.
 
 ### [Tuple](src/fancybank/util/Tuple.java)
 
