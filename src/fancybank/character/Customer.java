@@ -255,7 +255,7 @@ public class Customer extends Character {
     public boolean createSecuritesAccount(String savId, String currency, double money,ErrorResponse error)
             throws NumberFormatException, IOException {
         //SavingAccount sav = (SavingAccount)FancyBank.VARIABLE.ID_TO_ACCOUNT.get(savId);
-        SavingAccount sav = this.savings.get(0);
+        SavingAccount sav = this.savings.get(this.savings.size()-1);
         if(this.savings.size()<=0)
         {
             error.res = "NOT ELIGIBLE FOR SECURITIES ACCOUNT.";
@@ -271,7 +271,9 @@ public class Customer extends Character {
             Transaction t1 = new Transaction(Transaction.WITHDRAW, money, currency, String.format("SECURITIES ACCOUNT OPEN FEE %d",money));
             Transaction t2 = new Transaction(Transaction.DEPOSIT, money, currency, String.format("SECURITIES ACCOUNT OPEN FEE %d",money));
             sav.addTransaction(t1);
+            FancyBank.VARIABLE.updateTransaction(sav.getId(),t1);
             sec.addTransaction(t2);
+            FancyBank.VARIABLE.updateTransaction(sec.getId(),t2);
             this.securities.add(sec);
             FancyBank.VARIABLE.updateAccount(this.getAccountName(), sec);
             Transaction t = new Transaction(Transaction.FEE, FancyBank.OPENFEE, "USD", String.format("OPEN FEE %d", FancyBank.OPENFEE));
