@@ -30,8 +30,7 @@ public class UserLoginPanel extends BankPanel {
             String userName = userNameTextField.getText();
             if (userName.length() > 20) {
                 new Message(bankUI, "The Username must be less than 20 characters!");
-            } else if (true) {
-                // bankUI.userExists(userName)
+            } else if (bankUI.doesUserExist(userName)) {
                 bankUI.loginUser(userName);
             } else {
                 new Message(bankUI, "No such user exists!");
@@ -43,17 +42,11 @@ public class UserLoginPanel extends BankPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             String userName = userNameTextField.getText();
-                bankUI.loginUser(userName);
             if (userName.length() > 20) {
                 new Message(bankUI, "The Username must be less than 20 characters!");
-            }
-            else if (
-                true
-                // bankUI.userExists(userName)
-                ) {
-            new Message(bankUI,"Username has been used! Please change it");
-            }
-            else {
+            } else if (bankUI.doesUserExist(userName)) {
+                new Message(bankUI,"Username has been used! Please change it");
+            } else {
                 bankUI.createUser(userName);
                 bankUI.loginUser(userName);
             }

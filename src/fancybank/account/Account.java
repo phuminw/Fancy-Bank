@@ -283,7 +283,7 @@ public abstract class Account {
 
         if (transactions == null || (transactions.size() != 0 && transactions.get(transactions.size()-1).isAfter(t)))
             return false; // Attempted to add out-of-order transaction (edit history)
-        if (t.getTime().toLocalDate().isAfter(closedDate))
+        if (closedDate != null && t.getTime().toLocalDate().isAfter(closedDate))
             return false; // xact after account was closed
         if (!t.getCurrency().equals("N/A") && !balance.containsKey(Currency.getInstance(t.getCurrency().toUpperCase())))
             return false; // Invalid currency

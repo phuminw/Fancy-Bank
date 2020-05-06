@@ -12,7 +12,7 @@ public class AmountTextField extends BankPanel {
         add(txtAmount);
 
         add(new JLabel("Currency Type"));
-        cbxCurrencyType = new JComboBox<String>(new String[] { "RMB", "USD", "EUR", "JPY", "GBP", "CHF", });
+        cbxCurrencyType = new JComboBox<String>(new String[] { "RMB", "USD", "EUR" });
         add(cbxCurrencyType);
     }
 
@@ -26,7 +26,7 @@ public class AmountTextField extends BankPanel {
         return amount;
     }
 
-    // public Money.Currency getCurrency() {
-    // return (Money.Currency) cbxCurrencyType.getSelectedItem();
-    // }
+    public String getCurrency() {
+        return cbxCurrencyType.getSelectedItem().toString();
+    }
 }
