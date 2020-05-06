@@ -638,6 +638,7 @@ public class Variable {
                     
                 }
                 a.addTransaction(t);
+                this.transactions.add(t);
                 line = br.readLine();
                 //System.out.println(line);
             }

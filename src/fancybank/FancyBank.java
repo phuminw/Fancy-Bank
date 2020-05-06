@@ -72,11 +72,11 @@ public class FancyBank {
     public static void main(String[] args) {
         FancyBank f = new FancyBank();
 
-        // Customer c = (Customer)VARIABLE.USERNAME_TO_CHAR.get("jessy");
-        // c.deposit("USD", 10.0, Integer.toString(105272405));
+        Customer c = (Customer)VARIABLE.USERNAME_TO_CHAR.get("jessy");
+        //c.deposit("USD", 10.0, Integer.toString(105272405));
         // // c.deposit("USD", 100.0, Integer.toString(105272405));
         // //c.withdraw("USD", 1.0, Integer.toString(105272405));
-        // f.createCheckingAccount("USD",50.0);
+        //f.createCheckingAccount("USD",50.0);
 
         // System.out.println(c.getSaving());
 
@@ -289,6 +289,18 @@ public class FancyBank {
         {
             Customer cus = (Customer) this.currentChar;
          return cus.viewTransaction();
+        }
+        else if(this.currentChar instanceof Manager)
+        {
+            String ret = "";
+            for(Transaction t:FancyBank.VARIABLE.transactions)
+            {
+                ret = ret+t.toString();
+                ret = ret + "/n";
+            }
+            //System.out.println(ret);
+            return ret;
+            
         }
         return "";
 
