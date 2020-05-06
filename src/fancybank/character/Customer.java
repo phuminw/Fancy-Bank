@@ -72,9 +72,9 @@ public class Customer extends Character {
 
 
     public void requestLoan(double money){
-        Loan l = new Loan("USD", money, Fancybank.LOANINTEREST);
-        this.loans.add(l);
-        FancyBank.VARIABLE.updateAccount(this.getName(),l);
+        // Loan l = new Loan("USD", money, Fancybank.LOANINTEREST);
+        // this.loans.add(l);
+        // FancyBank.VARIABLE.updateAccount(this.getName(),l);
     }
 
     public void createSavingAccount() {

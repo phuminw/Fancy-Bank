@@ -153,14 +153,14 @@ public class Variable {
         {
             Loan l = (Loan) account;
 
-            record = new String[]{username,Integer.toString(account.getId()),"USD",Double.toString(account.getBalance("USD")),Double.toString(l.getInterestRate)};
-            try {
-                updataData(record, "loan");
+            // record = new String[]{username,Integer.toString(account.getId()),"USD",Double.toString(account.getBalance("USD")),Double.toString(l.getInterestRate)};
+            // try {
+            //     updataData(record, "loan");
                 
-            }  catch (IOException e) {
-                //TODO: handle exception
-                e.printStackTrace();
-            }
+            // }  catch (IOException e) {
+            //     //TODO: handle exception
+            //     e.printStackTrace();
+            // }
         }
 
 
@@ -339,7 +339,7 @@ public class Variable {
                                 Loan l = new Loan(tokens[2],Double.parseDouble(tokens[3]),Double.parseDouble(tokens[4]));
     
                                 //set up the account
-                                s.setID(Integer.parseInt(tokens[1]));
+                                // s.setID(Integer.parseInt(tokens[1]));
                                 // s.setBalance(Double.parseDouble(tokens[3]), tokens[2]);
                                 // s.setBalance(Double.parseDouble(tokens[3]), tokens[4]);
                                 // s.setBalance(Double.parseDouble(tokens[7]), tokens[6]);
@@ -347,7 +347,7 @@ public class Variable {
                                 Customer loan_c = (Customer)USERNAME_TO_CHAR.get(tokens[0]);
     
                                 loan_c.getChecking().add(l);
-                                loans.add(l);
+                                // loans.add(l);
                                 ID_TO_ACCOUNT.put(tokens[1], l);
                                 //ID_TO_ACCOUNT.put(new Tuple(tokens[0],tokens[1]), s);
                                 break;
