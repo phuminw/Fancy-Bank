@@ -337,7 +337,7 @@ public class FancyBank {
         return "";
     }
 
-    public List getUserToAccount(String username)
+    public List getUserToAccountSaving(String username)
     {
         Character c = (Character)FancyBank.VARIABLE.USERNAME_TO_CHAR.get(username);
         if(c instanceof Customer)
@@ -345,7 +345,43 @@ public class FancyBank {
             Customer cus = (Customer) c;
             List lst = new ArrayList<Account>();
             lst.addAll(cus.getSaving());
+            //lst.addAll(cus.getChecking());
+            //lst.addAll(cus.getSecurities());
+
+            return lst;
+
+        }
+        return null;
+        
+    }
+
+    public List getUserToAccountChecking(String username)
+    {
+        Character c = (Character)FancyBank.VARIABLE.USERNAME_TO_CHAR.get(username);
+        if(c instanceof Customer)
+        {
+            Customer cus = (Customer) c;
+            List lst = new ArrayList<Account>();
+            //lst.addAll(cus.getSaving());
             lst.addAll(cus.getChecking());
+            //lst.addAll(cus.getSecurities());
+
+            return lst;
+
+        }
+        return null;
+        
+    }
+
+    public List getUserToAccountSecurities(String username)
+    {
+        Character c = (Character)FancyBank.VARIABLE.USERNAME_TO_CHAR.get(username);
+        if(c instanceof Customer)
+        {
+            Customer cus = (Customer) c;
+            List lst = new ArrayList<Account>();
+            //lst.addAll(cus.getSaving());
+            //lst.addAll(cus.getChecking());
             lst.addAll(cus.getSecurities());
 
             return lst;
