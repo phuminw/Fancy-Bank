@@ -113,7 +113,7 @@ public class Customer extends Character {
         if (account instanceof SavingAccount) {
             SavingAccount sav = (SavingAccount) account;
             sav.addBalance(money, currency, "deposit",LocalDateTime.now());
-            sav.addBalance(10.0, "USD", "deposit",LocalDateTime.now());
+            //sav.addBalance(10.0, "USD", "deposit",LocalDateTime.now());
             //System.out.println(sav.getBalance("USD"));
             // System.out.println(money);
             FancyBank.VARIABLE.updateAccount(this.getAccountName(),sav);

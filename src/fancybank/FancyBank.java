@@ -36,7 +36,7 @@ import fancybank.market.StocksMarket;
  */
 public class FancyBank {
     /* DEBUG flag: Enable more options and settings for debugging */
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
 
     /* Account open and close fee (USD) */
     public static final int OPENFEE = 2;
@@ -72,6 +72,8 @@ public class FancyBank {
     public static void main(String[] args) {
         FancyBank f = new FancyBank();
         Customer c = (Customer)VARIABLE.USERNAME_TO_CHAR.get("jessy");
+
+
         c.deposit("USD", 10.0, Integer.toString(105272405));
         // c.deposit("USD", 100.0, Integer.toString(105272405));
         //c.withdraw("USD", 1.0, Integer.toString(105272405));
