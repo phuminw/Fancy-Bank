@@ -71,7 +71,7 @@ public class FancyBank {
     private String DBPATH;
     public static void main(String[] args) {
         FancyBank f = new FancyBank();
-        
+
         // Customer c = (Customer)VARIABLE.USERNAME_TO_CHAR.get("jessy");
         // c.deposit("USD", 10.0, Integer.toString(105272405));
         // // c.deposit("USD", 100.0, Integer.toString(105272405));
@@ -334,6 +334,46 @@ public class FancyBank {
 
     }
 
+    public List getSaving()
+    {
+        if(this.currentChar instanceof Customer)
+        {
+            Customer cus = (Customer) this.currentChar;
+            return cus.getSaving();
+        }
+        return null;
+    }
+
+    public List getChecking()
+    {
+        if(this.currentChar instanceof Customer)
+        {
+            Customer cus = (Customer) this.currentChar;
+            return cus.getChecking();
+        }
+        return null;
+
+    }
+
+    public List getSecurities()
+    {
+        if(this.currentChar instanceof Customer)
+        {
+            Customer cus = (Customer) this.currentChar;
+            return cus.getSecurities();
+        }
+        return null;
+    }
+
+    public String getUserName()
+    {
+        if(this.currentChar instanceof Customer)
+        {
+            Customer cus = (Customer) this.currentChar;
+            return cus.getAccountName();
+        }
+        return "";
+    }
     /**
      * Find db folder path that contains game data
      * 
