@@ -240,6 +240,11 @@ public class Customer extends Character {
             throws NumberFormatException, IOException {
         //SavingAccount sav = (SavingAccount)FancyBank.VARIABLE.ID_TO_ACCOUNT.get(savId);
         SavingAccount sav = this.savings.get(0);
+        if(this.savings.size()<=0)
+        {
+            error.res = "NOT ELIGIBLE FOR SECURITIES ACCOUNT.";
+            return false;
+        }
         double total = sav.getBalance(currency);
         double rest = total-money;
         if(rest>=2500)
