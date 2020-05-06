@@ -1,7 +1,16 @@
 # Fancy Bank
 
-## Object Design
+## Accounts
 
-- Saving Account
-- Checking Account
-- Securities Account
+## Characters
+
+## IO
+
+## Market
+
+## UI
+
+## Utilities
+
+## Miscellaneous
+
