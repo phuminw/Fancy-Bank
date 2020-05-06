@@ -1,5 +1,6 @@
 package fancybank.ui;
 
+import fancybank.account.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -15,19 +16,16 @@ public class SingleNormalAccountComponent extends BankPanel {
         super(bankUI);
     }
 
-    public SingleNormalAccountComponent(BankUI bankUI, String info) {
+    public SingleNormalAccountComponent(BankUI bankUI, Account account) {
         super(bankUI);
-        // info.reset();
-        // String strID = (String)info.getNextField();
-        // String strType = (String)info.getNextField();
-        accountID = "";
+        accountID = account.getId() + "";
 
         saveInputer = new AmountTextField(bankUI);
         withdrawInputer = new AmountTextField(bankUI);
         transactInputer = new AmountTextField(bankUI);
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        add(new NormalAccountInfoPanel());
+        add(new NormalAccountInfoPanel(account));
 
         JPanel savePanel = new JPanel();
         savePanel.add(saveInputer);
@@ -44,19 +42,19 @@ public class SingleNormalAccountComponent extends BankPanel {
         add(withdrawPanel);
 
         // if (strType.equals(CheckingAccount.class.getSimpleName())) {
-        // JPanel transactPanel = new JPanel();
-        // transactPanel.add(transactInputer);
-        // JButton btnTransact = new JButton("Transact");
-        // btnTransact.addActionListener(new TransactListener());
-        // transactPanel.add(new JLabel("Transact Account ID"));
-        // transactPanel.add(txtAccountID);
-        // transactPanel.add(btnTransact);
-        // add(transactPanel);
+            JPanel transactPanel = new JPanel();
+            transactPanel.add(transactInputer);
+            JButton btnTransact = new JButton("Transact");
+            btnTransact.addActionListener(new TransactListener());
+            transactPanel.add(new JLabel("Transact Account ID"));
+            transactPanel.add(txtAccountID);
+            transactPanel.add(btnTransact);
+            add(transactPanel);
         // }
 
-        JButton btnDestroy = new JButton("Destroy");
-        btnDestroy.addActionListener(new DestroyListener());
-        add(btnDestroy);
+        // JButton btnDestroy = new JButton("Destroy");
+        // btnDestroy.addActionListener(new DestroyListener());
+        // add(btnDestroy);
     }
 
     private class SaveListener implements ActionListener {
@@ -67,6 +65,10 @@ public class SingleNormalAccountComponent extends BankPanel {
                 return;
             }
             String currency = saveInputer.getCurrency();
+            System.out.println(currency);
+            System.out.println(amount);
+            System.out.println(accountID);
+            
             bankUI.depositMoney(currency, amount, accountID);
             bankUI.navigateToUserDetailPage();
         }
@@ -87,24 +89,23 @@ public class SingleNormalAccountComponent extends BankPanel {
 
     private class TransactListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            // double amount = transactInputer.getAmount();
-            // if (amount <= 0) {
-            // new MessageWindow("You would like to input a number larger than 0!",
-            // dlgBank);
-            // return;
-            // }
-            // Money.Currency currency = transactInputer.getCurrency();
-            // // int fromID = Integer.parseInt(lblAccountID.getText());
-            // int fromID = accountID;
-            // int toID;
-            // try {
-            // toID = Integer.parseInt(txtAccountID.getText());
-            // } catch (NumberFormatException ex) {
-            // new MessageWindow("Please input valid number!", dlgBank);
-            // return;
-            // }
-            // dlgBank.transactMoney(new Money(currency, amount), fromID, toID);
-            // dlgBank.switchUserPanel();
+            double amount = transactInputer.getAmount();
+            if (amount <= 0) {
+                new Message(bankUI, "You would like to input a number larger than 0!");
+                return;
+            }
+            String currency = transactInputer.getCurrency();
+            String fromID = accountID;
+            String toID;
+            try {
+                toID = txtAccountID.getText();
+            } catch (NumberFormatException ex) {
+                new Message(bankUI, "Please input valid number!");
+                return;
+            }
+            
+            bankUI.transactMoney(currency, amount, fromID, toID);
+            bankUI.navigateToUserDetailPage();
         }
     }
 

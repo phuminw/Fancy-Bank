@@ -23,6 +23,7 @@ import fancybank.FancyBank;
 import fancybank.util.ErrorResponse;
 import fancybank.util.Variable;
 import fancybank.market.StocksMarket;
+import fancybank.util.Tuple;
 
 
 public class Customer extends Character {

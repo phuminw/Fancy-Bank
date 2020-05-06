@@ -12,7 +12,7 @@ public class AmountTextField extends BankPanel {
         add(txtAmount);
 
         add(new JLabel("Currency Type"));
-        cbxCurrencyType = new JComboBox<String>(new String[] { "RMB", "USD", "EUR" });
+        cbxCurrencyType = new JComboBox<String>(new String[] { "CNY", "USD", "EUR" });
         add(cbxCurrencyType);
     }
 

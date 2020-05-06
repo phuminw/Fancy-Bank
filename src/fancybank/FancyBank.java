@@ -5,8 +5,6 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.FileReader;
 
-
-
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -15,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.ErrorManager;
+import java.util.Set;
 
 // import javax.lang.model.util.ElementScanner14;
 
@@ -31,6 +30,8 @@ import fancybank.character.Character;
 import fancybank.util.Variable;
 import fancybank.util.ErrorResponse;
 import fancybank.market.StocksMarket;
+import java.util.Map.Entry;
+
 /**
  * Main program for the bank
  */
@@ -69,23 +70,12 @@ public class FancyBank {
 
     //database path
     private String DBPATH;
-    public static void main(String[] args) {
-        FancyBank f = new FancyBank();
-        //System.out.println(f.VARIABLE.ID_TO_ACCOUNT);
-        
-
-        Customer c = (Customer)VARIABLE.USERNAME_TO_CHAR.get("jessy");
-        c.createCheckingAccount("USD",50.0);
-        //System.out.println(c.viewTransaction());
-        //c.deposit("USD", 10.0, Integer.toString(105272405));
-        // // c.deposit("USD", 100.0, Integer.toString(105272405));
-        // //c.withdraw("USD", 1.0, Integer.toString(105272405));
-        //f.createCheckingAccount("USD",50.0);
-
-        // System.out.println(c.getSaving());
-
-       
-    }
+    
+    // public static void main(String[] args) {
+    //     FancyBank f = new FancyBank();
+    //     Customer c = (Customer)VARIABLE.USERNAME_TO_CHAR.get("jessy");
+    //     System.out.println(c.viewTransaction());
+    // }
 
     public FancyBank(){
         try {
@@ -141,14 +131,9 @@ public class FancyBank {
     }
 
     public boolean createCheckingAccount(String currency, double money){
-        if(this.currentChar instanceof Customer)
-        {
-            Customer cus = (Customer)this.currentChar;
-            cus.createCheckingAccount(currency,money);
-            return true;
-
-        }
-        return false;
+        Customer cus = (Customer)this.currentChar;
+        cus.createCheckingAccount(currency,money);
+        return true;
     }
 
     public boolean createSavingAccount(String currency, double money){
@@ -257,7 +242,7 @@ public class FancyBank {
 
     public List getCustomers(){
         return VARIABLE.customerList;
-    }
+    } 
 
     public void deposit(String currency,double money,String accountId){
         if(this.currentChar instanceof Customer)

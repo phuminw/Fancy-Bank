@@ -1,10 +1,11 @@
 package fancybank.ui;
 
+import fancybank.account.*;
 import javax.swing.*;
 import java.awt.*;
 
 public class NormalAccountInfoPanel extends JPanel {
-    public NormalAccountInfoPanel() {
+    public NormalAccountInfoPanel(Account account) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         // info.reset();
@@ -19,22 +20,25 @@ public class NormalAccountInfoPanel extends JPanel {
 
         basicPanel.add(new JLabel("Account Type: "));
         basicPanel.add(new JLabel("Account ID: "));
-        basicPanel.add(new JLabel("Account Interest: "));
+        // basicPanel.add(new JLabel("Account Interest: "));
 
-        // basicPanel.add(new JLabel(strType));
-        // basicPanel.add(new JLabel(strID));
+        basicPanel.add(new JLabel(account.getClass().getSimpleName() + ""));
+        basicPanel.add(new JLabel(account.getId()+ ""));
         // basicPanel.add(new JLabel(strInterestRate));
 
         add(basicPanel);
 
         JPanel moneyPanel = new JPanel();
-        // moneyPanel.setLayout(new GridLayout(2, depositInfo.moneyInfo.size(), 10, 5));
-        // for (Money.MoneyInfo it : depositInfo.moneyInfo) {
-        // moneyPanel.add(new JLabel(it.type));
-        // }
-        // for (Money.MoneyInfo it : depositInfo.moneyInfo) {
-        // moneyPanel.add(new JLabel(it.amount));
-        // }
+        moneyPanel.setLayout(new GridLayout(2, 2, 10, 5));
+        moneyPanel.add(new JLabel("Account Balance CNY: "));
+        moneyPanel.add(new JLabel(account.getBalance("CNY") + ""));
+
+        moneyPanel.add(new JLabel("Account Balance USD: "));
+        moneyPanel.add(new JLabel(account.getBalance("USD") + ""));
+
+        moneyPanel.add(new JLabel("Account Balance EUR: "));
+        moneyPanel.add(new JLabel(account.getBalance("EUR") + ""));
+
         add(moneyPanel);
     }
 }

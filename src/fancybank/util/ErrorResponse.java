@@ -1,13 +1,13 @@
 package fancybank.util;
 
 public class ErrorResponse {
-    public String res = new String();
+    public String res = "";
 
-    public ErrorResponse(final String res) {
+    public ErrorResponse(String res) {
         this.res = res;
-
     }
 
     public ErrorResponse() {
     }
+
 }

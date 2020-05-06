@@ -1,5 +1,8 @@
 package fancybank.ui;
 
+import fancybank.character.*;
+import java.util.List;
+
 import javax.swing.*;
 import java.awt.event.*;
 
@@ -51,37 +54,37 @@ public class ManagerPanel extends BankPanel {
         btnPanel.add(btnLogout);
         ctrlPanel.add(btnPanel);
 
-        JPanel transFeePanel = new JPanel();
-        transFeePanel.add(new JLabel("Set Transaction Fee"));
-        transFeePanel.add(transFeeInputer);
-        JButton btnSetTransFee = new JButton("Confirm");
-        btnSetTransFee.addActionListener(new SetTransFeeListener());
-        transFeePanel.add(btnSetTransFee);
-        ctrlPanel.add(transFeePanel);
+        // JPanel transFeePanel = new JPanel();
+        // transFeePanel.add(new JLabel("Set Transaction Fee"));
+        // transFeePanel.add(transFeeInputer);
+        // JButton btnSetTransFee = new JButton("Confirm");
+        // btnSetTransFee.addActionListener(new SetTransFeeListener());
+        // transFeePanel.add(btnSetTransFee);
+        // ctrlPanel.add(transFeePanel);
 
-        JPanel highBalancePanel = new JPanel();
-        highBalancePanel.add(new JLabel("Set High Balance"));
-        highBalancePanel.add(highBalanceInputer);
-        JButton btnSetHighBalance = new JButton("Confirm");
-        btnSetHighBalance.addActionListener(new SetHighBalanceListener());
-        highBalancePanel.add(btnSetHighBalance);
-        ctrlPanel.add(highBalancePanel);
+        // JPanel highBalancePanel = new JPanel();
+        // highBalancePanel.add(new JLabel("Set High Balance"));
+        // highBalancePanel.add(highBalanceInputer);
+        // JButton btnSetHighBalance = new JButton("Confirm");
+        // btnSetHighBalance.addActionListener(new SetHighBalanceListener());
+        // highBalancePanel.add(btnSetHighBalance);
+        // ctrlPanel.add(highBalancePanel);
 
-        JPanel shareThresholdPanel = new JPanel();
-        shareThresholdPanel.add(new JLabel("Set Share Account Threshold"));
-        shareThresholdPanel.add(shareThresholdInputer);
-        JButton btnSetShareThreshold = new JButton("Confirm");
-        btnSetShareThreshold.addActionListener(new SetShareThresholdListener());
-        shareThresholdPanel.add(btnSetShareThreshold);
-        ctrlPanel.add(shareThresholdPanel);
+        // JPanel shareThresholdPanel = new JPanel();
+        // shareThresholdPanel.add(new JLabel("Set Share Account Threshold"));
+        // shareThresholdPanel.add(shareThresholdInputer);
+        // JButton btnSetShareThreshold = new JButton("Confirm");
+        // btnSetShareThreshold.addActionListener(new SetShareThresholdListener());
+        // shareThresholdPanel.add(btnSetShareThreshold);
+        // ctrlPanel.add(shareThresholdPanel);
 
-        JPanel loanInterestPanel = new JPanel();
-        loanInterestPanel.add(new JLabel("Set Loan Interest"));
-        loanInterestPanel.add(txtLoanInterest);
-        JButton btnSetLoanInterest = new JButton("Confirm");
-        btnSetLoanInterest.addActionListener(new SetLoanInterestListener());
-        loanInterestPanel.add(btnSetLoanInterest);
-        ctrlPanel.add(loanInterestPanel);
+        // JPanel loanInterestPanel = new JPanel();
+        // loanInterestPanel.add(new JLabel("Set Loan Interest"));
+        // loanInterestPanel.add(txtLoanInterest);
+        // JButton btnSetLoanInterest = new JButton("Confirm");
+        // btnSetLoanInterest.addActionListener(new SetLoanInterestListener());
+        // loanInterestPanel.add(btnSetLoanInterest);
+        // ctrlPanel.add(loanInterestPanel);
 
         JScrollPane scrlCtrlPanel = new JScrollPane(ctrlPanel);
         add(scrlCtrlPanel);
@@ -91,41 +94,41 @@ public class ManagerPanel extends BankPanel {
         add(scrlUserList);
         userPanel.setLayout(new BoxLayout(userPanel, BoxLayout.Y_AXIS));
 
-        add(new JLabel("Create New Stock"));
-        JPanel stockCtrlPanel = new JPanel();
-        stockCtrlPanel.add(new JLabel("New Stock Name"));
-        stockCtrlPanel.add(txtStockName);
-        stockCtrlPanel.add(new JLabel("New Stock ID"));
-        stockCtrlPanel.add(txtStockID);
-        JButton btnCreateStock = new JButton("Create");
-        btnCreateStock.addActionListener(new CreateNewStockListener());
-        stockCtrlPanel.add(btnCreateStock);
-        add(stockCtrlPanel);
+        // add(new JLabel("Create New Stock"));
+        // JPanel stockCtrlPanel = new JPanel();
+        // stockCtrlPanel.add(new JLabel("New Stock Name"));
+        // stockCtrlPanel.add(txtStockName);
+        // stockCtrlPanel.add(new JLabel("New Stock ID"));
+        // stockCtrlPanel.add(txtStockID);
+        // JButton btnCreateStock = new JButton("Create");
+        // btnCreateStock.addActionListener(new CreateNewStockListener());
+        // stockCtrlPanel.add(btnCreateStock);
+        // add(stockCtrlPanel);
 
-        add(new JLabel("Stock List"));
-        JScrollPane scrlStockList = new JScrollPane(stockPanel);
-        add(scrlStockList);
-        stockPanel.setLayout(new BoxLayout(stockPanel, BoxLayout.Y_AXIS));
+        // add(new JLabel("Stock List"));
+        // JScrollPane scrlStockList = new JScrollPane(stockPanel);
+        // add(scrlStockList);
+        // stockPanel.setLayout(new BoxLayout(stockPanel, BoxLayout.Y_AXIS));
     }
 
-    public void refreshAccountList(String userInfo, String stockInfo) {
+    public void refreshAccountList(List<Customer> userList, String stockInfo) {
         userPanel.removeAll();
-        // for (User.UserInfo it : userInfo) {
-        JButton btnUser = new JButton("it.name");
-        btnUser.setActionCommand("it.name");
-        btnUser.addActionListener(new UserCheckListener());
-        userPanel.add(btnUser);
-        // }
+        for (Customer it : userList) {
+            JButton btnUser = new JButton(it.getAccountName());
+            btnUser.setActionCommand(it.getAccountName());
+            btnUser.addActionListener(new UserCheckListener());
+            userPanel.add(btnUser);
+        }
 
         // stockPanel.removeAll();
         // for (Stock.StockInfo it : stockInfo) {
-        // JPanel p = new JPanel();
-        // p.add(new StockInfoPanel(it));
-        // JButton btnRemove = new JButton("Remove");
-        // btnRemove.addActionListener(new RemoveStockListener());
-        // btnRemove.setActionCommand(it.id);
-        // p.add(btnRemove);
-        // stockPanel.add(p);
+        //     JPanel p = new JPanel();
+        //     p.add(new SecurityInfoPanel());
+        //     JButton btnRemove = new JButton("Remove");
+        //     btnRemove.addActionListener(new RemoveStockListener());
+        //     btnRemove.setActionCommand("it.id");
+        //     p.add(btnRemove);
+        //     stockPanel.add(p);
         // }
     }
 
@@ -156,7 +159,8 @@ public class ManagerPanel extends BankPanel {
     private class UserCheckListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             String name = e.getActionCommand();
-            new UserUI(name, bankUI);
+            
+            new UserUI(name, bankUI, bankUI.getUserAccountInfo(name));
         }
     }
 

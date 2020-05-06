@@ -558,7 +558,6 @@ public class Variable {
                                 //System.out.println("zhe li");
     
                                 sac_c.getChecking().add(s);
-                                //System.out.println("加成"+sac_c.getChecking());
                                 savings.add(s);
                                 ID_TO_ACCOUNT.put(tokens[1], s);
                                 //ID_TO_ACCOUNT.put(new Tuple(tokens[0],tokens[1]), s);

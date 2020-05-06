@@ -20,7 +20,7 @@ public class CreateAccountPanel extends BankPanel {
 
         JPanel typePanel = new JPanel();
         typePanel.add(new JLabel("Account Type"));
-        cbxAccntTyp = new JComboBox<String>(new String[] { "()", "()" });
+        cbxAccntTyp = new JComboBox<String>(new String[] { "Checking", "Saving", "Security" });
         typePanel.add(cbxAccntTyp);
         createAccountPanel.add(typePanel);
 
@@ -44,12 +44,17 @@ public class CreateAccountPanel extends BankPanel {
                 new Message(bankUI, "You would like to input a number larger than 0!");
                 return;
             }
-            // Money.Currency currency = moneyInputer.getCurrency();
-            // Account.AccountType type = (Account.AccountType)
-            // cbxAccntTyp.getSelectedItem();
-            // if (bankUI.tryCreateAccount(type, new Money(currency, amount))) {
-            // bankUI.navigateToUserDetailPage();
-            // }
+            String currency = moneyInputer.getCurrency();
+            String type = cbxAccntTyp.getSelectedItem().toString();
+
+            System.out.println(currency);
+            System.out.println(type);
+            System.out.println(amount);
+
+            if (bankUI.tryCreateAccount(type, amount, currency)) {
+                System.out.println("success");
+                bankUI.navigateToUserDetailPage();
+            }
         }
     }
 }

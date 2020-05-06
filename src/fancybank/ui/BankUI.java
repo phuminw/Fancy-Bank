@@ -2,6 +2,7 @@ package fancybank.ui;
 
 import javax.swing.*;
 
+import java.util.*;
 import fancybank.FancyBank;
 import fancybank.util.*;
 
@@ -36,7 +37,8 @@ public class BankUI extends JFrame {
     }
 
     public boolean doesUserExist(String userName) {
-        System.out.println(userName);
+        System.out.println("doesUserExist");
+        System.out.println(fancybank.checkAccountNameValid(userName));
         return fancybank.checkAccountNameValid(userName);
     }
 
@@ -48,11 +50,30 @@ public class BankUI extends JFrame {
         fancybank.createOnlineAccount(userName);
     }
 
-    public boolean tryCreateAccount(String accountType, int initialDeposit) {
+    public boolean tryCreateAccount(String accountType, double initialDeposit, String currency) {
         ErrorResponse err = new ErrorResponse();
+        boolean res = true;
         // boolean res = fancybank.createAccount(type, initialDeposit, err);
-        new Message(this, err.res);
-        return false;
+
+        if (accountType.equals("Checking")) {
+            System.out.println("Checking");
+            res = fancybank.createCheckingAccount(currency, initialDeposit);
+        }
+
+        if (accountType.equals("Saving")) {
+            System.out.println("Saving");
+            res = fancybank.createSavingAccount(currency, initialDeposit);
+        }
+
+        if (accountType.equals("Security")) {
+            // res = fancybank.createSecuritiesAccount("",currency, initialDeposit, err);
+            if (!res) {
+                new Message(this, err.res);
+            }
+        }
+        
+
+        return res;
     }
 
     public boolean tryDestroyAccount(int id) {
@@ -74,11 +95,11 @@ public class BankUI extends JFrame {
         }
     }
 
-    public void transactMoney(int money, int fromID, int toID) {
-        // Response err = new Response();
-        // if (!fancybank.transactMoney(money, fromID, toID, err)) {
-        // new Message(err.res, this);
-        // }
+    public void transactMoney(String currency, double money, String fromID, String toID) {
+        ErrorResponse err = new ErrorResponse();
+        if (!fancybank.transfer(fromID, toID, currency, money, err)) {
+            new Message(this, err.res);
+        }
     }
 
     public void payInterest() {
@@ -86,20 +107,24 @@ public class BankUI extends JFrame {
     }
 
     public void showLogAll() {
-        new Log("bank.getLogAll()", this);
+        System.out.println("fancybank.viewTransaction()");
+        System.out.println(fancybank.viewTransaction());
+        new Log(fancybank.viewTransaction(), this);
     }
 
     // public void showLogUpdate() {
     // new DlgLog(fancybank.getLogUpdate(), this);
     // }
 
-    // public void showUserLog() {
-    // new DlgLog(fancybank.getActiveUserLog(), this);
-    // }
+    public void showUserLog() {
+        System.out.println("showUserLog");
+        System.out.println(fancybank.viewTransaction());
+        new Log(fancybank.viewTransaction(), this);
+    }
 
-    // public ArrayList getUserAccountInfo(String name) {
-    // return fancybank.getUserAccountInfo(name);
-    // }
+    public List getUserAccountInfo(String name) {
+        return fancybank.getUserToAccount(name);
+    }
 
     public void setTransFee(int newTransFee) {
         // fancybank.setTransFee(newTransFee);
@@ -148,7 +173,7 @@ public class BankUI extends JFrame {
 
     public void navigateToManagerPage() {
         getContentPane().removeAll();
-        managerPage.refreshAccountList("1", "2");
+        managerPage.refreshAccountList(fancybank.getCustomers(), "2");
         add(managerPage);
         SwingUtilities.updateComponentTreeUI(this);
     }
@@ -156,8 +181,12 @@ public class BankUI extends JFrame {
     public void navigateToUserDetailPage() {
         getContentPane().removeAll();
         add(userPage);
-        // userPanel.update(fancybank.getActiveUserName(),
-        // fancybank.getActiveUserAccountsInfo());
+
+        List saving = fancybank.getSaving();
+        List checking = fancybank.getChecking();
+        List securities = fancybank.getSecurities();
+
+        userPage.refreshAccountList("name", saving, checking, securities);
         SwingUtilities.updateComponentTreeUI(this);
     }
 
