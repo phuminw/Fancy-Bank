@@ -85,6 +85,7 @@ public class Variable {
         this.savings = new ArrayList<SavingAccount>();
         this.checkings = new ArrayList<CheckingAccount>();
         this.securites = new ArrayList<SecuritiesAccount>();
+        this.transactions = new ArrayList<Transaction>();
         Loans = new ArrayList<Loan>();
         
 
@@ -533,10 +534,11 @@ public class Variable {
     
                                 //给用户加进去
                                 Customer customer = (Customer)USERNAME_TO_CHAR.get(tokens[0]);
-                                //System.out.println(USERNAME_TO_CHAR);
+                                //System.out.println(customer);
                                 //System.out.println(tokens[0]);
                                 //System.out.println(USERNAME_TO_CHAR.get(tokens[0]));
                                 customer.getChecking().add(c);
+                                
                                 
                                 checkings.add(c);
                                 //ID_TO_ACCOUNT.put(new Tuple(tokens[0],tokens[1]), c);
@@ -614,6 +616,7 @@ public class Variable {
         for (File f : accountCsv) {
             BufferedReader br = new BufferedReader(new FileReader(f));
             br.readLine(); // skip header
+            br.readLine();
             String type = f.getName().substring(0, f.getName().indexOf('.')).toUpperCase();
 
             String line = "";
@@ -627,21 +630,28 @@ public class Variable {
                 String[] tokens = line.replace("\n", "").strip().split(",");
                 //System.out.println(tokens.length);
                 Account a = (Account)ID_TO_ACCOUNT.get(tokens[0]);
-                //System.out.println(tokens[0]);
-                Transaction t = null;
-                if(tokens[2].equals(""))
+                if(a != null)
                 {
-                    t = new Transaction(tokens[1], Double.parseDouble(tokens[3]), tokens[4], tokens[5]);
-                }
-                else
-                {
+                    Transaction t = null;
+                    if(tokens[2].equals(""))
+                    {
+                        t = new Transaction(tokens[1], Double.parseDouble(tokens[3]), tokens[4], tokens[5]);
+                    }
+                    else
+                    {
                     
-                    t = new Transaction(tokens[1], tokens[2], Double.parseDouble(tokens[3]), tokens[4], tokens[5]);
+                        t = new Transaction(tokens[1], tokens[2], Double.parseDouble(tokens[3]), tokens[4], tokens[5]);
                     
+                    }
+                    a.addTransaction(t);
+                    this.transactions.add(t);
+                    line = br.readLine();
+
                 }
-                a.addTransaction(t);
-                this.transactions.add(t);
+
                 line = br.readLine();
+                
+                
                 //System.out.println(line);
             }
 

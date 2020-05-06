@@ -71,11 +71,11 @@ public class FancyBank {
     //database path
     private String DBPATH;
     
-    // public static void main(String[] args) {
-    //     FancyBank f = new FancyBank();
-    //     Customer c = (Customer)VARIABLE.USERNAME_TO_CHAR.get("jessy");
-    //     System.out.println(c.viewTransaction());
-    // }
+    public static void main(String[] args) {
+        FancyBank f = new FancyBank();
+        Customer c = (Customer)VARIABLE.USERNAME_TO_CHAR.get("jessy");
+        System.out.println("Transaction:"+c.viewTransaction());
+    }
 
     public FancyBank(){
         try {
