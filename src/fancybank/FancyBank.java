@@ -407,6 +407,17 @@ public class FancyBank {
         }
         return "";
     }
+
+    public Set<Entry<String, Tuple<Double, Double>>> getStocksInfo()
+    {
+        if(this.currentChar instanceof Customer)
+        {
+            Customer cus = (Customer) this.currentChar;
+            return cus.getStocksInfo();
+        }
+        return null;
+
+    }
     /**
      * Find db folder path that contains game data
      * 

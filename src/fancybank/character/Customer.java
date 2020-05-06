@@ -375,6 +375,10 @@ public class Customer extends Character {
 
     }
 
+    public Set<Entry<String, Tuple<Double, Double>>> getStocksInfo(){
+        return this.securities.get(0).getMarket().getStocksInfo();
+    }
+
 
 
 }
