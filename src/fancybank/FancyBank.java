@@ -76,10 +76,6 @@ public class FancyBank {
         // c.deposit("USD", 100.0, Integer.toString(105272405));
         //c.withdraw("USD", 1.0, Integer.toString(105272405));
         f.createCheckingAccount("USD",50.0);
-
-        
-        
-
        
     }
 
@@ -210,9 +206,9 @@ public class FancyBank {
     public Boolean checkAccountNameValid(String id){
         if(VARIABLE.USERNAME_TO_CHAR.containsKey(id))
         {
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
     // public Boolean checkAccountNameValid(String id){

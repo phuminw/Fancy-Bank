@@ -106,7 +106,10 @@ public class Customer extends Character {
         FancyBank.VARIABLE.savings.add(sav);
         this.deposit(currency,money,Integer.toString(sav.getId()));
         FancyBank.VARIABLE.updateAccount(this.getAccountName(),sav);
-        sav.addTransaction(new Transaction(Transaction.FEE, FancyBank.OPENFEE, "USD", String.format("OPEN FEE %d", FancyBank.OPENFEE)));
+        Transaction t = new Transaction(Transaction.FEE, FancyBank.OPENFEE, "USD", String.format("OPEN FEE %d", FancyBank.OPENFEE));
+        sav.addTransaction(t);
+        FancyBank.VARIABLE.updateTransaction(sav.getId(),t);
+
     }
 
     public void deposit(String currency, double money, String accountID) {
@@ -250,7 +253,9 @@ public class Customer extends Character {
             sec.addTransaction(t2);
             this.securites.add(sec);
             FancyBank.VARIABLE.updateAccount(this.getAccountName(), sec);
-            sec.addTransaction(new Transaction(Transaction.FEE, FancyBank.OPENFEE, "USD", String.format("OPEN FEE %d", FancyBank.OPENFEE)));
+            Transaction t = new Transaction(Transaction.FEE, FancyBank.OPENFEE, "USD", String.format("OPEN FEE %d", FancyBank.OPENFEE));
+            FancyBank.VARIABLE.updateTransaction(sav.getId(),t);
+            sec.addTransaction(t);
             return true;
         }
         error.res = "FAILED TO CREATE ACCOUNT";
@@ -267,7 +272,9 @@ public class Customer extends Character {
         this.checkings.add(ck);
         this.deposit(currency,money,Integer.toString(ck.getId()));
         FancyBank.VARIABLE.updateAccount(this.getAccountName(), ck);
-        ck.addTransaction(new Transaction(Transaction.FEE, FancyBank.OPENFEE, "USD", String.format("OPEN FEE %d", FancyBank.OPENFEE)));
+        Transaction t = new Transaction(Transaction.FEE, FancyBank.OPENFEE, "USD", String.format("OPEN FEE %d", FancyBank.OPENFEE));
+        ck.addTransaction(t);
+        FancyBank.VARIABLE.updateTransaction(ck.getId(),t);
     }
 
     
