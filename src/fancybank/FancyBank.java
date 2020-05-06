@@ -24,6 +24,7 @@ import fancybank.account.SecuritiesAccount;
 import fancybank.account.Account;
 import fancybank.account.AccountType;
 import fancybank.io.StdinWrapper;
+import fancybank.misc.Transaction;
 import fancybank.util.Tuple;
 import fancybank.character.*;
 import fancybank.character.Character;
@@ -69,7 +70,15 @@ public class FancyBank {
     private String DBPATH;
     public static void main(String[] args) {
         FancyBank f = new FancyBank();
-        System.out.println(f.checkAccountNameValid("maoyizhou"));
+        //System.out.println(f.checkAccountNameValid("maoyizhou"));
+
+
+        // Transaction t = new Transaction(Transaction.DEPOSIT, 50.0, "USD", "hihi");
+        // VARIABLE.updateTransaction(, t);
+        // SavingAccount che = new SavingAccount(0.1, 5);
+        // Customer c = new Customer("", "jessy", "");
+        // c.getSaving().add(che);
+        // c.deposit("USD", 500.0, Integer.toString(che.getId()));
 
        
     }

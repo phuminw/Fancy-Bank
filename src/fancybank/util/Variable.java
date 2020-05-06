@@ -271,13 +271,28 @@ public class Variable {
         {
             if(i != (record.length-1))
             {
+                if(record[i] == null)
+                {
+                    write.write("");
+                }
+                else
+                {
+                    writer.write(record[i]);
+                }
                 
-                writer.write(record[i]);
                 writer.write(",");
             }
             else
             {
-                writer.write(record[i]);
+                if(record[i] == null)
+                {
+                    write.write("");
+                }
+                else
+                {
+                    writer.write(record[i]);
+                }
+                
             }
             
         }

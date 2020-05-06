@@ -49,17 +49,17 @@ public class Customer extends Character {
 
     }
 
-    public ArrayList getSaving()
+    public List getSaving()
     {
         return this.savings;
     }
 
-    public ArrayList getChecking()
+    public List getChecking()
     {
         return this.checkings;
     }
 
-    public ArrayList getSecurities(){
+    public List getSecurities(){
         return this.securites;
     }
 
