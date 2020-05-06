@@ -14,7 +14,6 @@ import fancybank.account.SecuritiesAccount;
 import fancybank.io.StdinWrapper;
 import fancybank.misc.Transaction;
 import fancybank.util.Variable;
-import sun.swing.plaf.synth.Paint9Painter.PaintType;
 import fancybank.FancyBank;
 import fancybank.util.ErrorResponse;
 

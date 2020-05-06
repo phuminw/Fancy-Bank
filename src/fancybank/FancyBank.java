@@ -69,6 +69,8 @@ public class FancyBank {
     private String DBPATH;
     public static void main(String[] args) {
         FancyBank f = new FancyBank();
+        System.out.println(f.checkAccountNameValid("maoyizhou"));
+
        
     }
 
@@ -157,17 +159,23 @@ public class FancyBank {
         }
     }
 
-    // public Boolean checkAccountNameValid(String id){
-    //     if(VARIABLE.USERNAME_TO_CHAR.containsKey(id))
-    //     {
-    //         return false;
-    //     }
-    //     return true;
-    // }
-
     public Boolean checkAccountNameValid(String id){
-        return VARIABLE.checkAccountNameValid(DBPATH+"character/", id);
+        if(VARIABLE.USERNAME_TO_CHAR.containsKey(id))
+        {
+            return false;
+        }
+        return true;
     }
+
+    // public Boolean checkAccountNameValid(String id){
+    //     try {
+    //         return VARIABLE.checkAccountNameValid(DBPATH+"character/", id);
+    //     } catch (IOException e) {
+    //         //TODO: handle exception
+    //     }
+    //     return false;
+        
+    // }
 
     public Tuple getReport(){
         List<Account> accounts = new ArrayList<Account>();
