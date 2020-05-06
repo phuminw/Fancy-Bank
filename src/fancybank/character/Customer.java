@@ -235,7 +235,8 @@ public class Customer extends Character {
 
     public boolean createSecuritesAccount(String savId, String currency, double money,ErrorResponse error)
             throws NumberFormatException, IOException {
-        SavingAccount sav = (SavingAccount)FancyBank.VARIABLE.ID_TO_ACCOUNT.get(savId);
+        //SavingAccount sav = (SavingAccount)FancyBank.VARIABLE.ID_TO_ACCOUNT.get(savId);
+        SavingAccount sav = this.savings.get(0);
         double total = sav.getBalance(currency);
         double rest = total-money;
         if(rest>=2500)

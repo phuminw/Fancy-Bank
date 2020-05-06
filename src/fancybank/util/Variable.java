@@ -486,9 +486,12 @@ public class Variable {
     //         }
     //     }
 
-    //     Collection<String> v = DISPLAY_TRANSACTION.values();
+    //     BufferedWriter writer = new BufferedWriter(new FileWriter(path));
+    //     writer.write(title);
 
-    //     BufferedWriter writer = 
+
+        
+        
 
 
 
