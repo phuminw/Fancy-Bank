@@ -30,6 +30,7 @@ import fancybank.character.*;
 import fancybank.character.Character;
 import fancybank.util.Variable;
 import fancybank.util.ErrorResponse;
+import fancybank.market.StocksMarket;
 /**
  * Main program for the bank
  */
@@ -70,7 +71,6 @@ public class FancyBank {
     private String DBPATH;
     public static void main(String[] args) {
         FancyBank f = new FancyBank();
-        //System.out.println(f.checkAccountNameValid("maoyizhou"));
 
 
         // Transaction t = new Transaction(Transaction.DEPOSIT, 50.0, "USD", "hihi");
@@ -86,9 +86,9 @@ public class FancyBank {
         //VARIABLE.updateCustomer(c);
         //c.getSaving().add(che);
         //c.deposit("USD", 500.0, Integer.toString(2037863579));
-        Customer c = (Customer)VARIABLE.USERNAME_TO_CHAR.get("jessy");
-        //c.createSavingAccount();
-        c.deposit("USD", 500.0, Integer.toString(105272405));
+        
+        //c.withdraw("USD", 500.0, Integer.toString(105272405));
+        
         
 
        
@@ -242,25 +242,32 @@ public class FancyBank {
         return cus.transfer(from, to, currency, money, error);
     }
 
-    public void viewTransaction()
+    public String viewTransaction()
     {
         Customer cus  = (Customer) this.currentChar;
-        cus.viewTransaction();
+        return cus.viewTransaction();
     }
 
-    public void viewSecuritiesBalance(){
+    public String viewSecuritiesBalance(){
         Customer cus  = (Customer) this.currentChar;
-        cus.viewSecuritiesBalance();
+        return cus.viewTransaction();
     }
 
-    public void viewSavingBalance(){
+    public String viewSavingBalance(){
         Customer cus  = (Customer) this.currentChar;
-        cus.viewSavingBalance();
+        return cus.viewTransaction();
     }
 
-    public void viewCheckingBalance(){
+    public String viewCheckingBalance(){
         Customer cus  = (Customer) this.currentChar;
-        cus.viewCheckingBalance();
+        return cus.viewTransaction();
+    }
+
+    public StocksMarket getStock(){
+        Customer cus  = (Customer) this.currentChar;
+        return cus.getStock();
+        
+
     }
 
     /**

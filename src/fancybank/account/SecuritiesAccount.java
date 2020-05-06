@@ -89,6 +89,10 @@ public class SecuritiesAccount extends CheckingAccount {
         return false;
     }
 
+    public StocksMarket getMarket(){
+        return this.market;
+    }
+
     /**
      * Sell asset/stocks and deposit into USD currency balance
      * 

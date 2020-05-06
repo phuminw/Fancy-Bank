@@ -16,6 +16,7 @@ import fancybank.misc.Transaction;
 import fancybank.util.Variable;
 import fancybank.FancyBank;
 import fancybank.util.ErrorResponse;
+import fancybank.market.StocksMarket;
 
 public class Customer extends Character {
     private ArrayList<SavingAccount> savings;
@@ -35,17 +36,39 @@ public class Customer extends Character {
         this.transactions = new ArrayList<Transaction>();
     }
 
-    public ArrayList viewCheckingBalance() {
-        return this.checkings;
+    public String viewCheckingBalance() {
+        String ret = "";
+        for(CheckingAccount c:this.checkings)
+        {
+            ret = ret+c.toString();
+            ret = ret + "/n";
+        }
+        //System.out.println(ret);
+        return ret;
+        //return this.checkings;
     }
 
-    public ArrayList viewSavingBalance() {
-        return this.savings;
+    public String viewSavingBalance() {
+        String ret = "";
+        for(SavingAccount c:this.savings)
+        {
+            ret = ret+c.toString();
+            ret = ret + "/n";
+        }
+        //System.out.println(ret);
+        return ret;
 
     }
 
-    public ArrayList viewSecuritiesBalance() {
-        return this.securites;
+    public String viewSecuritiesBalance() {
+        String ret = "";
+        for(SecuritiesAccount c:this.securites)
+        {
+            ret = ret+c.toString();
+            ret = ret + "/n";
+        }
+        //System.out.println(ret);
+        return ret;
 
     }
 
@@ -87,21 +110,21 @@ public class Customer extends Character {
         Account account = (Account)Variable.ID_TO_ACCOUNT.get(accountID);
         if (account instanceof SavingAccount) {
             SavingAccount sav = (SavingAccount) account;
-            sav.addBalance(money, currency, "deposit",null);
-            Transaction t = new Transaction(Transaction.DEPOSIT, money, currency, "DEPOSIT");
-            sav.addTransaction(t);
+            sav.addBalance(money, currency, "deposit",LocalDateTime.now());
+            //Transaction t = new Transaction(Transaction.DEPOSIT, money, currency, "DEPOSIT");
+            //sav.addTransaction(t);
         } else if (account instanceof CheckingAccount) {
             CheckingAccount sav = (CheckingAccount) account;
-            sav.addBalance(money, currency, "deposit", null);
-            Transaction t = new Transaction(Transaction.DEPOSIT, money, currency, "DEPOSIT");
-            sav.addTransaction(t);
+            sav.addBalance(money, currency, "deposit", LocalDateTime.now());
+            //Transaction t = new Transaction(Transaction.DEPOSIT, money, currency, "DEPOSIT");
+            //sav.addTransaction(t);
             //FancyBank.VARIABLE.updateTransation(t);
 
-        } else if (account instanceof CheckingAccount) {
+        } else if (account instanceof SecuritiesAccount) {
             SecuritiesAccount sav = (SecuritiesAccount) account;
-            sav.addBalance(money, currency, "deposit", null);
-            Transaction t = new Transaction(Transaction.DEPOSIT, money, currency, "DEPOSIT");
-            sav.addTransaction(t);
+            sav.addBalance(money, currency, "deposit", LocalDateTime.now());
+            //Transaction t = new Transaction(Transaction.DEPOSIT, money, currency, "DEPOSIT");
+            //sav.addTransaction(t);
             //FancyBank.VARIABLE.updateTransation(t);
 
         }
@@ -242,9 +265,16 @@ public class Customer extends Character {
         return ret;
     }
 
-    public ArrayList viewTransaction(){
+    public String viewTransaction(){
         //display transaction
-        return this.transactions;
+        String ret = "";
+        for(Transaction t:this.transactions)
+        {
+            ret = ret+t.toString();
+            ret = ret + "/n";
+        }
+        System.out.println(ret);
+        return ret;
 
     }
 
@@ -253,7 +283,12 @@ public class Customer extends Character {
     public String toString(){
         String str = this.getName()+" , "+this.getAccountName()+" , "+this.getPwd();
         return str;
-        
+    }
+
+    public StocksMarket getStock(){
+        return this.securites.get(0).getMarket();
+
+
     }
 
 
