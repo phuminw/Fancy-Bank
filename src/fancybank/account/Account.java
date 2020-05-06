@@ -15,6 +15,7 @@ import java.util.Map.Entry;
 import fancybank.FancyBank;
 import fancybank.misc.Transaction;
 import fancybank.util.Tuple;
+import fancybank.FancyBank;
 
 /**
  * Base template for all account types
@@ -51,7 +52,8 @@ public abstract class Account {
         xactByCurrency.put(EUR, new ArrayList<Transaction>());
         xactByCurrency.put(CNY, new ArrayList<Transaction>());
         // transactions = new ArrayList<Transaction>();
-        addTransaction(new Transaction(Transaction.FEE, FancyBank.OPENFEE, "USD", String.format("OPEN FEE %d", FancyBank.OPENFEE)));
+        
+        //addTransaction(new Transaction(Transaction.FEE, FancyBank.OPENFEE, "USD", String.format("OPEN FEE %d", FancyBank.OPENFEE)));
     }
 
     /**
@@ -296,8 +298,8 @@ public abstract class Account {
                     balance.put(Currency.getInstance(t.getCurrency().toUpperCase()), balance.get(Currency.getInstance(t.getCurrency().toUpperCase()))+t.getAmount());
                     t.setFinalBalance(balance.get(Currency.getInstance(t.getCurrency().toUpperCase())));
                     transactions.add(t);
-                    FancyBank.VARIABLE.updateTransaction(id, t);
-                    return true;
+                    //FancyBank.VARIABLE.updateTransaction(id, t);
+                    //return true;
                 // }
                 // return false;
             case Transaction.FEE:
@@ -306,16 +308,19 @@ public abstract class Account {
                     balance.put(Currency.getInstance(t.getCurrency().toUpperCase()), balance.get(Currency.getInstance(t.getCurrency().toUpperCase()))-t.getAmount());
                     t.setFinalBalance(balance.get(Currency.getInstance(t.getCurrency().toUpperCase())));
                     transactions.add(t);
-                    FancyBank.VARIABLE.updateTransaction(id, t);
-                    return true;
+                    //FancyBank.VARIABLE.updateTransaction(id, t);
+                    //return true;
                 // }
                 // return false;
             default: 
                 t.setFinalBalance(balance.get(Currency.getInstance("USD"))); // Buy/sell asset, no affect on balance USD for this xact.
                 transactions.add(t);
-                FancyBank.VARIABLE.updateTransaction(id, t);
-                return true;
+                //FancyBank.VARIABLE.updateTransaction(id, t);
+                //return true;
+            
         }
+        FancyBank.VARIABLE.updateTransaction(id, t);
+        return true;
     }
 
     /**

@@ -49,17 +49,17 @@ public class Customer extends Character {
 
     }
 
-    public ArrayList getSaving()
+    public List getSaving()
     {
         return this.savings;
     }
 
-    public ArrayList getChecking()
+    public List getChecking()
     {
         return this.checkings;
     }
 
-    public ArrayList getSecurities(){
+    public List getSecurities(){
         return this.securites;
     }
 
@@ -79,27 +79,30 @@ public class Customer extends Character {
         SavingAccount sav = new SavingAccount(FancyBank.SAVINGINTEREST, FancyBank.SAVINGWITHDRAWCOUNTLIMIT);
         this.savings.add(sav);
         FancyBank.VARIABLE.savings.add(sav);
-        FancyBank.VARIABLE.updateAccount(this.getName(), sav);
+        FancyBank.VARIABLE.updateAccount(this.getAccountName(),sav);
+        sav.addTransaction(new Transaction(Transaction.FEE, FancyBank.OPENFEE, "USD", String.format("OPEN FEE %d", FancyBank.OPENFEE)));
     }
 
     public void deposit(String currency, double money, String accountID) {
         Account account = (Account)Variable.ID_TO_ACCOUNT.get(accountID);
         if (account instanceof SavingAccount) {
             SavingAccount sav = (SavingAccount) account;
-            sav.addBalance(money, currency, "deposit", LocalDateTime.now());
+            sav.addBalance(money, currency, "deposit",null);
             Transaction t = new Transaction(Transaction.DEPOSIT, money, currency, "DEPOSIT");
             sav.addTransaction(t);
         } else if (account instanceof CheckingAccount) {
             CheckingAccount sav = (CheckingAccount) account;
-            sav.addBalance(money, currency, "deposit", LocalDateTime.now());
+            sav.addBalance(money, currency, "deposit", null);
             Transaction t = new Transaction(Transaction.DEPOSIT, money, currency, "DEPOSIT");
             sav.addTransaction(t);
+            //FancyBank.VARIABLE.updateTransation(t);
 
         } else if (account instanceof CheckingAccount) {
             SecuritiesAccount sav = (SecuritiesAccount) account;
-            sav.addBalance(money, currency, "deposit", LocalDateTime.now());
+            sav.addBalance(money, currency, "deposit", null);
             Transaction t = new Transaction(Transaction.DEPOSIT, money, currency, "DEPOSIT");
             sav.addTransaction(t);
+            //FancyBank.VARIABLE.updateTransation(t);
 
         }
     }
@@ -200,10 +203,12 @@ public class Customer extends Character {
             sav.addTransaction(t1);
             sec.addTransaction(t2);
             this.securites.add(sec);
-            FancyBank.VARIABLE.updateAccount(this.getName(), sec);
+            FancyBank.VARIABLE.updateAccount(this.getAccountName(), sec);
+            sec.addTransaction(new Transaction(Transaction.FEE, FancyBank.OPENFEE, "USD", String.format("OPEN FEE %d", FancyBank.OPENFEE)));
             return true;
         }
         error.res = "FAILED TO CREATE ACCOUNT";
+        
         return false;
 
     }
@@ -214,6 +219,8 @@ public class Customer extends Character {
         CheckingAccount ck = new CheckingAccount();
         FancyBank.VARIABLE.checkings.add(ck);
         this.checkings.add(ck);
+        FancyBank.VARIABLE.updateAccount(this.getAccountName(), ck);
+        ck.addTransaction(new Transaction(Transaction.FEE, FancyBank.OPENFEE, "USD", String.format("OPEN FEE %d", FancyBank.OPENFEE)));
     }
 
     
