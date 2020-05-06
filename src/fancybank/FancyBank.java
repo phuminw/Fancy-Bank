@@ -110,19 +110,10 @@ public class FancyBank {
         {
             this.currentChar = (Manager) c;
         }
-        
-        // if(checkAccountValid(userName,password))
-        // {
-        //     Character c = (Character)VARIABLE.USERNAME_TO_CHAR.get(userName);
-        //     this.currentChar = c;
-        //     return true;
-        // }
-        // else
-        // {
-        //     //error message
-        //     error.res = "INVALID USERNAME OR PASSWORD";
-        //     return false;
-        // }
+    }
+
+    public void logOut(){
+        System.exit(0);
     }
 
     public void createOnlineAccount(String username){
