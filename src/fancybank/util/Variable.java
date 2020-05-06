@@ -153,21 +153,16 @@ public class Variable {
         {
             Loan l = (Loan) account;
 
-<<<<<<< HEAD
-            // record = new String[]{username,Integer.toString(account.getId()),"USD",Double.toString(account.getBalance("USD")),Double.toString(l.getInterestRate)};
-            // try {
-            //     updataData(record, "loan");
-=======
             record = new String[]{username,Integer.toString(account.getId()),"USD",Double.toString(account.getBalance("USD")),Double.toString(l.getInterestRate())};
             try {
                 updataData(record, "loan");
->>>>>>> f9b360eea81cb0444b4c4798b5785d8806cb6445
                 
-            // }  catch (IOException e) {
-            //     //TODO: handle exception
-            //     e.printStackTrace();
-            // }
+            }  catch (IOException e) {
+                //TODO: handle exception
+                e.printStackTrace();
+            }
         }
+        
 
 
     }
@@ -345,24 +340,15 @@ public class Variable {
                                 Loan l = new Loan(tokens[2],Double.parseDouble(tokens[3]),Double.parseDouble(tokens[4]));
     
                                 //set up the account
-<<<<<<< HEAD
-                                // s.setID(Integer.parseInt(tokens[1]));
-=======
                                 l.setID(Integer.parseInt(tokens[1]));
->>>>>>> f9b360eea81cb0444b4c4798b5785d8806cb6445
                                 // s.setBalance(Double.parseDouble(tokens[3]), tokens[2]);
                                 // s.setBalance(Double.parseDouble(tokens[3]), tokens[4]);
                                 // s.setBalance(Double.parseDouble(tokens[7]), tokens[6]);
     
                                 Customer loan_c = (Customer)USERNAME_TO_CHAR.get(tokens[0]);
     
-<<<<<<< HEAD
-                                loan_c.getChecking().add(l);
-                                // loans.add(l);
-=======
                                 loan_c.getLoans().add(l);
                                 Loans.add(l);
->>>>>>> f9b360eea81cb0444b4c4798b5785d8806cb6445
                                 ID_TO_ACCOUNT.put(tokens[1], l);
                                 //ID_TO_ACCOUNT.put(new Tuple(tokens[0],tokens[1]), s);
                                 break;
