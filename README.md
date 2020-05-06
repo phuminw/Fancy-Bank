@@ -1,5 +1,13 @@
 # Fancy Bank
 
+## Launching Application
+
+[start](start) is a script to launch the application. Depends on geekness, you may launch in UI or in command line mode by commenting out appropiate lines at the very end of the script. Note that command line mode is non-interactive, meaning that you have to deal with main method under [FancyBank.java](src/fancybank/FancyBank.java) yourself ( ͡° ͜ʖ ͡°)
+
+```(bash)
+./start # May the money be with you
+```
+
 ## Accounts
 
 ### [Account](src/fancybank/account/Account.java)
@@ -26,12 +34,44 @@ Loan is a concrete class extending Saving account concrete class. Loan is simila
 
 ## IO
 
+### [STDIN Wrapper](src/fancybank/io/StdinWrapper.java)
+
+This class was taken from the previous assignment. It is used to handle input from the user and support checking for some defined special key through method call.
 
 ## Market
+
+### [Stocks Data Reader](src/fancybank/market/StocksDataReader.java)
+
+A supposed-to-be collection of static methods implementing different ways to gather stocks data into internal data structore of Stocks market. The current implementation supports only reading from csv; however, extending to fetching data from API or other sources is as easy as adding new static methods with same arguments.
+
+### [Stocks Market](src/fancybank/market/StocksMarket.java)
+
+Stocks market is a concrete singleton class. There MUST exist only one stocks market (*You don't want investors to be confused with multiple markets, do you?*). A single instance of the stocks market ensures that changes can be observed from all clients as we aims for consistency and latest views of the market details.
 
 ## UI
 
 ## Utilities
 
+### [Error Response](src/fancybank/util/ErrorResponse.java)
+
+### [Tuple](src/fancybank/util/Tuple.java)
+
+Tuple was taken from the previous assignment. It is used to pack two object to be passed together. This implementation is tuple of size 2.
+
+### [Variable](src/fancybank/util/Variable.java)
+
 ## Miscellaneous
 
+### [Interest Rate DB Corrept Exception](src/fancybank/misc/InterestRateDBCorruptException.java)
+
+A user-defined runtime exception to indicate more specific error on interest entry corruption occurred in Saving account or Loan. One reason that may raise this exception is that interest rate entries are not chronologically ordered.
+
+### [Transaction](src/fancybank/misc/Transaction.java)
+
+Transaction is a concrete immutable class. It is intended to mimic the real-world transaction: only getter and comparator methods are available, except the final balance setter, which reflects the balance after applying a transaction.
+
+# General Notes
+
+- Our implementation replies on Java implementation of time under ```java.time``` such as ```LocalDateTime```, ```YearMonth``` to abstract out difficulties dealing with time.
+
+- Debug mode can be switched using a flag declared at the top of FancyBank class. If not in debug mode, all actions will use current time of the system and ignore argument-passed time.
