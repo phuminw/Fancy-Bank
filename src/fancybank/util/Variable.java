@@ -557,7 +557,7 @@ public class Variable {
                                 //System.out.println(tokens[0]);
                                 //System.out.println("zhe li");
     
-                                sac_c.getChecking().add(s);
+                                sac_c.getSaving().add(s);
                                 savings.add(s);
                                 ID_TO_ACCOUNT.put(tokens[1], s);
                                 //ID_TO_ACCOUNT.put(new Tuple(tokens[0],tokens[1]), s);
@@ -589,7 +589,7 @@ public class Variable {
                                 se.setBalance(Double.parseDouble(tokens[7]), tokens[6]);
     
                                 Customer sec_c= (Customer)USERNAME_TO_CHAR.get(tokens[0]);
-                                sec_c.getChecking().add(se);
+                                sec_c.getSecurities().add(se);
                                 securites.add(se);
                                 ID_TO_ACCOUNT.put(tokens[1], se);
                                 //ID_TO_ACCOUNT.put(new Tuple(tokens[0],tokens[1]), se);

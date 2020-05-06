@@ -19,5 +19,5 @@ mkdir -p bin
 printf "\nCompiling source code\n"
 find src/ -name '*.java' | xargs javac -d bin
 printf "FancyBank starting\n\n"
-# java -Dfile.encoding=UTF-8 -cp "bin/" fancybank.FancyBank
+#java -Dfile.encoding=UTF-8 -cp "bin/" fancybank.FancyBank
 java -Dfile.encoding=UTF-8 -cp "bin/" fancybank.ui.BankUI
