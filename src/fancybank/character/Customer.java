@@ -84,7 +84,7 @@ public class Customer extends Character {
     }
 
     public void deposit(String currency, double money, String accountID) {
-        Account account = Variable.ID_TO_ACCOUNT.get(accountID);
+        Account account = (Account)Variable.ID_TO_ACCOUNT.get(accountID);
         if (account instanceof SavingAccount) {
             SavingAccount sav = (SavingAccount) account;
             sav.addBalance(money, currency, "deposit", LocalDateTime.now());
@@ -106,7 +106,7 @@ public class Customer extends Character {
     }
 
     public boolean withdraw(String currency, double money, String accountId,ErrorResponse error) {
-        Account account = Variable.ID_TO_ACCOUNT.get(accountID);     
+        Account account = (Account)Variable.ID_TO_ACCOUNT.get(accountID);     
         if (account instanceof SavingAccount) {
             SavingAccount sav = (SavingAccount) account;
             if (sav.getBalance(currency) < money) {

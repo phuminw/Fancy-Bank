@@ -181,7 +181,7 @@ public class FancyBank {
         }
     }
 
-    public ArrayList getAccounts()
+    public List getAccounts()
     {
         List<Account> accounts = new ArrayList<Account>();
         accounts.addAll(VARIABLE.savings);
@@ -190,7 +190,7 @@ public class FancyBank {
         return accounts;
     }
 
-    public ArrayList getCustomers(){
+    public List getCustomers(){
         return VARIABLE.customerList;
     }
 
