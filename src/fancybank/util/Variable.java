@@ -46,9 +46,7 @@ public class Variable {
 
     public Variable(String path){
         this.DBPATH = path;
-        initCharacter();
-        initAccount();
-        loading();
+
         //System.out.println(characterList);
 
 
@@ -59,6 +57,12 @@ public class Variable {
         // System.out.println(characterList);
         
 
+    }
+
+    public void init(){
+        initCharacter();
+        initAccount();
+        loading();
     }
 
     public void initCharacter(){
@@ -168,7 +172,7 @@ public class Variable {
 
     public void updateTransaction(int accountId,Transaction t)
     {
-        String[] record = new String[]{Integer.toString(accountId),t.getOperation(),t.getAssetName(), Double.toString(t.getAmount()),t.getCurrency(),""};
+        String[] record = new String[]{Integer.toString(accountId),t.getOperation(),t.getAssetName(), Double.toString(t.getAmount()),t.getCurrency(),t.getDescription()};
         try {
             updataData(record, "transaction");
             
@@ -182,23 +186,29 @@ public class Variable {
 
     public void loadCharacter(String path) throws IOException{
         File[] characterCsv = new File(path).listFiles();
+        //System.out.println(characterCsv);
 
         for (File f : characterCsv) {
             BufferedReader br = new BufferedReader(new FileReader(f));
             br.readLine(); // skip header
             String type = f.getName().substring(0, f.getName().indexOf('.')).toUpperCase();
+            System.out.println(type);
 
             String line = br.readLine();
+            System.out.println("out");
+            System.out.println(line);
 
             while (line != null) {
                 // Name,accountName,pwd
-                String[] tokens = line.replace("\n", "").strip().split(",");
+                String[] tokens = line.split(",");
+                System.out.println("HERE");
+                //System.out.println(tokens[3]);
 
                 // Expect 3 columns, otherwise skip
                 if (tokens.length == 3) {
+                    //System.out.println("HERE");
                     switch (type) {
                     case "MANAGER":
-
                         Manager m = new Manager(tokens[0].replace("-", " ").replace("_", " "), tokens[1], tokens[2]);
                         //System.out.println("jia");
                         characterList.add(m);
@@ -206,9 +216,11 @@ public class Variable {
                         USERNAME_TO_CHAR.put(tokens[1], m);
                         break;
                     case "CUSTOMER":
+                        //System.out.println("HERE");
                         Customer c = new Customer(tokens[0].replace("-", " ").replace("_", " "), tokens[1], tokens[2]);
                         characterList.add(c);
                         customerList.add(c);
+                        
                         USERNAME_TO_CHAR.put(tokens[1], c);
                         break;
                     default:
@@ -218,7 +230,7 @@ public class Variable {
                     System.out.printf("Len is %d\n", tokens.length);
                 }
                 line = br.readLine();
-                //System.out.println(line);
+                System.out.println(line);
             }
 
             br.close();
@@ -272,7 +284,7 @@ public class Variable {
             {
                 if(record[i] == null)
                 {
-                    write.write("");
+                    writer.write("");
                 }
                 else
                 {
@@ -285,7 +297,7 @@ public class Variable {
             {
                 if(record[i] == null)
                 {
-                    write.write("");
+                    writer.write("");
                 }
                 else
                 {
@@ -308,8 +320,10 @@ public class Variable {
             String type = f.getName().substring(0, f.getName().indexOf('.')).toUpperCase();
 
             String line = "";
+            line = br.readLine();
+            line = br.readLine();
 
-            while ((line = br.readLine()) != null) {
+            while (line != null) {
                 // username,account ID,USD,balance,EUR,balance, CNY, balance.
                 String[] tokens = line.replace("\n", "").strip().split(",");
 
@@ -320,12 +334,16 @@ public class Variable {
                             CheckingAccount c = new CheckingAccount();
                             //set up the account
                             c.setID(Integer.parseInt(tokens[1]));
+                            
                             c.setBalance(Double.parseDouble(tokens[3]), tokens[2]);
                             c.setBalance(Double.parseDouble(tokens[3]), tokens[4]);
                             c.setBalance(Double.parseDouble(tokens[7]), tokens[6]);
 
                             //给用户加进去
                             Customer customer = (Customer)USERNAME_TO_CHAR.get(tokens[0]);
+                            System.out.println(USERNAME_TO_CHAR);
+                            System.out.println(tokens[0]);
+                            //System.out.println(USERNAME_TO_CHAR.get(tokens[0]));
                             customer.getChecking().add(c);
                             checkings.add(c);
                             //ID_TO_ACCOUNT.put(new Tuple(tokens[0],tokens[1]), c);
@@ -343,6 +361,8 @@ public class Variable {
                             s.setBalance(Double.parseDouble(tokens[7]), tokens[6]);
 
                             Customer sac_c = (Customer)USERNAME_TO_CHAR.get(tokens[0]);
+                            System.out.println(tokens[0]);
+                            System.out.println(USERNAME_TO_CHAR);
 
                             sac_c.getChecking().add(s);
                             savings.add(s);
@@ -387,6 +407,7 @@ public class Variable {
                 } else {
                     System.out.printf("Len is %d\n", tokens.length);
                 }
+                line = br.readLine();
             }
 
         br.close();
@@ -403,11 +424,17 @@ public class Variable {
             String type = f.getName().substring(0, f.getName().indexOf('.')).toUpperCase();
 
             String line = "";
+            line = br.readLine();
+            
+            System.out.println("HI");
+            System.out.println(line);
 
-            while ((line = br.readLine()) != null) {
-                //accountID,operation,assetname,amount,currency,description,timestamp
+            while (line != null) {
+                //accountID,operation,assetname,amount,currency,description
                 String[] tokens = line.replace("\n", "").strip().split(",");
-                Account a = (Account)ID_TO_ACCOUNT.get(new Tuple(tokens[0],tokens[1]));
+                System.out.println(tokens.length);
+                Account a = (Account)ID_TO_ACCOUNT.get(tokens[0]);
+                System.out.println(tokens[0]);
                 Transaction t = null;
                 if(tokens[2].equals(""))
                 {
@@ -415,16 +442,12 @@ public class Variable {
                 }
                 else
                 {
-                    if(tokens[6].equals(""))
-                    {
-                        t = new Transaction(tokens[1], tokens[2], Double.parseDouble(tokens[3]), tokens[4], tokens[5]);
-                    }
-                    else
-                    {
-                        //t = new Transaction(tokens[2], tokens[3], Double.parseDouble(tokens[4]), tokens[5], tokens[6],tokens[7]);
-                    }
+                    
+                    t = new Transaction(tokens[1], tokens[2], Double.parseDouble(tokens[3]), tokens[4], tokens[5]);
+                    
                 }
                 a.addTransaction(t);
+                line = br.readLine();
             }
 
         br.close();

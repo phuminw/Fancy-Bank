@@ -75,10 +75,21 @@ public class FancyBank {
 
         // Transaction t = new Transaction(Transaction.DEPOSIT, 50.0, "USD", "hihi");
         // VARIABLE.updateTransaction(, t);
-        // SavingAccount che = new SavingAccount(0.1, 5);
+        //SavingAccount che = new SavingAccount(0.1, 5);
         // Customer c = new Customer("", "jessy", "");
-        // c.getSaving().add(che);
-        // c.deposit("USD", 500.0, Integer.toString(che.getId()));
+        // VARIABLE.updateCustomer(c);
+        // System.out.println(VARIABLE.USERNAME_TO_CHAR);
+        // c.createSavingAccount();
+        // System.out.println("u");
+        // System.out.println(VARIABLE.savings);
+        // System.out.println("u");
+        //VARIABLE.updateCustomer(c);
+        //c.getSaving().add(che);
+        //c.deposit("USD", 500.0, Integer.toString(2037863579));
+        Customer c = (Customer)VARIABLE.USERNAME_TO_CHAR.get("jessy");
+        //c.createSavingAccount();
+        c.deposit("USD", 500.0, Integer.toString(105272405));
+        
 
        
     }
@@ -91,6 +102,7 @@ public class FancyBank {
             e.printStackTrace();
         }
         VARIABLE = new Variable(DBPATH);
+        VARIABLE.init();
         initBank();
 
         
@@ -129,9 +141,7 @@ public class FancyBank {
     }
 
     public void createOnlineAccount(String username){
-        System.out.println("Manager Login");
-        System.out.println(username);
-        Customer c = new Customer("", username,"");
+        Customer c = new Customer("", username,"111");
         VARIABLE.updateCustomer(c);
         this.currentChar = c;
         
