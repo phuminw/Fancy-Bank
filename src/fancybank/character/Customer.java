@@ -196,19 +196,22 @@ public class Customer extends Character {
         Transaction t1 = new Transaction(Transaction.WITHDRAW, money, currency, "TRANSFER TO");
         Transaction t2 = new Transaction(Transaction.DEPOSIT, money, currency, "TRANSFER FROM");
 
-        from.addTransaction(t1);
-        to.addTransaction(t2);
+        FancyBank.VARIABLE.updateTransaction(from.getId(),t1);
+        FancyBank.VARIABLE.updateTransaction(to.getId(),t2);
 
         if (from instanceof SavingAccount) {
             SavingAccount s = (SavingAccount) from;
             s.deductBalance(money, currency, "WITHDRAW", LocalDateTime.now());
+            FancyBank.VARIABLE.updateAccount(this.getAccountName(),s);
         } else if (from instanceof CheckingAccount) {
             CheckingAccount s = (CheckingAccount) from;
             s.deductBalance(money, currency, "WITHDRAW", LocalDateTime.now());
+            FancyBank.VARIABLE.updateAccount(this.getAccountName(),s);
 
         } else if (from instanceof SecuritiesAccount) {
             SecuritiesAccount s = (SecuritiesAccount) from;
             s.deductBalance(money, currency, "WITHDRAW", LocalDateTime.now());
+            FancyBank.VARIABLE.updateAccount(this.getAccountName(),s);
 
         }
 
