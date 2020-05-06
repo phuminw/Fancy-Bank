@@ -160,7 +160,10 @@ public class ManagerPanel extends BankPanel {
         public void actionPerformed(ActionEvent e) {
             String name = e.getActionCommand();
             
-            new UserUI(name, bankUI, bankUI.getUserAccountInfo(name));
+            new UserUI(name, bankUI, 
+            bankUI.getUserSavingAccountInfo(name),
+            bankUI.getUserCheckingAccountInfo(name),
+            bankUI.getUserSecurityAccountInfo(name));
         }
     }
 

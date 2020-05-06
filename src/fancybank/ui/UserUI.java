@@ -5,7 +5,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class UserUI extends JFrame {
-    public UserUI(String name, Component parent, List<Account> accounts) {
+    public UserUI(String name, Component parent, List<Account> saving, List<Account> checking, List<Account> securities) {
         setTitle("User Info");
         setLocationRelativeTo(parent);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -14,15 +14,21 @@ public class UserUI extends JFrame {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-        
+        System.out.println(saving.size());
+        System.out.println(checking.size());
+        System.out.println(securities.size());
 
-        // for (Account it : accounts) {
-        //     if (it instanceof CheckingAccount || it instanceof SavingAccount) {
-        //         panel.add(new NormalAccountInfoPanel(it));
-        //     } else {
-        //         panel.add(new SecurityAccountInfoPanel());
-        //     }
-        // }
+        if (saving.size() > 0) {
+            panel.add(new NormalAccountInfoPanel(saving.get(saving.size() - 1)));
+        }
+
+        if (checking.size() > 0) {
+            panel.add(new NormalAccountInfoPanel(checking.get(checking.size() - 1)));
+        }
+
+        if (securities.size() > 0) {
+            panel.add(new SecurityAccountInfoPanel());
+        }
 
         add(panel);
 

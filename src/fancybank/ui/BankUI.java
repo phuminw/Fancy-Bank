@@ -122,8 +122,16 @@ public class BankUI extends JFrame {
         new Log(fancybank.viewTransaction(), this);
     }
 
-    public List getUserAccountInfo(String name) {
-        return fancybank.getUserToAccount(name);
+    public List getUserCheckingAccountInfo(String name) {
+        return fancybank.getUserToAccountChecking(name);
+    }
+
+    public List getUserSavingAccountInfo(String name) {
+        return fancybank.getUserToAccountSaving(name);
+    }
+
+    public List getUserSecurityAccountInfo(String name) {
+        return fancybank.getUserToAccountSecurities(name);
     }
 
     public void setTransFee(int newTransFee) {
