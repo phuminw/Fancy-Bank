@@ -319,19 +319,25 @@ public class Customer extends Character {
         for(SavingAccount sav:this.savings)
         {
             List lst = sav.getTransactions("USD");
+            lst.addAll(sav.getTransactions("CNY"));
+            lst.addAll(sav.getTransactions("EUR"));
             for(int i = 0;i<lst.size();i++)
             {
-                ret = ret+lst.get(0).toString();
+                ret = ret+lst.get(i).toString();
                 ret = ret + "/n";
             }
+            System.out.println(lst);
         }
 
         for(CheckingAccount sav:this.checkings)
         {
             List lst = sav.getTransactions("USD");
+            lst.addAll(sav.getTransactions("CNY"));
+            lst.addAll(sav.getTransactions("EUR"));
+
             for(int i = 0;i<lst.size();i++)
             {
-                ret = ret+lst.get(0).toString();
+                ret = ret+lst.get(i).toString();
                 ret = ret + "/n";
             }
         }
@@ -339,6 +345,8 @@ public class Customer extends Character {
         for(SecuritiesAccount sav:this.securites)
         {
             List lst = sav.getTransactions("USD");
+            lst.addAll(sav.getTransactions("CNY"));
+            lst.addAll(sav.getTransactions("EUR"));
             for(int i = 0;i<lst.size();i++)
             {
                 ret = ret+lst.get(0).toString();
