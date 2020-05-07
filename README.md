@@ -1,8 +1,8 @@
 # Fancy Bank
 ## Team Info
-Yizhou Mao /n
-Phumin Walaipatchara
-Jinshu Yang
+Yizhou Mao <br />
+Phumin Walaipatchara<br />
+Jinshu Yang<br />
 ## Launching Application
 
 [start](start) is a script to launch the application. Depends on geekness, you may launch in UI or in command line mode by commenting out appropiate lines at the very end of the script. Note that command line mode is non-interactive, meaning that you have to deal with main method under [FancyBank.java](src/fancybank/FancyBank.java) yourself ( ͡° ͜ʖ ͡°)
