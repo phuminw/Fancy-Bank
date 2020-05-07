@@ -1,6 +1,6 @@
 # Fancy Bank
 ## Team Info
-Yizhou Mao
+Yizhou Mao /n
 Phumin Walaipatchara
 Jinshu Yang
 ## Launching Application
