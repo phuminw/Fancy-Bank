@@ -1,5 +1,8 @@
 # Fancy Bank
-
+## Team Info
+Yizhou Mao
+Phumin Walaipatchara
+Jinshu Yang
 ## Launching Application
 
 [start](start) is a script to launch the application. Depends on geekness, you may launch in UI or in command line mode by commenting out appropiate lines at the very end of the script. Note that command line mode is non-interactive, meaning that you have to deal with main method under [FancyBank.java](src/fancybank/FancyBank.java) yourself ( ͡° ͜ʖ ͡°)
@@ -32,6 +35,16 @@ Loan is a concrete class extending Saving account concrete class. Loan is simila
 
 ## Characters
 
+### [Character](src/fancybank/character/Character.java)
+
+Character is an abstract class comprising of methods and attributes common to all character types such as realName, userName, password and so on. By implement Character as an abstract class, it will require all subclasses extended from Character class to have the methods and features defined in Character class. Concrete character is expected to inherit from this abstract class to standardize method signature of common mutators. In this way, it enhances code efficiency and standards.
+
+### [Customer](src/fancybank/character/Customer.java)
+Customer is a concrete class extending Character abstract class. With the features and methods implemented in Character class, Customer class includes features and methods that are specific to Customer, such as viewTransaction, deposit, withdraw and so on. It serves as a class to the achieve the functionality of Customer. Instead of directly calling the methods in Customer class,the system will use the methods in FancyBank class to input parameters to the corresponding methods in Customer class. In this way, it will limit the user's access to methods in other files and enhance the control of developer over this program. Similiar structure is enforced for Manager class.
+
+### [Manager](src/fancybank/character/Manager.java)
+Manager is a concrete class extending Character abstract class. With the features and methods implemented in Character class, Manager class includes features and methods that are specific to Manager, such as report, checkCustomer and so on. It serves as a class to the achieve the functionality of managers. 
+
 ## IO
 
 ### [STDIN Wrapper](src/fancybank/io/StdinWrapper.java)
@@ -56,9 +69,11 @@ Stocks market is a concrete singleton class. There MUST exist only one stocks ma
 
 ### [Tuple](src/fancybank/util/Tuple.java)
 
-Tuple was taken from the previous assignment. It is used to pack two object to be passed together. This implementation is tuple of size 2.
+Tuple was taken from the previous assignment. It is used to pack two object to be passed together. This implementation is tuple of size 2. This class gives developer more freedom towards types. In this system, especially in the Variable class which is functioned as the loading and storing informations from and to the database, the developer can create tuple with different combinations simply as a key feature in Hashmap. In this way, we can use different input parameters to check and get objects.
 
 ### [Variable](src/fancybank/util/Variable.java)
+
+Variable class serves as a class connects to the database. It contains the structures and methods dealing with informations in database. For example, every time when we start the system, the loading method in Variable class will be called to load each characters, accounts, stocks, transactions. And if a new operation is enforces, update methods in Variable class will be called to update the corresponding files in database. In this way, it enhances the simplicity in other files when dealing with updating data and the actual-complicated process is hidden and process is left in Variable class to finish. Additionally, Variable also contians structures to contains information, such as Lists and HashMaps. For example, other files can use these structure to check whether a specific customer is existed. With the setup of Variable class, we make the division of functionality more clearly. Everything associated with database is implemented in Variable class and it is also easier to modify and update in the future.
 
 ## Miscellaneous
 
