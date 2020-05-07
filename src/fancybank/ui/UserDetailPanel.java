@@ -65,6 +65,10 @@ public class UserDetailPanel extends BankPanel {
             accountsListJpanel.add(new SingleSecurityAccountComponent(bankUI));
         }
             
+        // System.out.println(
+        // "bankUI.getStockInfo();"
+        // );
+        // bankUI.getStockInfo();
 
         // for (Account it : saving) {
         //     accountsListJpanel.add(new SingleNormalAccountComponent(bankUI, it));

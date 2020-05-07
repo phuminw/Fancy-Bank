@@ -169,9 +169,10 @@ public class BankUI extends JFrame {
     // err);
     // }
 
-    // public ArrayList getStockInfo() {
-    // return fancybank.getStockInfo();
-    // }
+    public Set getStockInfo() {
+        System.out.println(fancybank.getStocksInfo());
+        return fancybank.getStocksInfo();
+    }
 
     public void navigateToLoginUserPage() {
         getContentPane().removeAll();
